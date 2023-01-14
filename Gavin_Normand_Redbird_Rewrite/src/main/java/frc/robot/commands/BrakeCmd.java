@@ -5,20 +5,19 @@
 package frc.robot.commands;
 
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.FlyWheel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class FlyWheelCmd extends CommandBase {
+public class BrakeCmd extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public FlyWheelCmd() {
+  public BrakeCmd() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.flywheelsubsystem);
+    addRequirements(RobotContainer.drivetrainsubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -28,12 +27,15 @@ public class FlyWheelCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.flywheelsubsystem.shoot(10000);
+    RobotContainer.drivetrainsubsystem.brakeButton(true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    RobotContainer.drivetrainsubsystem.brakeButton(false);
+
+  }
 
   // Returns true when the command should end.
   @Override

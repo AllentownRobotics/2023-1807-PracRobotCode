@@ -16,4 +16,14 @@ public final class Constants {
     public final static int flyid1 = 7;
     public final static int flyid2 = 8;
     public final static int controllerport = 0;
+
+    public final static int lm1 = 1;
+    public final static int lm2 = 2;
+    public final static int lm3 = 3;
+    public final static int rm4 = 4;
+    public final static int rm5 = 5;
+    public final static int rm6 = 6;
+
+    public final static double SpeedMult = 1.0;
+    public final static double TurnMult = 1.0;
 }

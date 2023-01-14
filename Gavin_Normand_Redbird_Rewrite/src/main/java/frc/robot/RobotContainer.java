@@ -8,8 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.BrakeCmd;
+import frc.robot.commands.DriveCmd;
 import frc.robot.commands.FlyWheelCmd;
 import frc.robot.commands.IdleCmd;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FlyWheel;
 
 /**
@@ -21,18 +24,23 @@ import frc.robot.subsystems.FlyWheel;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static FlyWheel flywheelsubsystem;
-  public XboxController controller;
+  public static XboxController controller;
   public static FlyWheelCmd flywheelcommand;
+  public static DriveTrain drivetrainsubsystem;
+  public static DriveCmd drivecommand;
 
   private JoystickButton flyButton;
+  private JoystickButton brakeButton;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     controller = new XboxController(Constants.controllerport);
 
     flywheelsubsystem = new FlyWheel();
+    drivetrainsubsystem = new DriveTrain();
     // Configure the button bindings
     flywheelsubsystem.setDefaultCommand(new IdleCmd());
+    drivetrainsubsystem.setDefaultCommand(new DriveCmd());
     configureButtonBindings();
   }
 
@@ -46,7 +54,8 @@ public class RobotContainer {
 
     flyButton = new JoystickButton(controller, XboxController.Button.kA.value);
     flyButton.whileHeld(new FlyWheelCmd());
-    
+    brakeButton = new JoystickButton(controller, XboxController.Button.kB.value);
+    brakeButton.whileHeld(new BrakeCmd());
   }
 
   /**
