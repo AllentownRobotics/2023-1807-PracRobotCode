@@ -14,6 +14,7 @@ import frc.robot.commands.FlyWheelCmd;
 import frc.robot.commands.IdleCmd;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FlyWheel;
+import frc.robot.subsystems.Indexer;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,6 +28,7 @@ public class RobotContainer {
   public static XboxController controller;
   public static FlyWheelCmd flywheelcommand;
   public static DriveTrain drivetrainsubsystem;
+  public static Indexer indexsubsystem;
   public static DriveCmd drivecommand;
 
   private JoystickButton flyButton;
@@ -38,6 +40,7 @@ public class RobotContainer {
 
     flywheelsubsystem = new FlyWheel();
     drivetrainsubsystem = new DriveTrain();
+    indexsubsystem = new Indexer();
     // Configure the button bindings
     flywheelsubsystem.setDefaultCommand(new IdleCmd());
     drivetrainsubsystem.setDefaultCommand(new DriveCmd());

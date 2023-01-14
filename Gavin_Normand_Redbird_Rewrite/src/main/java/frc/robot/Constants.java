@@ -26,4 +26,6 @@ public final class Constants {
 
     public final static double SpeedMult = 1.0;
     public final static double TurnMult = 1.0;
+
+    public final static int indexmotorid = 13;
 }
