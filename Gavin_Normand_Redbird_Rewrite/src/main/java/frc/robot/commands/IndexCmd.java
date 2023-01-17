@@ -29,14 +29,11 @@ public class IndexCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Indexer.indexUltrasonic1.setAutomaticMode(true);
-    Indexer.indexUltrasonic2.setAutomaticMode(true);
     SmartDashboard.putNumber("BOTTOM SENSOR", Indexer.indexUltrasonic1.getRangeInches());
     SmartDashboard.putNumber("TOP SENSOR", Indexer.indexUltrasonic2.getRangeInches());
     if(Indexer.indexUltrasonic1.getRangeInches()<7 || Indexer.indexUltrasonic1.getRangeInches() > 20)
     {
       RobotContainer.indexsubsystem.index(1);
-      SmartDashboard.putString("BALL STATUS TOP", "Ball Ball Ball(top)");
     }
     else
     {
@@ -45,7 +42,6 @@ public class IndexCmd extends CommandBase {
     if(Indexer.indexUltrasonic2.getRangeInches()<7 || Indexer.indexUltrasonic2.getRangeInches()>20)
     {
       RobotContainer.indexsubsystem.index(1);
-      SmartDashboard.putString("BALL STATUS BOTTOM", "Ball Ball Ball(bottom)");
 
     }
     else

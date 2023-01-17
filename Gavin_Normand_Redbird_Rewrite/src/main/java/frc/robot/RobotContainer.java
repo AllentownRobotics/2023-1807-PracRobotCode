@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.BrakeCmd;
 import frc.robot.commands.DriveCmd;
 import frc.robot.commands.FlyWheelCmd;
 import frc.robot.commands.IdleCmd;
+import frc.robot.commands.IndexCmd;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FlyWheel;
 import frc.robot.subsystems.Indexer;
@@ -54,6 +56,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    Trigger bottomSensorTrigger = new Trigger(() -> Indexer.sensorBottom());
+    bottomSensorTrigger.whenActive(new IndexCmd());
+    Trigger topSensorTrigger = new Trigger(() -> Indexer.sensorTop());
+    topSensorTrigger.whenActive(new IndexCmd());
+
 
     flyButton = new JoystickButton(controller, XboxController.Button.kA.value);
     flyButton.whileHeld(new FlyWheelCmd());

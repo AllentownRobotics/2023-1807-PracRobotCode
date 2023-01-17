@@ -31,6 +31,8 @@ public class Indexer extends SubsystemBase {
     indexUltrasonic2 = new Ultrasonic(3, 2);
 
     indexMotor = new WPI_TalonSRX(Constants.indexmotorid);
+    indexUltrasonic1.setAutomaticMode(true);
+    indexUltrasonic2.setAutomaticMode(true);
   }
 
   @Override
@@ -51,5 +53,27 @@ public class Indexer extends SubsystemBase {
   {
     feedMotor.set(rpm);
   }
-  
+
+  public static boolean sensorBottom()
+  {
+    if(indexUltrasonic1.getRangeInches()<7 || indexUltrasonic1.getRangeInches()>20)
+    {
+     return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  public static boolean sensorTop()
+  {
+    if(indexUltrasonic2.getRangeInches()<7 || indexUltrasonic2.getRangeInches()>20)
+    {
+     return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
 }
