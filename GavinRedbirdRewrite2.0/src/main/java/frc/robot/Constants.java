@@ -28,4 +28,10 @@ public final class Constants {
     public final static double TurnMult = 1.0;
 
     public final static int indexmotorid = 13;
+
+    public final static int collectormotorid = 11;
+
+    public final static int collectpneumaticid = 14;
+    public final static int collectpneumaticforward = 0;
+    public final static int collectpneumaticreverse = 1;
 }

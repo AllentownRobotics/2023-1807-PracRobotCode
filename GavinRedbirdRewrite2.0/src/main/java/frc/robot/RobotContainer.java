@@ -10,10 +10,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.BrakeCmd;
+import frc.robot.commands.CollectCmd;
+import frc.robot.commands.CompressCmd;
 import frc.robot.commands.DriveCmd;
 import frc.robot.commands.FlyWheelCmd;
 import frc.robot.commands.IdleCmd;
 import frc.robot.commands.IndexCmd;
+import frc.robot.subsystems.Collector;
+import frc.robot.subsystems.Compress;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.FlyWheel;
 import frc.robot.subsystems.Indexer;
@@ -32,9 +36,12 @@ public class RobotContainer {
   public static DriveTrain drivetrainsubsystem;
   public static Indexer indexsubsystem;
   public static DriveCmd drivecommand;
+  public static Compress compresssubsystem;
+  public static Collector collectsubsystem;
 
   private JoystickButton flyButton;
   private JoystickButton brakeButton;
+  private JoystickButton collectButton;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -43,9 +50,13 @@ public class RobotContainer {
     flywheelsubsystem = new FlyWheel();
     drivetrainsubsystem = new DriveTrain();
     indexsubsystem = new Indexer();
+    compresssubsystem = new Compress();
+    collectsubsystem = new Collector();
     // Configure the button bindings
     flywheelsubsystem.setDefaultCommand(new IdleCmd());
     drivetrainsubsystem.setDefaultCommand(new DriveCmd());
+    compresssubsystem.setDefaultCommand(new CompressCmd());
+    collectsubsystem.setDefaultCommand(new CollectCmd());
     configureButtonBindings();
   }
 
@@ -66,6 +77,8 @@ public class RobotContainer {
     flyButton.whileHeld(new FlyWheelCmd());
     brakeButton = new JoystickButton(controller, XboxController.Button.kB.value);
     brakeButton.whileHeld(new BrakeCmd());
+    collectButton = new JoystickButton(controller, XboxController.Button.kY.value);
+    collectButton.whileHeld(new CollectCmd());
   }
 
   /**
