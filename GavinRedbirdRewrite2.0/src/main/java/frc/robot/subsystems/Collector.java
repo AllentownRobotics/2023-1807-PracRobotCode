@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.ResourceBundle.Control;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -35,24 +37,15 @@ public class Collector extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-  public void collect(boolean state)
+  public void collect()
   {
-    if(state)
-    {
-      if(collectSolenoid.get().equals(Value.kReverse))
-      {
-        collectSolenoid.toggle();
-      }
-      collectMotor.set(ControlMode.Velocity, 1000);
-    }
-    else
-    {
-      if(collectSolenoid.get().equals(Value.kForward))
-      {
-        collectSolenoid.toggle();
-      }
-      collectMotor.set(ControlMode.Velocity, 0);
-    }
-
+    collectSolenoid.set(Value.kForward);
+    collectMotor.set(ControlMode.PercentOutput,.35);
+  }
+  public void retract()
+  {
+    collectSolenoid.set(Value.kReverse);
+    collectMotor.set(ControlMode.PercentOutput,0);
   }
 }
+

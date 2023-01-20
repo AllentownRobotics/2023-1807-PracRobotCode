@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import java.util.ResourceBundle.Control;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -22,8 +25,8 @@ public class Indexer extends SubsystemBase {
     indexUltrasonic2 = new Ultrasonic(3, 2);
 
     indexMotor = new WPI_TalonSRX(Constants.indexmotorid);
-    indexUltrasonic1.setAutomaticMode(true);
-    indexUltrasonic2.setAutomaticMode(true);
+    feedMotor = new WPI_TalonSRX(Constants.feedmotorid);
+
   }
 
   @Override
@@ -36,35 +39,12 @@ public class Indexer extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-  public void index(int rpm)
+  public void index(double rpm)
   {
-    indexMotor.set(rpm);
+    indexMotor.set(ControlMode.PercentOutput, -rpm);
   }
-  public void feed(int rpm)
+  public void feed(double rpm)
   {
-    feedMotor.set(rpm);
-  }
-
-  public static boolean sensorBottom()
-  {
-    if(indexUltrasonic1.getRangeInches()<7 || indexUltrasonic1.getRangeInches()>20)
-    {
-     return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-  public static boolean sensorTop()
-  {
-    if(indexUltrasonic2.getRangeInches()<7 || indexUltrasonic2.getRangeInches()>20)
-    {
-     return true;
-    }
-    else
-    {
-      return false;
-    }
+    feedMotor.set(ControlMode.PercentOutput, -rpm);
   }
 }

@@ -14,6 +14,7 @@ import frc.robot.commands.CollectCmd;
 import frc.robot.commands.CompressCmd;
 import frc.robot.commands.DriveCmd;
 import frc.robot.commands.FlyWheelCmd;
+import frc.robot.commands.FlyWheelCmdReverse;
 import frc.robot.commands.IdleCmd;
 import frc.robot.commands.IndexCmd;
 import frc.robot.subsystems.Collector;
@@ -42,6 +43,9 @@ public class RobotContainer {
   private JoystickButton flyButton;
   private JoystickButton brakeButton;
   private JoystickButton collectButton;
+  private JoystickButton indexButton;
+  private JoystickButton reverseButton;
+  private JoystickButton indexReverseButton;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -56,7 +60,6 @@ public class RobotContainer {
     flywheelsubsystem.setDefaultCommand(new IdleCmd());
     drivetrainsubsystem.setDefaultCommand(new DriveCmd());
     compresssubsystem.setDefaultCommand(new CompressCmd());
-    collectsubsystem.setDefaultCommand(new CollectCmd());
     configureButtonBindings();
   }
 
@@ -67,18 +70,25 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    Trigger bottomSensorTrigger = new Trigger(() -> Indexer.sensorBottom());
-    bottomSensorTrigger.whenActive(new IndexCmd());
-    Trigger topSensorTrigger = new Trigger(() -> Indexer.sensorTop());
-    topSensorTrigger.whenActive(new IndexCmd());
+    //Trigger bottomSensorTrigger = new Trigger(() -> Indexer.sensorBottom());
+    //bottomSensorTrigger.whenActive(new IndexCmd());
+    //Trigger topSensorTrigger = new Trigger(() -> Indexer.sensorTop());
+    //topSensorTrigger.whenActive(new IndexCmd());
 
-
+    indexButton = new JoystickButton(controller, XboxController.Button.kX.value);
+    indexButton.whileHeld(new IndexCmd(.5));
+    indexReverseButton = new JoystickButton(controller, XboxController.Button.kStart.value);
+    indexReverseButton.whileHeld((new IndexCmd(-.5)));
     flyButton = new JoystickButton(controller, XboxController.Button.kA.value);
     flyButton.whileHeld(new FlyWheelCmd());
     brakeButton = new JoystickButton(controller, XboxController.Button.kB.value);
     brakeButton.whileHeld(new BrakeCmd());
     collectButton = new JoystickButton(controller, XboxController.Button.kY.value);
     collectButton.whileHeld(new CollectCmd());
+    collectButton = new JoystickButton(controller, XboxController.Button.kY.value);
+    collectButton.whileHeld(new CollectCmd());
+    reverseButton = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
+    reverseButton.whileHeld(new FlyWheelCmdReverse());
   }
 
   /**

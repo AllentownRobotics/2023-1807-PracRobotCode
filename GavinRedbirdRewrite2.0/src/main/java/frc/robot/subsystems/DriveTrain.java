@@ -31,7 +31,7 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     leftMotorOne = new WPI_TalonFX(Constants.lm1);
     leftMotorTwo = new WPI_TalonFX(Constants.lm2);
-    leftMotorTwo = new WPI_TalonFX(Constants.lm3);
+    leftMotorThree = new WPI_TalonFX(Constants.lm3);
     rightMotorFour = new WPI_TalonFX(Constants.rm4);
     rightMotorFive = new WPI_TalonFX(Constants.rm5);
     rightMotorSix = new WPI_TalonFX(Constants.rm6);

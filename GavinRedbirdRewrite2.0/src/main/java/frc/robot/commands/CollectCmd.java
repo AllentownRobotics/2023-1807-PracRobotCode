@@ -27,13 +27,13 @@ public class CollectCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.collectsubsystem.collect(true);
+    RobotContainer.collectsubsystem.collect();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.collectsubsystem.collect(false);
+    RobotContainer.collectsubsystem.retract();
   }
 
   // Returns true when the command should end.
