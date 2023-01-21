@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DrivetrainCommand;
+import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,11 +23,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static XboxController xboxController;
   public static Drivetrain drivetrain = new Drivetrain();
+  public static Indexer indexer = new Indexer();
   public static Shooter shooter = new Shooter();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain.setDefaultCommand(new DrivetrainCommand());
     shooter.setDefaultCommand(new ShooterCommand());
+    indexer.setDefaultCommand(new IndexerCommand());
     xboxController = new XboxController(Constants.robotContainerXboxController);
     // Configure the button bindings
     configureButtonBindings();

@@ -38,6 +38,20 @@ public final class Constants {
 
     public static final int shooterTargetRPM = 4000;
 
+    // indexer constants
+
+    public static final int indexerIndexPingChannel = 1;
+
+    public static final int indexerIndexEchoChannel = 0;
+
+    public static final int indexerFeederPingChannel = 3;
+
+    public static final int indexerFeederEchoChannel = 2;
+
+    public static final int indexerIndexMotorID = 13;
+
+    public static final int indexerFeederMotorID = 12;
+
     // general constants
     
     public static final int robotContainerXboxController = 0;
