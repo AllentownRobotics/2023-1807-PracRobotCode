@@ -9,6 +9,9 @@ import frc.robot.RobotContainer;
 
 public class ControlCommand extends CommandBase {
   /** Creates a new Control. */
+
+  double sus;
+
   public ControlCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_neoMotorSubsystem);
@@ -22,7 +25,8 @@ public class ControlCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_neoMotorSubsystem.control(RobotContainer.m_xboxController);
+    sus = RobotContainer.m_xboxController.getLeftY();
+    RobotContainer.m_neoMotorSubsystem.control(sus);
   }
 
   // Called once the command ends or is interrupted.

@@ -16,4 +16,20 @@ public final class Constants {
 
     public static final int ControllerID = 1;
     public static final int MotorID = 1;
+
+    // PID coefficients
+        public static final double kP = 0.1; 
+        public static final double kI = 1e-4;
+        public static final double kD = 1; 
+        public static final double kIz = 0; 
+        public static final double kFF = 0; 
+        public static final double kMaxOutput = 1; 
+        public static final double kMinOutput = -1;
+        public static final double kToleranceRPS = 0;
+        public static final double kEncoderDistancePerPulse = 0;
+        public static final double kTargetRPS = 0;
+
+    
+
+
 }
