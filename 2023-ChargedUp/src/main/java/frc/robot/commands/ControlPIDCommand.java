@@ -29,7 +29,7 @@ public class ControlPIDCommand extends PIDCommand {
         // This should return the measurement
         m_neoMotorSubsystem::getSpeed,
         // This should return the setpoint (can also be a constant)
-        m_xboxController.getLeftY(),
+        targetSpeed,
         // This uses the output
         output -> RobotContainer.m_neoMotorSubsystem.control(output)
         
