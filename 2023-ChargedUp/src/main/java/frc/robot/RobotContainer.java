@@ -17,6 +17,7 @@ import frc.robot.commands.CurvatureDriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.FlywheelIdleCommand;
 import frc.robot.commands.FlywheelShootCommand;
+import frc.robot.commands.IndexCommand;
 import frc.robot.subsystems.CollectorSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -103,6 +104,18 @@ public class RobotContainer {
         }  
       }
 
+    if (m_xboxController.getXButtonPressed()) {
+      if (collectorOn) {
+          new CollectRetractCommand();
+          collectorOn = false;
+        } else {
+          new CollectExtendCommand();
+          collectorOn = true;
+        }  
+      }
+
+      JoystickButton indexButton = new JoystickButton(m_xboxController, XboxController.Button.kX.value);
+      indexButton.whileHeld(new IndexCommand(.5));
 
   }
 
