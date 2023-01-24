@@ -4,20 +4,16 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
-public class CompresserSubsystem extends SubsystemBase {
+public class CompressorSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   Compressor comp;
 
-  public Compress() {
+  public CompressorSubsystem() {
     comp = new Compressor(14, PneumaticsModuleType.REVPH);
   }
 

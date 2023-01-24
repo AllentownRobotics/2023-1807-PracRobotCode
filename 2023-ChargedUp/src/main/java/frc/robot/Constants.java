@@ -19,7 +19,17 @@ public final class Constants {
     public static final int RIGHT_MOTOR_ONE = 4;
     public static final int RIGHT_MOTOR_TWO = 5;
     public static final int RIGHT_MOTOR_THREE = 6;
-    public static final int ControllerID = 0;
+
+    public static final int XBOX_CONTROLLER_ONE = 0;
+
+    public static final int FLYWHEEL_MOTOR_ONE = 0;
+    public static final int FLYWHEEL_MOTOR_TWO = 0;
+    public static final int FEED_MOTOR = 0;
+    public static final int INDEX_MOTOR = 0;
+    public static final int PNEUMATIC_REVERSE = 0;
+    public static final int PNEUMATIC_FOWARD = 0;
+    public static final int COLLECTOR_PNEUMATIC = 0;
+    public static final int COLLECTOR_MOTOR = 0;
 
 
 

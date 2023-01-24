@@ -15,7 +15,7 @@ public class FlywheelSubsystem extends SubsystemBase {
   WPI_TalonFX lead;
   WPI_TalonFX follow;
 
-  public FlywheelSubsytem() {
+  public FlywheelSubsystem() {
     lead = new WPI_TalonFX(Constants.FLYWHEEL_MOTOR_ONE);
     follow = new WPI_TalonFX(Constants.FLYWHEEL_MOTOR_TWO);
     follow.follow(lead);

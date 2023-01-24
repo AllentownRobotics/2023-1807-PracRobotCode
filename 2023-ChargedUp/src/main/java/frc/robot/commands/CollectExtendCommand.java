@@ -4,12 +4,20 @@
 
 package frc.robot.commands;
 
+import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class CollectCommand extends CommandBase {
-  /** Creates a new CollectCommand. */
-  public CollectCommand() {
+/** An example command that uses an example subsystem. */
+public class CollectExtendCommand extends CommandBase {
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  /**
+   * Creates a new ExampleCommand.
+   *
+   * @param subsystem The subsystem used by this command.
+   */
+  public CollectExtendCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(RobotContainer.m_CollectorSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -18,11 +26,14 @@ public class CollectCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    RobotContainer.m_CollectorSubsystem.collect();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
