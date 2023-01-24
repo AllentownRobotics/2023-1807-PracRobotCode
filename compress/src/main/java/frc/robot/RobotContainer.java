@@ -5,15 +5,10 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.DriveCMD;
-import frc.robot.commands.IndexCmd;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Indexer;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.CompressCmd;
+import frc.robot.subsystems.Compress;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -24,23 +19,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public static DriveTrain drivetrainsubsystem;
-  public static Indexer indexsubsystem;
-  private JoystickButton indexButton;
+  public static Compress compresssubsystem;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  public static XboxController controller;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    controller = new XboxController(OperatorConstants.kDriverControllerPort);
     // Configure the trigger bindings
+    compresssubsystem  = new Compress();
+    compresssubsystem.setDefaultCommand(new CompressCmd());
     configureBindings();
-    drivetrainsubsystem = new DriveTrain();
-    indexsubsystem = new Indexer();
-    drivetrainsubsystem.setDefaultCommand(new DriveCMD());
-    indexsubsystem.setDefaultCommand(new IndexCmd(0));
-    //compresssubsystem.setDefaultCommand(new CompressCmd());
   }
 
   /**
@@ -53,16 +41,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    Trigger beamBreakTrigger = new Trigger(() -> Indexer.getBeamBreak());
-    indexButton = new JoystickButton(controller, XboxController.Button.kX.value);
-    indexButton.and(beamBreakTrigger).whileActiveContinuous(new IndexCmd(.5));
-
-
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
   }
 
   /**

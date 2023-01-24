@@ -35,12 +35,11 @@ public class RobotContainer {
   public RobotContainer() {
     controller = new XboxController(OperatorConstants.kDriverControllerPort);
     // Configure the trigger bindings
-    configureBindings();
     drivetrainsubsystem = new DriveTrain();
     indexsubsystem = new Indexer();
     drivetrainsubsystem.setDefaultCommand(new DriveCMD());
     indexsubsystem.setDefaultCommand(new IndexCmd(0));
-    //compresssubsystem.setDefaultCommand(new CompressCmd());
+    configureBindings();
   }
 
   /**
@@ -55,8 +54,7 @@ public class RobotContainer {
   private void configureBindings() {
     Trigger beamBreakTrigger = new Trigger(() -> Indexer.getBeamBreak());
     indexButton = new JoystickButton(controller, XboxController.Button.kX.value);
-    indexButton.and(beamBreakTrigger).whileActiveContinuous(new IndexCmd(.5));
-
+    indexButton.and(beamBreakTrigger).whileTrue(new IndexCmd(0.05));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     

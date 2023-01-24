@@ -23,7 +23,7 @@ public final class Constants {
     public static final int leftFollowid = 10;
     public static final int rightLeadid = 31;
     public static final int rightFollowid = 2;
-    public static final int indexMotorid = 0;
+    public static final int indexMotorid = 3;
 
     public static final double driveMultiplier = .5;
   }
