@@ -115,7 +115,7 @@ public class RobotContainer {
       }
 
       JoystickButton indexButton = new JoystickButton(m_xboxController, XboxController.Button.kX.value);
-      indexButton.whileHeld(new IndexCommand(.5));
+      indexButton.whileHeld(new IndexCommand(0.5));
 
   }
 
