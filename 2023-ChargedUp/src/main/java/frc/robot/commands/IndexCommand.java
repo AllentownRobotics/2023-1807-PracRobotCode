@@ -5,11 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 
-public class CoastCommand extends CommandBase {
-  /** Creates a new CoastCommand. */
-  public CoastCommand() {
+public class IndexCommand extends CommandBase {
+  /** Creates a new IndexCommand. */
+  public IndexCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -19,10 +18,7 @@ public class CoastCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-      RobotContainer.m_DrivetrainSubsystem.coast();
-
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override

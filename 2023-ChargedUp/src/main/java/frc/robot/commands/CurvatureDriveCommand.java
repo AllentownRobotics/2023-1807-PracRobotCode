@@ -5,11 +5,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 
 public class CurvatureDriveCommand extends CommandBase {
+  private double xSpeed;
+  private boolean allowTurnInPlace;
+  private double yRotation;
+
   /** Creates a new CurvatureDriveCommand. */
-  public CurvatureDriveCommand() {
+  public CurvatureDriveCommand(double xSpeed, double yRotation, boolean allowTurnInPlace) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.xSpeed = xSpeed;
+
+    this.yRotation = yRotation;
+
+    this.allowTurnInPlace = allowTurnInPlace;
+
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +29,10 @@ public class CurvatureDriveCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+        RobotContainer.m_DrivetrainSubsystem.drive.curvatureDrive(xSpeed, yRotation, allowTurnInPlace);
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override
