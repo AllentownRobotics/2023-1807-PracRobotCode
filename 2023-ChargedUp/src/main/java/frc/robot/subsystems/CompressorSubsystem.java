@@ -15,20 +15,17 @@ public class CompressorSubsystem extends SubsystemBase {
 
   public CompressorSubsystem() {
     comp = new Compressor(14, PneumaticsModuleType.REVPH);
+    comp.enableAnalog(60,120);
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Pressure Switch Value", comp.getPressure());
     // This method will be called once per scheduler run
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
-  }
-  public void run()
-  {
-    SmartDashboard.putNumber("Pressure Switch Value", comp.getPressure());
-    comp.enableAnalog(60,120);
   }
 }

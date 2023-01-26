@@ -12,7 +12,6 @@ import frc.robot.commands.BrakeCommand;
 import frc.robot.commands.CoastCommand;
 import frc.robot.commands.CollectExtendCommand;
 import frc.robot.commands.CollectRetractCommand;
-import frc.robot.commands.CompressCommand;
 import frc.robot.commands.CurvatureDriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.FlywheelCommand;
@@ -54,8 +53,6 @@ public class RobotContainer {
   public RobotContainer() {
     m_DrivetrainSubsystem.setDefaultCommand(new CurvatureDriveCommand(m_xboxController.getRightTriggerAxis(), m_xboxController.getLeftX(), neutralSteeringOn));
     m_FlywheelSubsystem.setDefaultCommand(new FlywheelCommand(50));
-    m_CompressorSubsystem.setDefaultCommand(new CompressCommand());
-
     // Configure the button bindings
     configureButtonBindings();
 
