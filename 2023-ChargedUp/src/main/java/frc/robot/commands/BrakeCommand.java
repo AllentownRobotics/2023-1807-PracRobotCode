@@ -11,7 +11,6 @@ public class BrakeCommand extends CommandBase {
   /** Creates a new BrakeCommand. */
   public BrakeCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-      addRequirements(RobotContainer.m_DrivetrainSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -34,6 +33,6 @@ public class BrakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
