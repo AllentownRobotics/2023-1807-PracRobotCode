@@ -25,6 +25,6 @@ public final class Constants {
     public static final int rightFollowid = 2;
     public static final int indexMotorid = 3;
 
-    public static final double driveMultiplier = .5;
+    public static final double driveMultiplier = 1;
   }
 }

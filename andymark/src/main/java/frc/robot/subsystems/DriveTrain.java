@@ -9,6 +9,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -19,6 +21,8 @@ public class DriveTrain extends SubsystemBase {
   private CANSparkMax rightLead;
   private CANSparkMax rightFollow;
   private DifferentialDrive driver;
+  private MotorControllerGroup left;
+  private MotorControllerGroup right;
   public DriveTrain() 
   {
     leftLead = new CANSparkMax(DriveConstants.leftLeadid, MotorType.kBrushless);
@@ -26,10 +30,11 @@ public class DriveTrain extends SubsystemBase {
     rightLead = new CANSparkMax(DriveConstants.rightLeadid, MotorType.kBrushless);
     rightFollow = new CANSparkMax(DriveConstants.rightFollowid, MotorType.kBrushless);
 
-    leftFollow.follow(leftLead);
-    rightFollow.follow(rightLead);
-    rightLead.setInverted(true);
-    driver = new DifferentialDrive(leftLead, rightLead);
+
+    left = new MotorControllerGroup(leftLead, leftFollow);
+    right = new MotorControllerGroup(rightLead, rightFollow);
+    left.setInverted(true);
+    driver = new DifferentialDrive(left, right);
   }
 
   @Override
@@ -39,6 +44,6 @@ public class DriveTrain extends SubsystemBase {
 
   public void drive(XboxController controller)
   {
-    driver.arcadeDrive(controller.getLeftY()*DriveConstants.driveMultiplier, controller.getRightX()*DriveConstants.driveMultiplier);
+    driver.arcadeDrive(controller.getLeftY()*DriveConstants.driveMultiplier, -controller.getRightX()*DriveConstants.driveMultiplier);
   }
 }

@@ -4,18 +4,13 @@
 
 package frc.robot.subsystems;
 
-import javax.print.CancelablePrintJob;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 
 public class Indexer extends SubsystemBase {
@@ -43,7 +38,7 @@ public class Indexer extends SubsystemBase {
   }
   public void stop()
   {
-    indexMotor.set(-1);
+    indexMotor.set(0);
     indexMotor.setIdleMode(IdleMode.kBrake);
   }
 }
