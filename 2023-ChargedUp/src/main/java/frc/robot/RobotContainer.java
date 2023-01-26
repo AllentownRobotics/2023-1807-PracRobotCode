@@ -15,8 +15,7 @@ import frc.robot.commands.CollectRetractCommand;
 import frc.robot.commands.CompressCommand;
 import frc.robot.commands.CurvatureDriveCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.FlywheelIdleCommand;
-import frc.robot.commands.FlywheelShootCommand;
+import frc.robot.commands.FlywheelCommand;
 import frc.robot.commands.IndexCommand;
 import frc.robot.subsystems.CollectorSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
@@ -54,7 +53,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_DrivetrainSubsystem.setDefaultCommand(new CurvatureDriveCommand(m_xboxController.getRightTriggerAxis(), m_xboxController.getLeftX(), neutralSteeringOn));
-    m_FlywheelSubsystem.setDefaultCommand(new FlywheelIdleCommand());
+    m_FlywheelSubsystem.setDefaultCommand(new FlywheelCommand(50));
     m_CompressorSubsystem.setDefaultCommand(new CompressCommand());
 
     // Configure the button bindings
@@ -87,11 +86,11 @@ public class RobotContainer {
     }
     
     if (m_xboxController.getLeftBumperPressed()) {
-      new FlywheelShootCommand();
+      new FlywheelCommand(10000);
     }
 
     if (m_xboxController.getLeftBumperReleased())	{
-      new FlywheelIdleCommand();
+      new FlywheelCommand(50);
     }
 
     if (m_xboxController.getRightBumperPressed()) {

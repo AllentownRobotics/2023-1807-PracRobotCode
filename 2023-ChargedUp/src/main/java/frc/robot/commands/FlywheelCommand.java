@@ -8,16 +8,18 @@ import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class FlywheelIdleCommand extends CommandBase {
+public class FlywheelCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public FlywheelIdleCommand() {
+  int rpm = 0;
+  public FlywheelCommand(int rpm) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_FlywheelSubsystem);
+    this.rpm = rpm;
   }
 
   // Called when the command is initially scheduled.
@@ -27,6 +29,7 @@ public class FlywheelIdleCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    RobotContainer.m_FlywheelSubsystem.shoot(rpm);
   }
 
   // Called once the command ends or is interrupted.
