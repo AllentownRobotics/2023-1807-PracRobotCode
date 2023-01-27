@@ -5,8 +5,10 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.CollectCmd;
 import frc.robot.commands.DriveCMD;
 import frc.robot.commands.IndexCmd;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Indexer;
 import edu.wpi.first.wpilibj.Joystick;
@@ -26,7 +28,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static DriveTrain drivetrainsubsystem;
   public static Indexer indexsubsystem;
+  public static Collector collectsubsystem;
   private JoystickButton indexButton;
+  private JoystickButton collectButton;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static XboxController controller;
@@ -55,6 +59,9 @@ public class RobotContainer {
     Trigger beamBreakTrigger = new Trigger(() -> Indexer.getBeamBreak());
     indexButton = new JoystickButton(controller, XboxController.Button.kX.value);
     indexButton.and(beamBreakTrigger).whileTrue(new IndexCmd(0.05));
+
+    collectButton = new JoystickButton(controller, XboxController.Button.kA.value);
+    collectButton.whileHeld(new CollectCmd(.5));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     

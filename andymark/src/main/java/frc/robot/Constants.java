@@ -15,6 +15,9 @@ package frc.robot;
 public final class Constants {
   public static final int beamBreakChannel = 1;
 
+  public static final int topCollectorid = 3;
+  public static final int bottomCollectorid = 0;
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
