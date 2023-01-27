@@ -44,6 +44,6 @@ public class DriveTrain extends SubsystemBase {
 
   public void drive(XboxController controller)
   {
-    driver.arcadeDrive(controller.getLeftY()*DriveConstants.driveMultiplier, controller.getRightX()*DriveConstants.driveMultiplier);
+    driver.arcadeDrive(controller.getLeftY()*DriveConstants.driveMultiplier, -controller.getRightX()*DriveConstants.driveMultiplier);
   }
 }

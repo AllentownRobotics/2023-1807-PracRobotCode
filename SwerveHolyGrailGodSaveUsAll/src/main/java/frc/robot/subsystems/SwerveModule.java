@@ -10,6 +10,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import frc.lib.config.SwerveModuleConstants;
 import frc.lib.math.OnboardModuleState;
 import frc.lib.util.CANCoderUtil;
@@ -55,6 +56,7 @@ public class SwerveModule {
     /* Drive Motor Config */
     driveMotor = new CANSparkMax(moduleConstants.driveMotorID, MotorType.kBrushless);
     driveEncoder = driveMotor.getEncoder();
+    driveEncoder.setPositionConversionFactor(Math.PI*Units.inchesToMeters(3.94));
     driveController = driveMotor.getPIDController();
     configDriveMotor();
 
@@ -149,8 +151,8 @@ public class SwerveModule {
   public SwerveModuleState getState() {
     return new SwerveModuleState(driveEncoder.getVelocity(), getAngle());
   }
-  public SwerveModulePosition getPosition() {
+  public SwerveModulePosition getMyPosition() {
     return new SwerveModulePosition(
-        driveEncoder.getPosition(), new Rotation2d(integratedAngleEncoder.getPosition()));
+        driveEncoder.getPosition(), getAngle());
   }
 }

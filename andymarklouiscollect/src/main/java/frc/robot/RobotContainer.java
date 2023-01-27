@@ -30,7 +30,7 @@ public class RobotContainer {
   public static Indexer indexsubsystem;
   public static Collector collectsubsystem;
   private JoystickButton indexButton;
-  private JoystickButton indexReverse;
+  private JoystickButton collectButton;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static XboxController controller;
@@ -59,9 +59,6 @@ public class RobotContainer {
   private void configureBindings() {
     indexButton = new JoystickButton(controller, XboxController.Button.kX.value);
     indexButton.whileTrue(new IndexCmd(0.05));
-
-    indexReverse = new JoystickButton(controller, XboxController.Button.kA.value);
-    indexReverse.whileTrue(new IndexCmd(-0.05));
 
     /*collectButton = new JoystickButton(controller, XboxController.Button.kA.value);
     collectButton.whileHeld(new CollectCmd(.1));*/

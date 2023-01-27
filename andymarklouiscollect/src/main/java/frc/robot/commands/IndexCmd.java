@@ -10,13 +10,13 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
-public class CollectCmd extends CommandBase {
+public class IndexCmd extends CommandBase {
   /** Creates a new DriveCMD. */
   private double speed = 0.0;
-  public CollectCmd(double spd) {
+  public IndexCmd(double spd) {
     // Use addRequirements() here to declare subsystem dependencies.
     speed = spd;
-    addRequirements(RobotContainer.collectsubsystem);
+    addRequirements(RobotContainer.indexsubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -26,13 +26,13 @@ public class CollectCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //RobotContainer.collectsubsystem.collect(speed);
+    RobotContainer.indexsubsystem.spin(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //RobotContainer.collectsubsystem.stop();
+    RobotContainer.indexsubsystem.stop();
   }
 
   // Returns true when the command should end.

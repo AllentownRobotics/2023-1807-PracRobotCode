@@ -4,19 +4,15 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
-public class CollectCmd extends CommandBase {
+public class DriveCMD extends CommandBase {
   /** Creates a new DriveCMD. */
-  private double speed = 0.0;
-  public CollectCmd(double spd) {
+  public DriveCMD() {
+    addRequirements(RobotContainer.drivetrainsubsystem);
+
     // Use addRequirements() here to declare subsystem dependencies.
-    speed = spd;
-    addRequirements(RobotContainer.collectsubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -26,14 +22,12 @@ public class CollectCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //RobotContainer.collectsubsystem.collect(speed);
+    RobotContainer.drivetrainsubsystem.drive(RobotContainer.controller);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    //RobotContainer.collectsubsystem.stop();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
