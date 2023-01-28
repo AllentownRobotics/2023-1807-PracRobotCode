@@ -7,9 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.CollectorCommand;
+import frc.robot.commands.CompressorCommand;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.subsystems.CompressorAndPistons;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -25,11 +29,15 @@ public class RobotContainer {
   public static Drivetrain drivetrain = new Drivetrain();
   public static Indexer indexer = new Indexer();
   public static Shooter shooter = new Shooter();
+  public static CompressorAndPistons compressorAndPistons = new CompressorAndPistons();
+  public static Collector collector = new Collector();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain.setDefaultCommand(new DrivetrainCommand());
     shooter.setDefaultCommand(new ShooterCommand());
     indexer.setDefaultCommand(new IndexerCommand());
+    compressorAndPistons.setDefaultCommand(new CompressorCommand());
+    collector.setDefaultCommand(new CollectorCommand());
     xboxController = new XboxController(Constants.robotContainerXboxController);
     // Configure the button bindings
     configureButtonBindings();

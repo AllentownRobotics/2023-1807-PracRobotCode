@@ -52,6 +52,14 @@ public final class Constants {
 
     public static final int indexerFeederMotorID = 12;
 
+    // collector constants
+
+    public static final int collectorMotorID = 14;
+
+    public static final double collectorMotorSpeed = .5;
+
+    public static final int compressorModuleID = 0;
+
     // general constants
     
     public static final int robotContainerXboxController = 0;
