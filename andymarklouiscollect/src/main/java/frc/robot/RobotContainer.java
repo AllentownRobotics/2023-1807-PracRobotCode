@@ -52,8 +52,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    collectButton = new JoystickButton(controller, XboxController.Button.kA.value);
-    collectButton.whileHeld(new CollectCmd(.3));
+    collectButton = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
+    collectButton.whileHeld(new CollectCmd(.4));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     
