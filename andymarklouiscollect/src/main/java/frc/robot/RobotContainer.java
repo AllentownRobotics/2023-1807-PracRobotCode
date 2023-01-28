@@ -27,6 +27,7 @@ public class RobotContainer {
   public static DriveTrain drivetrainsubsystem;
   public static Collector collectsubsystem;
   private JoystickButton collectButton;
+  private JoystickButton reverseButton;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static XboxController controller;
@@ -53,7 +54,10 @@ public class RobotContainer {
   private void configureBindings() {
 
     collectButton = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
-    collectButton.whileHeld(new CollectCmd(.4));
+    collectButton.whileHeld(new CollectCmd(.45));
+
+    reverseButton = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
+    reverseButton.whileHeld(new CollectCmd(-.4));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     
