@@ -4,9 +4,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Lockdown;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -15,11 +23,18 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  public boolean fieldRelative;
+  public boolean locked;
+
+  XboxController driverController = new XboxController(0);
+
+  Drivetrain drivetrain = new Drivetrain();
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
+    
+
     configureButtonBindings();
   }
 
@@ -29,15 +44,35 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    // Field relative toggle
+    new JoystickButton(driverController, XboxController.Button.kLeftBumper.value).onTrue(
+      new RunCommand(() -> drivetrain.toggleFieldRelative(), drivetrain)
+    );
+
+    // Lock button
+    new JoystickButton(driverController, XboxController.Button.kB.value).whileTrue(new Lockdown(drivetrain));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
+  public Command getAutonomousCommand(Trajectory autoTrajectory) {
+    ProfiledPIDController rotationController = new ProfiledPIDController(Constants.AUTO_ROTATIONPID_Kp, 0, 0, Constants.AUTO_ROTATIONPID_CONSTRAINT);
+    rotationController.enableContinuousInput(-Math.PI, Math.PI);
+
+    SwerveControllerCommand autoCommand = new SwerveControllerCommand(
+      autoTrajectory,
+      drivetrain::getPose,
+      Constants.CHASSIS_KINEMATICS,
+      new PIDController(1, 0, 0), 
+      new PIDController(1, 0, 0), 
+      rotationController,
+      drivetrain::setAllModuleStates,
+      drivetrain);
+
+    return autoCommand;
   }
 }
