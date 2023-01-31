@@ -18,6 +18,8 @@ public class CollectorSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   WPI_TalonFX collectMotor;
   DoubleSolenoid collectSolenoid;
+  public boolean collectorExtended = false;
+
 
   public CollectorSubsystem() {
     collectMotor = new WPI_TalonFX(Constants.COLLECTOR_MOTOR);
@@ -34,13 +36,17 @@ public class CollectorSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-  public void collect()
+  public void extend()
   {
     collectSolenoid.set(Value.kForward);
+
+    collectorExtended = true;
   }
   public void retract()
   {
     collectSolenoid.set(Value.kReverse);
+
+    collectorExtended = false;
   }
   public void run()
   {

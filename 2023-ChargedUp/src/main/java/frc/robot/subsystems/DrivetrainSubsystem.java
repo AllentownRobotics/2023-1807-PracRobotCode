@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DrivetrainSubsystem extends SubsystemBase {  
+    public boolean brakeOn = false;
+
     private WPI_TalonFX leftMotorOne = new WPI_TalonFX(Constants.LEFT_MOTOR_ONE);;
     private WPI_TalonFX leftMotorTwo = new WPI_TalonFX(Constants.LEFT_MOTOR_TWO);
     private WPI_TalonFX leftMotorThree = new WPI_TalonFX(Constants.LEFT_MOTOR_THREE);

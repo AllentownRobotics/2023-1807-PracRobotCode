@@ -4,20 +4,16 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.BrakeCommand;
-import frc.robot.commands.CoastCommand;
-import frc.robot.commands.CollectorExtendCommand;
-import frc.robot.commands.CollectorRepeatCommand;
-import frc.robot.commands.CollectorRetractCommand;
 import frc.robot.commands.CurvatureDriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.FlywheelRepeatCommand;
-import frc.robot.commands.FlywheelRunCommand;
-import frc.robot.commands.IndexerRunCommand;
+import frc.robot.commands.IndexerRepeatCommand;
 import frc.robot.subsystems.CollectorSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -45,20 +41,14 @@ public class RobotContainer {
 
   public static XboxController m_xboxController= new XboxController(Constants.XBOX_CONTROLLER_ONE);;
   
-  private boolean brakeOn = false;
-
   private boolean neutralSteeringOn = false;
-
-  private boolean collectorOn = false;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_DrivetrainSubsystem.setDefaultCommand(new CurvatureDriveCommand(m_xboxController.getRightTriggerAxis(), m_xboxController.getLeftX(), neutralSteeringOn));
-    m_FlywheelSubsystem.setDefaultCommand(new FlywheelRunCommand(50));
+    m_FlywheelSubsystem.setDefaultCommand(new FlywheelRepeatCommand(50));
     // Configure the button bindings
     configureButtonBindings();
-
-
 
 
   }
@@ -70,51 +60,49 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
-    if (m_xboxController.getAButtonPressed()) {
-      if (brakeOn) {
-        new CoastCommand();
-        brakeOn = false;
-      } else {
-        new BrakeCommand();
-        brakeOn = true;
-      }  
-    }
 
     if (m_xboxController.getBButtonPressed()) {
       neutralSteeringOn = !neutralSteeringOn;
     }
-  
 
-    if (m_xboxController.getYButtonPressed()) {
-      if (collectorOn) {
-          new CollectorRetractCommand();
-          collectorOn = false;
-        } else {
-          new CollectorExtendCommand();
-          collectorOn = true;
-        }  
-      }
 
-    if (m_xboxController.getXButtonPressed()) {
-      if (collectorOn) {
-          new CollectorRetractCommand();
-          collectorOn = false;
-        } else {
-          new CollectorExtendCommand();
-          collectorOn = true;
-        }  
-      }
+    Command setBrake = Commands.either(
+      // true
+      Commands.runOnce(m_DrivetrainSubsystem::coast, m_CollectorSubsystem),
+      // false
+      Commands.runOnce(m_DrivetrainSubsystem::brake, m_CollectorSubsystem),
+      // condition
+      (() -> m_DrivetrainSubsystem.brakeOn));
 
-      JoystickButton indexButton = new JoystickButton(m_xboxController, XboxController.Button.kX.value);
-      indexButton.whileTrue(new IndexerRunCommand(0.5));
+    JoystickButton brakeButton = new JoystickButton(m_xboxController, XboxController.Button.kA.value);
+    brakeButton.onTrue(setBrake);
 
-      JoystickButton collectorButton = new JoystickButton(m_xboxController, XboxController.Button.kRightBumper.value);
-      collectorButton.whileTrue(new CollectorRepeatCommand());
 
-      JoystickButton flywheelButton = new JoystickButton(m_xboxController, XboxController.Button.kLeftBumper.value);
-      flywheelButton.whileTrue(new FlywheelRepeatCommand(10000));
-      flywheelButton.whileFalse(new FlywheelRepeatCommand(50));
+    Command collectorArm = Commands.either(
+          // true
+        Commands.runOnce(m_CollectorSubsystem::retract, m_CollectorSubsystem),
+          // false
+        Commands.runOnce(m_CollectorSubsystem::extend, m_CollectorSubsystem),
+          // condition
+        (() -> m_CollectorSubsystem.collectorExtended));
+
+    JoystickButton collectorArmButton = new JoystickButton(m_xboxController, XboxController.Button.kY.value);
+    collectorArmButton.onTrue(collectorArm);
+
+    
+    Command collectorMotor = Commands.run(m_CollectorSubsystem::run, m_CollectorSubsystem) ;
+
+    JoystickButton collectorMotorButton = new JoystickButton(m_xboxController, XboxController.Button.kY.value);
+    collectorMotorButton.onTrue(collectorMotor);
+    
+
+    JoystickButton indexButton = new JoystickButton(m_xboxController, XboxController.Button.kX.value);
+    indexButton.whileTrue(new IndexerRepeatCommand(0.5));
+
+
+    JoystickButton flywheelButton = new JoystickButton(m_xboxController, XboxController.Button.kLeftBumper.value);
+    flywheelButton.whileTrue(new FlywheelRepeatCommand(10000));
+    flywheelButton.whileFalse(new FlywheelRepeatCommand(50));
 
   }
 
