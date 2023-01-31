@@ -4,20 +4,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import frc.robot.RobotContainer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/** An example command that uses an example subsystem. */
-public class CollectExtendCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public CollectExtendCommand() {
+public class FlywheelRepeatCommand extends RepeatCommand {
+  /** Creates a new FlywheelRepeatCommand. */
+  public FlywheelRepeatCommand(int rpm) { 
+    super(new FlywheelRunCommand(rpm));
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_CollectorSubsystem);
+    addRequirements(RobotContainer.m_FlywheelSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -26,18 +21,15 @@ public class CollectExtendCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    RobotContainer.m_CollectorSubsystem.collect();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

@@ -24,6 +24,8 @@ public class IndexerSubsystem extends SubsystemBase {
 
     indexMotor = new WPI_TalonSRX(Constants.INDEX_MOTOR);
     feedMotor = new WPI_TalonSRX(Constants.FEED_MOTOR);
+    indexMotor.setInverted(true);
+    feedMotor.setInverted(true);
 
   }
 
@@ -39,7 +41,8 @@ public class IndexerSubsystem extends SubsystemBase {
   }
   public void index(double rpm)
   {
-    indexMotor.set(ControlMode.PercentOutput, -rpm);
-    feedMotor.set(ControlMode.PercentOutput, -rpm);
+    indexMotor.set(ControlMode.PercentOutput, rpm);
+    feedMotor.set(ControlMode.PercentOutput, rpm);
   }
+
 }

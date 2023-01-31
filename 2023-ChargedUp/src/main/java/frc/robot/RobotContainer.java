@@ -10,12 +10,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.BrakeCommand;
 import frc.robot.commands.CoastCommand;
-import frc.robot.commands.CollectExtendCommand;
-import frc.robot.commands.CollectRetractCommand;
+import frc.robot.commands.CollectorExtendCommand;
+import frc.robot.commands.CollectorRepeatCommand;
+import frc.robot.commands.CollectorRetractCommand;
 import frc.robot.commands.CurvatureDriveCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.FlywheelCommand;
-import frc.robot.commands.IndexCommand;
+import frc.robot.commands.FlywheelRepeatCommand;
+import frc.robot.commands.FlywheelRunCommand;
+import frc.robot.commands.IndexerRunCommand;
 import frc.robot.subsystems.CollectorSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -52,7 +54,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_DrivetrainSubsystem.setDefaultCommand(new CurvatureDriveCommand(m_xboxController.getRightTriggerAxis(), m_xboxController.getLeftX(), neutralSteeringOn));
-    m_FlywheelSubsystem.setDefaultCommand(new FlywheelCommand(50));
+    m_FlywheelSubsystem.setDefaultCommand(new FlywheelRunCommand(50));
     // Configure the button bindings
     configureButtonBindings();
 
@@ -68,6 +70,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
     if (m_xboxController.getAButtonPressed()) {
       if (brakeOn) {
         new CoastCommand();
@@ -81,37 +84,37 @@ public class RobotContainer {
     if (m_xboxController.getBButtonPressed()) {
       neutralSteeringOn = !neutralSteeringOn;
     }
-    
-    if (m_xboxController.getLeftBumperPressed()) {
-      new FlywheelCommand(10000);
-    }
+  
 
-    if (m_xboxController.getLeftBumperReleased())	{
-      new FlywheelCommand(50);
-    }
-
-    if (m_xboxController.getRightBumperPressed()) {
+    if (m_xboxController.getYButtonPressed()) {
       if (collectorOn) {
-          new CollectRetractCommand();
+          new CollectorRetractCommand();
           collectorOn = false;
         } else {
-          new CollectExtendCommand();
+          new CollectorExtendCommand();
           collectorOn = true;
         }  
       }
 
     if (m_xboxController.getXButtonPressed()) {
       if (collectorOn) {
-          new CollectRetractCommand();
+          new CollectorRetractCommand();
           collectorOn = false;
         } else {
-          new CollectExtendCommand();
+          new CollectorExtendCommand();
           collectorOn = true;
         }  
       }
 
       JoystickButton indexButton = new JoystickButton(m_xboxController, XboxController.Button.kX.value);
-      indexButton.whileHeld(new IndexCommand(0.5));
+      indexButton.whileTrue(new IndexerRunCommand(0.5));
+
+      JoystickButton collectorButton = new JoystickButton(m_xboxController, XboxController.Button.kRightBumper.value);
+      collectorButton.whileTrue(new CollectorRepeatCommand());
+
+      JoystickButton flywheelButton = new JoystickButton(m_xboxController, XboxController.Button.kLeftBumper.value);
+      flywheelButton.whileTrue(new FlywheelRepeatCommand(10000));
+      flywheelButton.whileFalse(new FlywheelRepeatCommand(50));
 
   }
 
@@ -124,4 +127,6 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+  
 }
+

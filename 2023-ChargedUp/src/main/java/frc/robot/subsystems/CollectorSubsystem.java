@@ -37,13 +37,21 @@ public class CollectorSubsystem extends SubsystemBase {
   public void collect()
   {
     collectSolenoid.set(Value.kForward);
-    collectMotor.set(ControlMode.PercentOutput,.35);
   }
   public void retract()
   {
     collectSolenoid.set(Value.kReverse);
-    collectMotor.set(ControlMode.PercentOutput,0);
   }
+  public void run()
+  {
+    collectMotor.set(ControlMode.PercentOutput,35);
+  }
+  public void stop()
+  {
+    collectMotor.set(ControlMode.PercentOutput,35);
+  }
+
+
 
   public double get() {
     return collectMotor.get();

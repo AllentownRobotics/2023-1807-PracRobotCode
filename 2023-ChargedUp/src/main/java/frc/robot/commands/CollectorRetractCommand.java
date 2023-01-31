@@ -8,14 +8,14 @@ import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class CollectRetractCommand extends CommandBase {
+public class CollectorRetractCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public CollectRetractCommand() {
+  public CollectorRetractCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_CollectorSubsystem);
   }
@@ -33,6 +33,7 @@ public class CollectRetractCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.m_CollectorSubsystem.stop();
   }
 
   // Returns true when the command should end.

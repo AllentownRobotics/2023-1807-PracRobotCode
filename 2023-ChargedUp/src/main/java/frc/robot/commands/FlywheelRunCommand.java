@@ -8,7 +8,7 @@ import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class FlywheelCommand extends CommandBase {
+public class FlywheelRunCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   /**
    * Creates a new ExampleCommand.
@@ -16,7 +16,7 @@ public class FlywheelCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
   int rpm = 0;
-  public FlywheelCommand(int rpm) {
+  public FlywheelRunCommand(int rpm) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_FlywheelSubsystem);
     this.rpm = rpm;
