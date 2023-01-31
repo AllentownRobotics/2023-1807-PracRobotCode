@@ -45,9 +45,19 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
     m_DrivetrainSubsystem.setDefaultCommand(new CurvatureDriveCommand(m_xboxController.getRightTriggerAxis(), m_xboxController.getLeftX(), neutralSteeringOn));
     m_FlywheelSubsystem.setDefaultCommand(new FlywheelRepeatCommand(50));
     // Configure the button bindings
+    /**
+     * B button = Neutral Steering toggle
+     * A button = Brake toggle
+     * Y button = Collector Arm toggle
+     * Right bumper = Collector Motor toggle
+     * X button = Indexer on
+     * Left bumper = Flywheel Toggle
+     * pretty much everything is a toggle
+     */
     configureButtonBindings();
 
 
@@ -92,7 +102,7 @@ public class RobotContainer {
     
     Command collectorMotor = Commands.run(m_CollectorSubsystem::run, m_CollectorSubsystem) ;
 
-    JoystickButton collectorMotorButton = new JoystickButton(m_xboxController, XboxController.Button.kY.value);
+    JoystickButton collectorMotorButton = new JoystickButton(m_xboxController, XboxController.Button.kRightBumper.value);
     collectorMotorButton.onTrue(collectorMotor);
     
 
@@ -101,8 +111,7 @@ public class RobotContainer {
 
 
     JoystickButton flywheelButton = new JoystickButton(m_xboxController, XboxController.Button.kLeftBumper.value);
-    flywheelButton.whileTrue(new FlywheelRepeatCommand(10000));
-    flywheelButton.whileFalse(new FlywheelRepeatCommand(50));
+    flywheelButton.whileTrue(new FlywheelRepeatCommand(10000)).whileFalse(new FlywheelRepeatCommand(50));
 
   }
 
