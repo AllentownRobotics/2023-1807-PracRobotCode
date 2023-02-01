@@ -74,7 +74,7 @@ public class RobotContainer {
     brakeButton.onTrue(setBrake);
 
 
-    Command collectorArm = Commands.either(
+    Command collectorArmCommand = Commands.either(
           // true
         Commands.runOnce(m_CollectorSubsystem::retract, m_CollectorSubsystem),
           // false
@@ -83,13 +83,13 @@ public class RobotContainer {
         (() -> m_CollectorSubsystem.collectorExtended));
 
     JoystickButton collectorArmButton = new JoystickButton(m_xboxController, XboxController.Button.kY.value);
-    collectorArmButton.onTrue(collectorArm);
+    collectorArmButton.onTrue(collectorArmCommand);
 
     
-    Command collectorMotor = Commands.run(m_CollectorSubsystem::run, m_CollectorSubsystem) ;
+    Command collectorMotorCommand = Commands.run(m_CollectorSubsystem::run, m_CollectorSubsystem) ;
 
     JoystickButton collectorMotorButton = new JoystickButton(m_xboxController, XboxController.Button.kRightBumper.value);
-    collectorMotorButton.onTrue(collectorMotor);
+    collectorMotorButton.onTrue(collectorMotorCommand);
     
 
     JoystickButton indexButton = new JoystickButton(m_xboxController, XboxController.Button.kX.value);
