@@ -12,12 +12,13 @@ public class Indexer extends SubsystemBase {
     Ultrasonic indexSensor;
     Ultrasonic feederSensor;
 
-    WPI_TalonSRX indexerMotor;
-    WPI_TalonSRX feederMotor;
+    public static WPI_TalonSRX indexerMotor;
+    public static WPI_TalonSRX feederMotor;
 
     public Indexer() {
         indexSensor = new Ultrasonic(Constants.indexerIndexPingChannel, 
         Constants.indexerIndexEchoChannel);
+        
         feederSensor = new Ultrasonic(Constants.indexerFeederPingChannel, 
         Constants.indexerFeederEchoChannel);
 

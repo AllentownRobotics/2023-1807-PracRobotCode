@@ -16,17 +16,17 @@ public final class Constants {
 
     // drivetrain constants
 
-    public static final int drivetrainFrontRight = 4;
-
     public static final int drivetrainFrontLeft = 1;
-
-    public static final int drivetrainBackRight = 6;
-
-    public static final int drivetrainBackLeft = 3;
-
-    public static final int drivetrainCenterRight = 5;
-
+    
     public static final int drivetrainCenterLeft = 2;
+    
+    public static final int drivetrainBackLeft = 3;
+    
+    public static final int drivetrainFrontRight = 4;
+    
+    public static final int drivetrainCenterRight = 5;
+    
+    public static final int drivetrainBackRight = 6;
 
     public static final double drivetrainPrecisionMultiplier = 0.25;
 
@@ -40,25 +40,25 @@ public final class Constants {
 
     // indexer constants
 
+    public static final int indexerIndexEchoChannel = 0;
+    
     public static final int indexerIndexPingChannel = 1;
 
-    public static final int indexerIndexEchoChannel = 0;
-
+    public static final int indexerFeederEchoChannel = 2;
+    
     public static final int indexerFeederPingChannel = 3;
 
-    public static final int indexerFeederEchoChannel = 2;
-
-    public static final int indexerIndexMotorID = 13;
-
     public static final int indexerFeederMotorID = 12;
+    
+    public static final int indexerIndexMotorID = 13;
 
     // collector constants
 
-    public static final int collectorMotorID = 14;
+    public static final int collectorMotorID = 11;
 
     public static final double collectorMotorSpeed = .5;
 
-    public static final int compressorModuleID = 0;
+    public static final int compressorModuleID = 14;
 
     // general constants
     

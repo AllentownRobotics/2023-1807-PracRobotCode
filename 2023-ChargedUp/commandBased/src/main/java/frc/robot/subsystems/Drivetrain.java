@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -45,7 +46,7 @@ public class Drivetrain extends SubsystemBase {
 
         drivetrain = new DifferentialDrive(leftWheels, rightWheels);
     }
-    public void CurvatureDrive(double moveSpeed, double rotateSpeed, boolean stopButton) {
-        drivetrain.curvatureDrive(moveSpeed, rotateSpeed, stopButton);    
+    public void CurvatureDrive(double moveSpeed, double rotateSpeed) {
+        drivetrain.curvatureDrive(moveSpeed, rotateSpeed, RobotContainer.xboxController.getRightBumper());    
     }
 }

@@ -4,17 +4,14 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants;
+
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Drivetrain;
-
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class DrivetrainCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  double mult = 0.0;
 
   /**
    * Creates a new ExampleCommand.
@@ -22,9 +19,9 @@ public class DrivetrainCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    * @return 
    */
-  public void DriveCommand() {    
+  public DrivetrainCommand(double multiplier) {    
     // Use addRequirements() here to declare subsystem dependencies.
-
+    mult = multiplier;
     addRequirements(RobotContainer.drivetrain);
   }
 
@@ -36,30 +33,8 @@ public class DrivetrainCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double moveSpeed = RobotContainer.xboxController.getLeftY();
-    double rotateSpeed = RobotContainer.xboxController.getRightX();
-    boolean stopButton = RobotContainer.xboxController.getAButton();
-    // brake button
-    if (RobotContainer.xboxController.getXButton()) {
-      Drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
-      Drivetrain.centerRight.setNeutralMode(NeutralMode.Brake);
-      Drivetrain.backRight.setNeutralMode(NeutralMode.Brake);
-      Drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
-      Drivetrain.centerLeft.setNeutralMode(NeutralMode.Brake);
-      Drivetrain.backLeft.setNeutralMode(NeutralMode.Brake);
-    // precision mode for small movements 
-    if (RobotContainer.xboxController.getLeftBumper()) {
-      RobotContainer.drivetrain.CurvatureDrive
-      (moveSpeed * Constants.drivetrainPrecisionMultiplier, 
-      rotateSpeed * Constants.drivetrainPrecisionMultiplier,
-      stopButton);
-
-    } else {
-
-    RobotContainer.drivetrain.CurvatureDrive(moveSpeed, rotateSpeed, stopButton);
-
-    }
-  }
+    RobotContainer.drivetrain.CurvatureDrive(RobotContainer.xboxController.getLeftY()*mult, 
+    RobotContainer.xboxController.getRightX()*mult);
   }
 
   // Called once the command ends or is interrupted.

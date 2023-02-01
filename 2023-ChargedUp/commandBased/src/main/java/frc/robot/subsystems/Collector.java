@@ -8,10 +8,10 @@ import frc.robot.Constants;
 
 public class Collector extends SubsystemBase {
 
-    WPI_TalonFX collectorMotor;
+    public static WPI_TalonFX collectorMotor;
 
     public Collector() {
-        WPI_TalonFX collectorMotor = new WPI_TalonFX(Constants.collectorMotorID);
+        collectorMotor = new WPI_TalonFX(Constants.collectorMotorID);
         collectorMotor.setNeutralMode(NeutralMode.Coast);
     }
     public void Collect() {

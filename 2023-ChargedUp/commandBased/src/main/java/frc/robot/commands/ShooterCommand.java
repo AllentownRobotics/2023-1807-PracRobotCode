@@ -4,8 +4,11 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter;
 
 public class ShooterCommand extends CommandBase {
   /** Creates a new ShooterCommand. */
@@ -28,7 +31,10 @@ public class ShooterCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    Shooter.shooterLeft.set(ControlMode.Velocity, 0); 
+    Shooter.shooterRight.set(ControlMode.Velocity, 0);
+  }
 
   // Returns true when the command should end.
   @Override
