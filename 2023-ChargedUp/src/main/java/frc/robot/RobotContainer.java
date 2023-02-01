@@ -41,12 +41,10 @@ public class RobotContainer {
 
   public static XboxController m_xboxController= new XboxController(Constants.XBOX_CONTROLLER_ONE);;
   
-  private boolean neutralSteeringOn = false;
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
-    m_DrivetrainSubsystem.setDefaultCommand(new CurvatureDriveCommand(m_xboxController.getRightTriggerAxis(), m_xboxController.getLeftX(), neutralSteeringOn));
+    m_DrivetrainSubsystem.setDefaultCommand(Commands.run(m_DrivetrainSubsystem::drive, m_DrivetrainSubsystem));
     m_FlywheelSubsystem.setDefaultCommand(new FlywheelRepeatCommand(50));
     // Configure the button bindings
     /**
@@ -71,18 +69,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    if (m_xboxController.getBButtonPressed()) {
-      neutralSteeringOn = !neutralSteeringOn;
-    }
-
-
-    Command setBrake = Commands.either(
-      // true
-      Commands.runOnce(m_DrivetrainSubsystem::coast, m_CollectorSubsystem),
-      // false
-      Commands.runOnce(m_DrivetrainSubsystem::brake, m_CollectorSubsystem),
-      // condition
-      (() -> m_DrivetrainSubsystem.brakeOn));
+    Command setBrake =  Commands.runOnce(m_DrivetrainSubsystem::toggleBrake);
 
     JoystickButton brakeButton = new JoystickButton(m_xboxController, XboxController.Button.kA.value);
     brakeButton.onTrue(setBrake);
@@ -112,6 +99,9 @@ public class RobotContainer {
 
     JoystickButton flywheelButton = new JoystickButton(m_xboxController, XboxController.Button.kLeftBumper.value);
     flywheelButton.whileTrue(new FlywheelRepeatCommand(10000)).whileFalse(new FlywheelRepeatCommand(50));
+
+    JoystickButton turnInPlaceButton = new JoystickButton(m_xboxController, XboxController.Button.kB.value);
+    turnInPlaceButton.onTrue(Commands.runOnce(m_DrivetrainSubsystem::toggleTurnInPlace, m_CollectorSubsystem));
 
   }
 

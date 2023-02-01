@@ -11,9 +11,12 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class DrivetrainSubsystem extends SubsystemBase {  
     public boolean brakeOn = false;
+    public boolean neutralSteeringOn = false;
+
 
     private WPI_TalonFX leftMotorOne = new WPI_TalonFX(Constants.LEFT_MOTOR_ONE);;
     private WPI_TalonFX leftMotorTwo = new WPI_TalonFX(Constants.LEFT_MOTOR_TWO);
@@ -45,24 +48,34 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-
-
-public void brake() 
-{
-  leftMotorOne.setNeutralMode(NeutralMode.Brake);
-  leftMotorTwo.setNeutralMode(NeutralMode.Brake);
-  leftMotorThree.setNeutralMode(NeutralMode.Brake);
-  rightMotorOne.setNeutralMode(NeutralMode.Brake);
-  rightMotorTwo.setNeutralMode(NeutralMode.Brake);
-  rightMotorThree.setNeutralMode(NeutralMode.Brake);
+public void toggleTurnInPlace(){
+  neutralSteeringOn = !neutralSteeringOn;
 }
 
-public void coast() {
-  leftMotorOne.setNeutralMode(NeutralMode.Coast);
-  leftMotorTwo.setNeutralMode(NeutralMode.Coast);
-  leftMotorThree.setNeutralMode(NeutralMode.Coast);
-  rightMotorOne.setNeutralMode(NeutralMode.Coast);
-  rightMotorTwo.setNeutralMode(NeutralMode.Coast);
-  rightMotorThree.setNeutralMode(NeutralMode.Coast);
+public void toggleBrake(){
+  if (brakeOn){
+    leftMotorOne.setNeutralMode(NeutralMode.Coast);
+    leftMotorTwo.setNeutralMode(NeutralMode.Coast);
+    leftMotorThree.setNeutralMode(NeutralMode.Coast);
+    rightMotorOne.setNeutralMode(NeutralMode.Coast);
+    rightMotorTwo.setNeutralMode(NeutralMode.Coast);
+    rightMotorThree.setNeutralMode(NeutralMode.Coast);
+
+    brakeOn = false;
+  } else {
+    leftMotorOne.setNeutralMode(NeutralMode.Brake);
+    leftMotorTwo.setNeutralMode(NeutralMode.Brake);
+    leftMotorThree.setNeutralMode(NeutralMode.Brake);
+    rightMotorOne.setNeutralMode(NeutralMode.Brake);
+    rightMotorTwo.setNeutralMode(NeutralMode.Brake);
+    rightMotorThree.setNeutralMode(NeutralMode.Brake);
+
+    brakeOn = true;
+  }
 }
+
+public void drive(){
+  drive.curvatureDrive(RobotContainer.m_xboxController.getRightTriggerAxis(), RobotContainer.m_xboxController.getLeftX(), neutralSteeringOn);
+}
+
 }
