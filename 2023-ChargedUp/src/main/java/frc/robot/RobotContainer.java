@@ -7,8 +7,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SpindexerCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Spindexer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,13 +21,17 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private XboxController operatorController;
+
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  public static Spindexer spindexer = new Spindexer();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
+    operatorController = new XboxController(Constants.operatorControllerID);
     configureButtonBindings();
   }
 
@@ -34,7 +41,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    // X button runs forward, Y runs backward
+    new JoystickButton(operatorController, XboxController.Button.kX.value).whenHeld(new SpindexerCommand(.5));
+    new JoystickButton(operatorController, XboxController.Button.kX.value).whenHeld(new SpindexerCommand(-.5));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
