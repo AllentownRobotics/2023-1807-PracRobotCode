@@ -19,6 +19,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -33,7 +34,7 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
+  private boolean fieldOriented = false;
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -53,7 +54,7 @@ public class RobotContainer {
                 MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.3),
                 MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.3),
                 MathUtil.applyDeadband(-m_driverController.getRightX(), 0.3),
-                false),
+                fieldOriented),
             m_robotDrive));
   }
 
@@ -72,13 +73,8 @@ public class RobotContainer {
             () -> m_robotDrive.setX(),
             m_robotDrive));
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value)
-        .toggleOnTrue(new RunCommand(
-            () -> m_robotDrive.drive(
-                MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.3),
-                MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.3),
-                MathUtil.applyDeadband(-m_driverController.getRightX(), 0.3),
-                true),
-            m_robotDrive));
+        .onTrue(new InstantCommand(
+            () -> fieldOriented = !fieldOriented));
   }
 
   /**
