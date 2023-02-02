@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.OrientedCmd;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public final static DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -52,8 +53,7 @@ public class RobotContainer {
             () -> m_robotDrive.drive(
                 MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.3),
                 MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.3),
-                MathUtil.applyDeadband(-m_driverController.getRightX(), 0.3),
-                false),
+                MathUtil.applyDeadband(-m_driverController.getRightX(), 0.3)),
             m_robotDrive));
   }
 
@@ -72,13 +72,7 @@ public class RobotContainer {
             () -> m_robotDrive.setX(),
             m_robotDrive));
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value)
-        .toggleOnTrue(new RunCommand(
-            () -> m_robotDrive.drive(
-                MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.3),
-                MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.3),
-                MathUtil.applyDeadband(-m_driverController.getRightX(), 0.3),
-                true),
-            m_robotDrive));
+        .toggleOnTrue(new OrientedCmd());
   }
 
   /**
@@ -124,6 +118,6 @@ public class RobotContainer {
     m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0));
   }
 }
