@@ -6,8 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.CollectorCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SpindexerCommand;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Spindexer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,6 +27,7 @@ public class RobotContainer {
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static Spindexer spindexer = new Spindexer();
+  public static Collector collector = new Collector();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
@@ -42,9 +45,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // X button runs forward, Y runs backward
+    // X button runs indexer forward, Y runs backward
     new JoystickButton(operatorController, XboxController.Button.kX.value).whenHeld(new SpindexerCommand(.5));
-    new JoystickButton(operatorController, XboxController.Button.kX.value).whenHeld(new SpindexerCommand(-.5));
+    new JoystickButton(operatorController, XboxController.Button.kY.value).whenHeld(new SpindexerCommand(-.5));
+    // A button runs collector
+    new JoystickButton(operatorController, XboxController.Button.kA.value).whenHeld(new CollectorCommand());
   }
 
   /**

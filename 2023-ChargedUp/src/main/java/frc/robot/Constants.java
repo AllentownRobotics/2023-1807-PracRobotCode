@@ -18,4 +18,8 @@ public final class Constants {
 
     public static final int spindexerMotorID = 2;
 
+    public static final int collectorUpperMotorID = 3;
+
+    public static final int collectorLowerMotorID = 4;
+
 }
