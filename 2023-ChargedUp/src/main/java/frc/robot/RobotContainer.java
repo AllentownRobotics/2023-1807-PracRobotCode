@@ -44,7 +44,7 @@ public class RobotContainer {
   public RobotContainer() {
     
     m_DrivetrainSubsystem.setDefaultCommand(Commands.run(m_DrivetrainSubsystem::drive, m_DrivetrainSubsystem));
-    m_FlywheelSubsystem.setDefaultCommand(new FlywheelRepeatCommand(50));
+    m_FlywheelSubsystem.setDefaultCommand(new FlywheelRepeatCommand(500));
     // Configure the button bindings
     /**
      * B button = Neutral Steering toggle
@@ -68,10 +68,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    Command setBrake =  Commands.runOnce(m_DrivetrainSubsystem::toggleBrake);
+    Command toggleBrake =  Commands.runOnce(m_DrivetrainSubsystem::toggleBrake);
 
     JoystickButton brakeButton = new JoystickButton(m_xboxController, XboxController.Button.kA.value);
-    brakeButton.onTrue(setBrake);
+    brakeButton.onTrue(toggleBrake);
 
 
     Command collectorArmCommand = Commands.either(
@@ -97,7 +97,7 @@ public class RobotContainer {
 
 
     JoystickButton flywheelButton = new JoystickButton(m_xboxController, XboxController.Button.kLeftBumper.value);
-    flywheelButton.whileTrue(new FlywheelRepeatCommand(10000)).whileFalse(new FlywheelRepeatCommand(50));
+    flywheelButton.whileTrue(new FlywheelRepeatCommand(10000));
 
     JoystickButton turnInPlaceButton = new JoystickButton(m_xboxController, XboxController.Button.kB.value);
     turnInPlaceButton.onTrue(Commands.runOnce(m_DrivetrainSubsystem::toggleTurnInPlace, m_CollectorSubsystem));
