@@ -43,7 +43,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
-    m_DrivetrainSubsystem.setDefaultCommand(Commands.run(m_DrivetrainSubsystem::drive, m_DrivetrainSubsystem));
+    m_DrivetrainSubsystem.setDefaultCommand(Commands.run(() -> m_DrivetrainSubsystem.drive(m_xboxController.getRightTriggerAxis(), m_xboxController.getLeftX()), m_DrivetrainSubsystem));
     m_FlywheelSubsystem.setDefaultCommand(new FlywheelRepeatCommand(500));
     // Configure the button bindings
     /**

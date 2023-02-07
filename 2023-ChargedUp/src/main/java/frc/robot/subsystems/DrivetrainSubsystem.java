@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 public class DrivetrainSubsystem extends SubsystemBase {  
     public boolean brakeOn = false;
@@ -74,8 +73,8 @@ public void toggleBrake(){
   }
 }
 
-public void drive(){
-  drive.curvatureDrive(RobotContainer.m_xboxController.getRightTriggerAxis(), RobotContainer.m_xboxController.getLeftX(), neutralSteeringOn);
+public void drive(double rightTriggerAxis, double leftX){
+  drive.curvatureDrive(rightTriggerAxis, leftX, neutralSteeringOn);
 }
 
 }
