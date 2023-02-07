@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CollectorCommand;
 import frc.robot.commands.CompressorCommand;
 import frc.robot.commands.DrivetrainCommand;
-import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.PistonCommand;
+import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.StopButtonCommand;
 import frc.robot.subsystems.Collector;
@@ -51,13 +51,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(xboxController, XboxController.Button.kY.value).whenHeld(new IndexerCommand());
-    new JoystickButton(xboxController, XboxController.Button.kLeftBumper.value).whenHeld
+    new JoystickButton(xboxController, XboxController.Button.kY.value).whileTrue(new IndexerCommand());
+    new JoystickButton(xboxController, XboxController.Button.kLeftBumper.value).whileTrue
     (new DrivetrainCommand(Constants.drivetrainPrecisionMultiplier));
-    new JoystickButton(xboxController, XboxController.Button.kB.value).whenHeld(new CollectorCommand());
-    new JoystickButton(xboxController, XboxController.Button.kA.value).whenHeld(new StopButtonCommand());
-    new JoystickButton(xboxController, XboxController.Button.kX.value).whenHeld(new PistonCommand());
-    new JoystickButton(xboxController, XboxController.Button.kLeftStick.value).whenHeld(new ShooterCommand());
+    new JoystickButton(xboxController, XboxController.Button.kB.value).whileTrue(new CollectorCommand());
+    new JoystickButton(xboxController, XboxController.Button.kA.value).whileTrue(new StopButtonCommand());
+    new JoystickButton(xboxController, XboxController.Button.kX.value).whileTrue(new PistonCommand());
+    new JoystickButton(xboxController, XboxController.Button.kLeftStick.value).whileTrue(new ShooterCommand());
   }
 
 

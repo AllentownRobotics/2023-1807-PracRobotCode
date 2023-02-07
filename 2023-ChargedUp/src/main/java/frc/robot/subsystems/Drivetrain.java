@@ -24,6 +24,8 @@ public class Drivetrain extends SubsystemBase {
 
     public static DifferentialDrive drivetrain;
 
+    public static boolean isBraking;
+
     public Drivetrain() {
         frontRight = new WPI_TalonFX(Constants.drivetrainFrontRight);
         centerRight = new WPI_TalonFX(Constants.drivetrainCenterRight);
@@ -45,8 +47,29 @@ public class Drivetrain extends SubsystemBase {
         rightWheels.setInverted(true);
 
         drivetrain = new DifferentialDrive(leftWheels, rightWheels);
+
+        isBraking = false;
     }
     public void CurvatureDrive(double moveSpeed, double rotateSpeed) {
         drivetrain.curvatureDrive(moveSpeed, rotateSpeed, RobotContainer.xboxController.getRightBumper());    
+    }
+    public void ToggleBrakes() {
+        if (isBraking = false) {
+        frontRight.setNeutralMode(NeutralMode.Brake);
+        centerRight.setNeutralMode(NeutralMode.Brake);
+        backRight.setNeutralMode(NeutralMode.Brake);
+        frontLeft.setNeutralMode(NeutralMode.Brake);
+        centerLeft.setNeutralMode(NeutralMode.Brake);
+        backLeft.setNeutralMode(NeutralMode.Brake);
+        isBraking = true;
+        } else if (isBraking = true) {
+        frontRight.setNeutralMode(NeutralMode.Coast);
+        centerRight.setNeutralMode(NeutralMode.Coast);
+        backRight.setNeutralMode(NeutralMode.Coast);
+        frontLeft.setNeutralMode(NeutralMode.Coast);
+        centerLeft.setNeutralMode(NeutralMode.Coast);
+        backLeft.setNeutralMode(NeutralMode.Coast);
+        isBraking = false;
+        }
     }
 }

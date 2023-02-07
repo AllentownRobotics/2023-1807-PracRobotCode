@@ -5,15 +5,19 @@ import frc.robot.RobotContainer;
 
 public class PistonCommand extends CommandBase {
 
-    public void CompressCommand() {
+    public PistonCommand() {
         addRequirements(RobotContainer.pistons);
     }
+
+    public void initialize() {
+      RobotContainer.pistons.TogglePistons();
+    }
     public void execute() {
-            RobotContainer.pistons.ExtendPistons();
+      
     }
     @Override
   public void end(boolean interrupted) {
-      RobotContainer.pistons.ExtendPistons(); // this is intentional
+      RobotContainer.pistons.TogglePistons(); // this is intentional
   }
 
   // Returns true when the command should end.
