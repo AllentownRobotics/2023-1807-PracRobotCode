@@ -38,21 +38,28 @@ public class CollectorSubsystem extends SubsystemBase {
   }
   public void extend()
   {
-    collectSolenoid.set(Value.kForward);
 
-    collectorExtended = true;
   }
   public void retract()
   {
+
+  }
+  public void armToggle()
+  { 
+  if (!collectorExtended) {
+    // extend
+    collectSolenoid.set(Value.kForward);
+
+    collectorExtended = true;
+  } else {
+    //retract
     collectSolenoid.set(Value.kReverse);
 
     collectorExtended = false;
   }
-  public void run()
-  {
-    collectMotor.set(ControlMode.PercentOutput,35);
   }
-  public void stop()
+
+  public void motorRun()
   {
     collectMotor.set(ControlMode.PercentOutput,35);
   }
