@@ -24,6 +24,10 @@ public class Shooter extends SubsystemBase {
     shooterLeft.set(ControlMode.Velocity, Constants.shooterTargetRPM);
     shooterRight.set(ControlMode.Velocity, Constants.shooterTargetRPM);
   }
+  public void StopShooting() {
+    shooterLeft.set(0);
+    shooterRight.set(0);
+  }
 
   @Override
   public void periodic() {
