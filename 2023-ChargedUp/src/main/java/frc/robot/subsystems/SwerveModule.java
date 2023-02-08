@@ -78,6 +78,9 @@ public class SwerveModule extends SubsystemBase {
     turnPID.setFF(Constants.TURN_MOTORS_Kff);
     turnPID.setOutputRange(-1.0, 1.0);
     
+    driveMotor.setSmartCurrentLimit(50);
+    turnMotor.setSmartCurrentLimit(20);
+
     driveMotor.burnFlash();
     turnMotor.burnFlash();
 
@@ -90,12 +93,15 @@ public class SwerveModule extends SubsystemBase {
    * @param newDesiredState State for the module to converge to
    */
   public void setDesiredState(SwerveModuleState newDesiredState){
-    SwerveModuleState correctedState = newDesiredState;
-    correctedState.angle.plus(Rotation2d.fromDegrees(angularOffset));
-    desiredState = SwerveModuleState.optimize(correctedState, new Rotation2d(turnEncoder.getPosition()));
+    SwerveModuleState correctedState = new SwerveModuleState();
+    correctedState.speedMetersPerSecond = newDesiredState.speedMetersPerSecond;
+    correctedState.angle = newDesiredState.angle.plus(new Rotation2d(angularOffset));
+    correctedState = SwerveModuleState.optimize(correctedState, new Rotation2d(turnEncoder.getPosition()));
+    
+    drivePID.setReference(correctedState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
+    turnPID.setReference(correctedState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
-    drivePID.setReference(desiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
-    turnPID.setReference(desiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+    desiredState = correctedState;
   }
 
   /**

@@ -26,7 +26,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private String autoFilePath = "pathplanner/generatedJSON/name.wpilib.json";
+  private String autoFilePath = "pathplanner/generatedJSON/TimeToSwerve.wpilib.json";
   private Trajectory autoTrajectory;
 
   /**

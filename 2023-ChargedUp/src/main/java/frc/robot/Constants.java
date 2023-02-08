@@ -18,16 +18,15 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
     // Global Module Values
     public static final double MODULE_GEARING_DRIVE_MOTORTOWHEEL = 990.0 / 195.0;
-    public static final double MODULE_GEARING_ROTATION_MOTORTOWHEEL = 9424 / 203;
+    public static final double MODULE_GEARING_ROTATION_MOTORTOWHEEL = 9424.0 / 203.0;
     public static final double MODULE_WHEEL_RADIUS_METERS = Units.inchesToMeters(3);
     public static final double MODULE_WHEEL_CIRCUMFRENCE_METERS = MODULE_WHEEL_RADIUS_METERS * 2.0 * Math.PI;
 
         // Drive Constants
     public static final double DRIVE_MOTORS_Kp = 0.04;
-    public static final double DRIVE_MOTORS_Kff = 0.0;
+    public static final double DRIVE_MOTORS_Kff = 1.0 / ((5676 * MODULE_WHEEL_CIRCUMFRENCE_METERS) / MODULE_GEARING_DRIVE_MOTORTOWHEEL);
 
         // Turn Constants
     public static final double TURN_MOTORS_Kp = 1.0;
@@ -41,15 +40,15 @@ public final class Constants {
 
     public static final boolean CHASSIS_GYRO_INVERTED = false;
 
-    public static final double CHASSIS_FRONTLEFT_ANGULAROFFSET_RADIANS = -Math.PI / 2.0;
-    public static final double CHASSIS_FRONTRIGHT_ANGULAROFFSET_RADIANS = 0.0;
-    public static final double CHASSIS_BACKLEFT_ANGULAROFFSET_RADIANS = Math.PI;
+    public static final double CHASSIS_FRONTLEFT_ANGULAROFFSET_RADIANS = Math.PI / 2.0;
+    public static final double CHASSIS_FRONTRIGHT_ANGULAROFFSET_RADIANS = Math.PI / 2.0;
+    public static final double CHASSIS_BACKLEFT_ANGULAROFFSET_RADIANS = Math.PI / 2.0;
     public static final double CHASSIS_BACKRIGHT_ANGULAROFFSET_RADIANS = Math.PI / 2.0;
 
-    public static final Translation2d CHASSIS_FRONTLEFT_POSITION_METERS = new Translation2d(CHASSIS_DISTANCE_OFFSET_MODULES_METERS, CHASSIS_DISTANCE_OFFSET_MODULES_METERS);
+    public static final Translation2d CHASSIS_FRONTLEFT_POSITION_METERS = new Translation2d(-CHASSIS_DISTANCE_OFFSET_MODULES_METERS, CHASSIS_DISTANCE_OFFSET_MODULES_METERS);
     public static final Translation2d CHASSIS_FRONTRIGHT_POSITION_METERS = new Translation2d(CHASSIS_DISTANCE_OFFSET_MODULES_METERS, CHASSIS_DISTANCE_OFFSET_MODULES_METERS);
-    public static final Translation2d CHASSIS_BACKLEFT_POSITION_METERS = new Translation2d(CHASSIS_DISTANCE_OFFSET_MODULES_METERS, CHASSIS_DISTANCE_OFFSET_MODULES_METERS);
-    public static final Translation2d CHASSIS_BACKRIGHT_POSITION_METERS = new Translation2d(CHASSIS_DISTANCE_OFFSET_MODULES_METERS, CHASSIS_DISTANCE_OFFSET_MODULES_METERS);
+    public static final Translation2d CHASSIS_BACKLEFT_POSITION_METERS = new Translation2d(-CHASSIS_DISTANCE_OFFSET_MODULES_METERS, -CHASSIS_DISTANCE_OFFSET_MODULES_METERS);
+    public static final Translation2d CHASSIS_BACKRIGHT_POSITION_METERS = new Translation2d(CHASSIS_DISTANCE_OFFSET_MODULES_METERS, -CHASSIS_DISTANCE_OFFSET_MODULES_METERS);
 
     /**
      * Order: FL, FR, BL, BR
@@ -75,8 +74,8 @@ public final class Constants {
     public static final int IDS_GYRO = 9;
 
     // Auto Values
-    public static final double AUTO_MAXACCELERATION_ANGULAR_RADIANSPERSECONDSQUARED = Math.PI; // 180 deg/sec^2
+    public static final double AUTO_MAXACCELERATION_ANGULAR_RADIANSPERSECONDSQUARED = Math.PI * 2; // 360 deg/sec^2
     
     public static final double AUTO_ROTATIONPID_Kp = 1.0;
-    public static final TrapezoidProfile.Constraints AUTO_ROTATIONPID_CONSTRAINT = new TrapezoidProfile.Constraints(CHASSIS_MAXSPEED_ANGULAR_RADIANSPERSECOND, CHASSIS_BACKLEFT_ANGULAROFFSET_RADIANS);
+    public static final TrapezoidProfile.Constraints AUTO_ROTATIONPID_CONSTRAINT = new TrapezoidProfile.Constraints(CHASSIS_MAXSPEED_ANGULAR_RADIANSPERSECOND, AUTO_MAXACCELERATION_ANGULAR_RADIANSPERSECONDSQUARED);
 }

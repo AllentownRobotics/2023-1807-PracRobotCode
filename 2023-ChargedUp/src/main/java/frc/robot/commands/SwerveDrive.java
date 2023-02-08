@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -29,7 +30,10 @@ public class SwerveDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.SwerveDrive(controller.getLeftX(), controller.getLeftY(), controller.getRightX());
+    drivetrain.SwerveDrive(
+      MathUtil.applyDeadband(controller.getLeftX(), 0.05), 
+      MathUtil.applyDeadband(controller.getLeftY(), 0.05), 
+      MathUtil.applyDeadband(controller.getRightX(), 0.05));
   }
 
   // Called once the command ends or is interrupted.

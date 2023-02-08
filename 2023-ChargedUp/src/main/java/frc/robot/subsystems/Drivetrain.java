@@ -37,7 +37,6 @@ public class Drivetrain extends SubsystemBase {
    * @param xSpeed
    * @param ySpeed
    * @param rot
-   * @param fieldRelative
    */
   public void SwerveDrive(double xSpeed, double ySpeed, double rot){
     xSpeed *= Constants.CHASSIS_MAXSPEED_LINEAR_METERSPERSECOND;
@@ -60,6 +59,8 @@ public class Drivetrain extends SubsystemBase {
    * @param moduleStates Desired state of all modules
    */
   public void setAllModuleStates(SwerveModuleState[] moduleStates){
+    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.CHASSIS_MAXSPEED_LINEAR_METERSPERSECOND);
+
     FL.setDesiredState(moduleStates[0]);
     FR.setDesiredState(moduleStates[1]);
     BL.setDesiredState(moduleStates[2]);
@@ -71,10 +72,10 @@ public class Drivetrain extends SubsystemBase {
    * Sets the modules to an X formation to prevent unwanted movement
    */
   public void lockDown(){
-    FL.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-    FR.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    BL.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    BR.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    FL.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    FR.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    BL.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    BR.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
   }
 
   /**

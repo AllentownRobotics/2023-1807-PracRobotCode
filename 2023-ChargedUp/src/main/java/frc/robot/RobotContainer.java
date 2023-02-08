@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Lockdown;
+import frc.robot.commands.SwerveDrive;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -33,7 +34,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
+  drivetrain.setDefaultCommand(new SwerveDrive(drivetrain, driverController));    
 
     configureButtonBindings();
   }
