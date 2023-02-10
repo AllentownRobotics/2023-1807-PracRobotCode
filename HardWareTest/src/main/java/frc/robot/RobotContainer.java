@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Arm.RotateArmToSetPoint;
+import frc.robot.commands.Claw.ToggleClaw;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Claw;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -20,8 +25,11 @@ public class RobotContainer {
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
+  private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
+  private final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
+
+  private final Claw claw = new Claw();
+  private final Arm arm = new Arm(claw);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -39,7 +47,16 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    // HIGH PLACEMENT
+    operatorController.povUp().onTrue(new RotateArmToSetPoint(arm, operatorController, ArmConstants.ANGLE_CONE_HIGH, ArmConstants.ANGLE_CUBE_HIGH));
+    // MID PLACEMENT
+    operatorController.povLeft().onTrue(new RotateArmToSetPoint(arm, operatorController, ArmConstants.ANGLE_CONE_MID, ArmConstants.ANGLE_CUBE_MID));
+
+    // ARM RESET
+    operatorController.povRight().onTrue(new RotateArmToSetPoint(arm, operatorController, 0.0));
+
+    // CLAW TOGGLE
+    operatorController.x().onTrue(new ToggleClaw(claw));
   }
 
   /**

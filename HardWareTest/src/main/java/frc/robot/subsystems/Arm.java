@@ -14,14 +14,12 @@ import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ClawConstants;
 
 public class Arm extends SubsystemBase {
-  /** Creates a new Arm. */
-  CANSparkMax leftMotor1 = new CANSparkMax(ArmConstants.LEFT_MOTOR1_ID, MotorType.kBrushless);
-  CANSparkMax leftMotor2 = new CANSparkMax(ArmConstants.LEFT_MOTOR2_ID, MotorType.kBrushless);
+  CANSparkMax leftMotor = new CANSparkMax(ArmConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
 
-  CANSparkMax rightMotor1 = new CANSparkMax(ArmConstants.RIGHT_MOTOR1_ID, MotorType.kBrushless);
-  CANSparkMax rightMotor2 = new CANSparkMax(ArmConstants.RIGHT_MOTOR2_ID, MotorType.kBrushless);
+  CANSparkMax rightMotor = new CANSparkMax(ArmConstants.RIGHT_MOTOR_ID, MotorType.kBrushless);
 
   AbsoluteEncoder encoder;
 
@@ -29,16 +27,18 @@ public class Arm extends SubsystemBase {
 
   double desiredAngle;
 
-  public Arm() {
+  Claw claw;
+
+  public Arm(Claw claw) {
     // Determine which encoder to use
-    encoder = ArmConstants.USE_LEFT_ENCODER ? leftMotor1.getAbsoluteEncoder(Type.kDutyCycle) : rightMotor1.getAbsoluteEncoder(Type.kDutyCycle); 
+    encoder = ArmConstants.USE_LEFT_ENCODER ? leftMotor.getAbsoluteEncoder(Type.kDutyCycle) : rightMotor.getAbsoluteEncoder(Type.kDutyCycle); 
     // If using right encoder set inversion false, if not set true
     encoder.setInverted(!ArmConstants.USE_LEFT_ENCODER);
     // Set conversion factor to output in degrees and degrees/sec
-    encoder.setPositionConversionFactor(1.0 / 360.0);
-    encoder.setVelocityConversionFactor((1.0 / 360.0) / 60.0);
+    encoder.setPositionConversionFactor(360.0);
+    encoder.setVelocityConversionFactor(encoder.getPositionConversionFactor() / 60.0);
 
-    pidController = leftMotor1.getPIDController();
+    pidController = leftMotor.getPIDController();
     pidController.setFeedbackDevice(encoder);
 
     // Set PID values from SysID
@@ -49,20 +49,27 @@ public class Arm extends SubsystemBase {
     pidController.setOutputRange(-1.0, 1.0);
 
     // Have all motors follor master
-    leftMotor2.follow(leftMotor1, false);
-    rightMotor1.follow(leftMotor1, true);
-    rightMotor2.follow(leftMotor1, true);
+    rightMotor.follow(leftMotor, true);
 
     // Set all motors to brake
-    leftMotor1.setIdleMode(IdleMode.kBrake);
-    leftMotor2.setIdleMode(IdleMode.kBrake);
-    rightMotor1.setIdleMode(IdleMode.kBrake);
-    rightMotor2.setIdleMode(IdleMode.kBrake);
+    rightMotor.setIdleMode(IdleMode.kBrake);
+
+    leftMotor.burnFlash();
+    rightMotor.burnFlash();
+
+    this.claw = claw;
   }
 
   @Override
   public void periodic() {
     pidController.setReference(desiredAngle, ControlType.kPosition);
+
+    if (encoder.getPosition() < ClawConstants.ANGLE_WRIST_FLIPPOINT){
+      claw.setWristOut(false);
+    }
+    else{
+      claw.setWristOut(true);
+    }
   }
 
   public double getAngle(){
@@ -73,7 +80,11 @@ public class Arm extends SubsystemBase {
     desiredAngle = angle;
   }
 
-  public void RotateBy(double degrees){
+  public void rotateBy(double degrees){
     desiredAngle += degrees;
+  }
+
+  public void toggleWrist(){
+    claw.toggleWrist();
   }
 }

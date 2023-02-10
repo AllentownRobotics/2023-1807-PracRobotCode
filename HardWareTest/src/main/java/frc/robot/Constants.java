@@ -25,18 +25,17 @@ public final class Constants {
     public static final double HEIGHT_OFFSET_FROM_GROUND_INCHES = 35.219;
     public static final double ARM_LENGTH_INCHES = 30.254;
 
-    public static final int LEFT_MOTOR1_ID = 0;
-    public static final int LEFT_MOTOR2_ID = 0;
+    public static final int LEFT_MOTOR_ID = 0;
 
-    public static final int RIGHT_MOTOR1_ID = 0;
-    public static final int RIGHT_MOTOR2_ID = 0;
+    public static final int RIGHT_MOTOR_ID = 0;
 
     public static final double PID_kP = 0.0;
     public static final double PID_kI = 0.0;
     public static final double PID_kD = 0.0;
     public static final double PID_kFF = 0.0;
-
+    
     public static final double ANGLE_CONE_INSURANCE = 5.0;
+    public static final double ANGLE_MANUAL_SENSITIVITY = 0.5;
 
     public static final double ANGLE_CONE_HIGH = 195.37664 - ANGLE_CONE_INSURANCE;
     public static final double ANGLE_CONE_MID = 210.2488 - ANGLE_CONE_INSURANCE;
@@ -45,12 +44,23 @@ public final class Constants {
     public static final double ANGLE_CUBE_MID = 210.2488;
 
     public static final double ANGLE_FROM_HEIGHT(double heightInches, boolean insure){
-      double sideRatios = Math.abs(heightInches - HEIGHT_OFFSET_FROM_GROUND_INCHES) / ARM_LENGTH_INCHES;
-      double angle = (270.0 - Math.asin(sideRatios)) - ANGLE_OFFSET_FROM_VERTICAL_DEGREES;
+      double verticalDiff = heightInches - HEIGHT_OFFSET_FROM_GROUND_INCHES;
+      double sideRatios = Math.abs(verticalDiff) / ARM_LENGTH_INCHES;
+      double angle = (270.0 - verticalDiff > 0.0 ? Math.asin(sideRatios) : -Math.asin(sideRatios)) - ANGLE_OFFSET_FROM_VERTICAL_DEGREES;
 
       angle -= insure ? ANGLE_CONE_INSURANCE : 0.0;
 
       return angle;
     }
+  }
+
+  public static class ClawConstants{
+    public static final int WRIST_CHANNEL_FORWARD = 0;
+    public static final int WRIST_CHANNEL_BACKWARD = 0;
+
+    public static final int CLAW_CHANNEL_FORWARD = 0;
+    public static final int CLAW_CHANNEL_BACKWARD = 0;
+
+    public static final double ANGLE_WRIST_FLIPPOINT = 15.0;
   }
 }
