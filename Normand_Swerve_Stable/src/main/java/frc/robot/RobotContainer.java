@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -37,7 +38,9 @@ public class RobotContainer {
   private boolean fieldOriented = false;
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-
+  
+  SlewRateLimiter strafe = new SlewRateLimiter(5);
+  SlewRateLimiter translate = new SlewRateLimiter(5);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -51,8 +54,8 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.3),
-                MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.3),
+                translate.calculate(MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.3)),
+                strafe.calculate(MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.3)),
                 MathUtil.applyDeadband(-m_driverController.getRightX(), 0.3),
                 fieldOriented),
             m_robotDrive));
@@ -75,6 +78,10 @@ public class RobotContainer {
     new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value)
         .onTrue(new InstantCommand(
             () -> fieldOriented = !fieldOriented));
+    new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value)
+        .onTrue(new InstantCommand(
+            () -> m_robotDrive.zeroHeading(),
+            m_robotDrive));
   }
 
   /**
