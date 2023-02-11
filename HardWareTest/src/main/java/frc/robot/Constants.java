@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.util.Color;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,9 +15,15 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static class GlobalConstants{
+    public static final int PNEUMATICS_ID = 0;
+  }
+
   public static class OperatorConstants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
     public static final int OPERATOR_CONTROLLER_PORT = 1;
+
+    public static final double OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER = 0.08;
   }
 
   public static class ArmConstants{
@@ -55,12 +63,33 @@ public final class Constants {
   }
 
   public static class ClawConstants{
+    public static final int WRIST_ID = GlobalConstants.PNEUMATICS_ID;
     public static final int WRIST_CHANNEL_FORWARD = 0;
     public static final int WRIST_CHANNEL_BACKWARD = 0;
 
+    public static final int CLAW_ID = GlobalConstants.PNEUMATICS_ID;
     public static final int CLAW_CHANNEL_FORWARD = 0;
     public static final int CLAW_CHANNEL_BACKWARD = 0;
 
     public static final double ANGLE_WRIST_FLIPPOINT = 15.0;
+  }
+
+  public static class SpindexerConstants{
+    public static final int SPINDEXER_MOTOR_ID = 0;
+
+    public static final double SPINDEXER_MOTOR_MAXOUTPUT = 0.5;
+
+    public static final double COLORSENSOR_THRESHOLD_CUBE = 0.04;
+    public static final double COLORSENSOR_THRESHOLD_CONE = 0.04;
+
+    public static final Color COLORSENSOR_COLOR_CUBE = new Color(190, 20, 220);
+    public static final Color COLORSENSOR_COLOR_CONE = new Color(230, 220, 0);
+  }
+
+  public static class CompressorConstants{
+    public static int COMPRESSOR_ID = GlobalConstants.PNEUMATICS_ID;
+
+    public static double COMPRESSOR_RANGE_MIN = 60.0;
+    public static double COMPRESSOR_RANGE_MAX = 120.0;
   }
 }
