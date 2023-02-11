@@ -54,7 +54,7 @@ public class RobotContainer {
   private void configureBindings() {
 
     collectButton = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
-    collectButton.whileHeld(new CollectCmd(.45));
+    collectButton.whileHeld(new CollectCmd(.4));
 
     reverseButton = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
     reverseButton.whileHeld(new CollectCmd(-.4));

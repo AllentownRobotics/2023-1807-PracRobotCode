@@ -30,7 +30,7 @@ public class Collector extends SubsystemBase {
   public void collect(double speed)
   {
     topCollectMotor.set(speed);
-    bottomCollectMotor.set(-speed);
+    bottomCollectMotor.set(speed);
   }
   public void stop()
   {
