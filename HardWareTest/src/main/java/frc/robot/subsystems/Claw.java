@@ -12,8 +12,10 @@ import frc.robot.Constants.ClawConstants;
 
 public class Claw extends SubsystemBase {
 
-  DoubleSolenoid wristPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, ClawConstants.WRIST_CHANNEL_FORWARD, ClawConstants.WRIST_CHANNEL_BACKWARD);
-  DoubleSolenoid clawPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, ClawConstants.CLAW_CHANNEL_FORWARD, ClawConstants.CLAW_CHANNEL_BACKWARD);
+  DoubleSolenoid wristPiston = new DoubleSolenoid(ClawConstants.WRIST_ID, PneumaticsModuleType.REVPH, 
+    ClawConstants.WRIST_CHANNEL_FORWARD, ClawConstants.WRIST_CHANNEL_BACKWARD);
+  DoubleSolenoid clawPiston = new DoubleSolenoid(ClawConstants.CLAW_ID, PneumaticsModuleType.REVPH, 
+    ClawConstants.CLAW_CHANNEL_FORWARD, ClawConstants.CLAW_CHANNEL_BACKWARD);
   
   boolean wristOut = false;
   boolean holding = false;
@@ -45,6 +47,7 @@ public class Claw extends SubsystemBase {
     wristOut = !wristOut;
   }
 
+  // Handles setting piston position
   @Override
   public void periodic() {
     wristPiston.set(wristOut ? Value.kForward : Value.kReverse);

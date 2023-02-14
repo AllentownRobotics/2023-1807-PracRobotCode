@@ -92,4 +92,18 @@ public final class Constants {
     public static double COMPRESSOR_RANGE_MIN = 60.0;
     public static double COMPRESSOR_RANGE_MAX = 120.0;
   }
+
+  public static class CollectorConstants{
+    public static final int TOP_MOTOR_ID = 0;
+    public static final int BOTTOM_MOTOR_ID = 0;
+
+    public static final int COLLECTOR_PISTON_ID = GlobalConstants.PNEUMATICS_ID;
+    public static final int COLLECTOR_PISTON_CHANNEL_FORWARD = 0;
+    public static final int COLLECTOR_PISTON_CHANNEL_BACKWARD = 0;
+
+    // SUBJECT TO CHANGE
+    public static final int BELT_MOTOR_ID = 0;
+
+    public static final double COLLECTOR_SPEED_MAX = 0.5;
+  }
 }

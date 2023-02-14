@@ -46,45 +46,18 @@ public class Spindexer extends SubsystemBase {
     Color cubeColor = SpindexerConstants.COLORSENSOR_COLOR_CUBE;
     Color coneColor = SpindexerConstants.COLORSENSOR_COLOR_CONE;
 
-    byte cubeMatch = 0b000;
-    byte coneMatch = 0b000;
+    // Plot RGB as XYZ point for sensed color and for constant color, find 3D distance (deltaE) to compare against threshold
+    // Produces sphere around constant colors that sensed colors must fall wihtin
+    // Tighter and more accurate range compared to previous which created cube around color constants
+    double cubeDeltaE = Math.sqrt(Math.pow(sRed - cubeColor.red, 2.0) + Math.pow(sGreen - cubeColor.green, 2) + Math.pow(sBlue, cubeColor.blue));
+    double coneDeltaE = Math.sqrt(Math.pow(sRed - coneColor.red, 2.0) + Math.pow(sGreen - coneColor.green, 2) + Math.pow(sBlue, coneColor.blue));
 
-    // Cube red
-    if (sRed <= cubeColor.red + cubeThreshold && sRed >= cubeColor.red - cubeThreshold){
-      cubeMatch += 0b100;
-    }
-    // Cube green
-    if (sGreen <= cubeColor.green + cubeThreshold && sGreen >= cubeColor.green - cubeThreshold){
-      cubeMatch += 0b010;
-    }
-    // Cube Blue
-    if (sBlue <= cubeColor.blue + cubeThreshold && sBlue >= cubeColor.blue - cubeThreshold){
-      cubeMatch += 0b001;
-    }
-
-    // Cone red
-    if (sRed <= coneColor.red + coneThreshold && sRed >= coneColor.red - coneThreshold){
-      coneMatch += 0b100;
-    }
-    // Cone green
-    if (sGreen <= coneColor.green + coneThreshold && sGreen >= coneColor.green - coneThreshold){
-      coneMatch += 0b010;
-    }
-    // Cone Blue
-    if (sBlue <= coneColor.blue + coneThreshold && sBlue >= coneColor.blue - coneThreshold){
-      coneMatch += 0b001;
-    }
-
-    // Results parse
-    // Prioritize cone in all cases because of angle being higher
-    if(coneMatch == 0b111 && cubeMatch != 0b111){
+    // Dual guard clause
+    if (coneDeltaE < coneThreshold){
       return "Cone Match";
     }
-    else if(cubeMatch == 0b111 && coneMatch != 0b111){
+    if (cubeDeltaE < cubeThreshold){
       return "Cube Match";
-    }
-    else if(coneMatch == 0b111 && cubeMatch == 0b111){
-      return "Cone Match";
     }
 
     return "Null Match";

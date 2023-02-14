@@ -37,7 +37,7 @@ public class Arm extends SubsystemBase {
     // Set conversion factor to output in degrees and degrees/sec
     encoder.setPositionConversionFactor(360.0);
     encoder.setVelocityConversionFactor(encoder.getPositionConversionFactor() / 60.0);
-
+    
     pidController = leftMotor.getPIDController();
     pidController.setFeedbackDevice(encoder);
 
@@ -53,6 +53,9 @@ public class Arm extends SubsystemBase {
 
     // Set all motors to brake
     rightMotor.setIdleMode(IdleMode.kBrake);
+
+    leftMotor.setSmartCurrentLimit(40);
+    rightMotor.setSmartCurrentLimit(40);
 
     leftMotor.burnFlash();
     rightMotor.burnFlash();

@@ -8,11 +8,13 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Arm.RotateArmToSetPoint;
 import frc.robot.commands.Claw.ToggleClaw;
+import frc.robot.commands.Collector.Collect;
 import frc.robot.commands.Compressor.Compress;
 import frc.robot.commands.Spindexer.Spindex;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Cmprsr;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Spindexer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -36,6 +38,7 @@ public class RobotContainer {
   private final Arm arm = new Arm(claw);
   private final Cmprsr compressor = new Cmprsr();
   private final Spindexer spindexer = new Spindexer();
+  private final Collector collector = new Collector();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -70,6 +73,9 @@ public class RobotContainer {
     operatorController.rightTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new Spindex(spindexer, 1.0));
     // SPINDEXER REVERSE
     operatorController.leftTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new Spindex(spindexer, -1.0));
+
+    // COLLECT
+    operatorController.a().whileTrue(new Collect(collector));
   }
 
   /**
