@@ -12,4 +12,35 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
+<<<<<<< Updated upstream
 public final class Constants {}
+=======
+public final class Constants {
+  public static class OperatorConstants {
+    public static final int kDriverControllerPort = 0;
+    
+    public static final int kOperatorControllerPort = 1;
+  }
+  public static final int compressorModuleID = 14;
+
+  public static final int leftArmPistonForwardChannel = 0;
+
+  public static final int leftArmPistonReverseChannel = 1;
+
+  public static final int rightArmPistonForwardChannel = 2;
+
+  public static final int rightArmPistonReverseChannel = 3;
+
+  public static final int clawRetractorForwardChannel = 4;
+
+  public static final int clawRetractorReverseChannel = 5;
+
+  public static final int leftClawExtenderForwardChannel = 6;
+
+  public static final int leftClawExtenderReverseChannel = 7;
+  
+  public static final int rightClawExtenderForwardChannel = 8;
+
+  public static final int rightClawExtenderReverseChannel = 9;
+}
+>>>>>>> Stashed changes
