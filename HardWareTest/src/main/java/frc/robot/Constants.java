@@ -16,12 +16,12 @@ import edu.wpi.first.wpilibj.util.Color;
  */
 public final class Constants {
   public static class GlobalConstants{
-    public static final int PNEUMATICS_ID = 0;
+    public static final int PNEUMATICS_ID = 14;
   }
 
   public static class OperatorConstants {
-    public static final int DRIVER_CONTROLLER_PORT = 0;
-    public static final int OPERATOR_CONTROLLER_PORT = 1;
+    public static final int DRIVER_CONTROLLER_PORT = 1;
+    public static final int OPERATOR_CONTROLLER_PORT = 0;
 
     public static final double OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER = 0.08;
   }
@@ -33,11 +33,11 @@ public final class Constants {
     public static final double HEIGHT_OFFSET_FROM_GROUND_INCHES = 35.219;
     public static final double ARM_LENGTH_INCHES = 30.254;
 
-    public static final int LEFT_MOTOR_ID = 0;
+    public static final int LEFT_MOTOR_ID = 31;
 
-    public static final int RIGHT_MOTOR_ID = 0;
+    public static final int RIGHT_MOTOR_ID = 32;
 
-    public static final double PID_kP = 0.0;
+    public static final double PID_kP = 0.08;
     public static final double PID_kI = 0.0;
     public static final double PID_kD = 0.0;
     public static final double PID_kFF = 0.0;

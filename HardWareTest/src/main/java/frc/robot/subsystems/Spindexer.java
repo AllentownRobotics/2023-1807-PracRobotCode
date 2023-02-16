@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SpindexerConstants;
+import frc.robot.ColorMatchType;
 
 public class Spindexer extends SubsystemBase {
   CANSparkMax motor = new CANSparkMax(SpindexerConstants.SPINDEXER_MOTOR_ID, MotorType.kBrushless);
@@ -28,14 +30,14 @@ public class Spindexer extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putString("Color Sensor", colorMatch(colorSensor.getColor()));
+    SmartDashboard.putString("Color Sensor", colorMatch(colorSensor.getColor()).asString);
   }
 
   public void spindex(double direction){
     motor.set(direction * SpindexerConstants.SPINDEXER_MOTOR_MAXOUTPUT);
   }
 
-  public String colorMatch(Color sensedColor){
+  public ColorMatchType colorMatch(Color sensedColor){
     double sRed = sensedColor.red;
     double sGreen = sensedColor.green;
     double sBlue = sensedColor.blue;
@@ -54,12 +56,12 @@ public class Spindexer extends SubsystemBase {
 
     // Dual guard clause
     if (coneDeltaE < coneThreshold){
-      return "Cone Match";
+      return ColorMatchType.ConeMatch;
     }
     if (cubeDeltaE < cubeThreshold){
-      return "Cube Match";
+      return ColorMatchType.CubeMatch;
     }
 
-    return "Null Match";
+    return ColorMatchType.NullMatch;
   }
 }

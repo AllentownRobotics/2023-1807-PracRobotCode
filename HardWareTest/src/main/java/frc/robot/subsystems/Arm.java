@@ -29,11 +29,11 @@ public class Arm extends SubsystemBase {
 
   Claw claw;
 
-  public Arm(Claw claw) {
+  public Arm(/*Claw claw*/) {
     // Determine which encoder to use
     encoder = ArmConstants.USE_LEFT_ENCODER ? leftMotor.getAbsoluteEncoder(Type.kDutyCycle) : rightMotor.getAbsoluteEncoder(Type.kDutyCycle); 
     // If using right encoder set inversion false, if not set true
-    encoder.setInverted(!ArmConstants.USE_LEFT_ENCODER);
+    encoder.setInverted(ArmConstants.USE_LEFT_ENCODER);
     // Set conversion factor to output in degrees and degrees/sec
     encoder.setPositionConversionFactor(360.0);
     encoder.setVelocityConversionFactor(encoder.getPositionConversionFactor() / 60.0);
@@ -46,12 +46,15 @@ public class Arm extends SubsystemBase {
     pidController.setI(ArmConstants.PID_kI);
     pidController.setD(ArmConstants.PID_kD);
     pidController.setFF(ArmConstants.PID_kFF);
-    pidController.setOutputRange(-1.0, 1.0);
+    pidController.setOutputRange(-0.01,0.01);
+
+    leftMotor.setInverted(true);
 
     // Have all motors follor master
     rightMotor.follow(leftMotor, true);
 
     // Set all motors to brake
+    leftMotor.setIdleMode(IdleMode.kBrake);
     rightMotor.setIdleMode(IdleMode.kBrake);
 
     leftMotor.setSmartCurrentLimit(40);
@@ -60,19 +63,19 @@ public class Arm extends SubsystemBase {
     leftMotor.burnFlash();
     rightMotor.burnFlash();
 
-    this.claw = claw;
+    //this.claw = claw;
   }
 
   @Override
   public void periodic() {
-    pidController.setReference(desiredAngle, ControlType.kPosition);
+    //pidController.setReference(desiredAngle, ControlType.kPosition);
 
-    if (encoder.getPosition() < ClawConstants.ANGLE_WRIST_FLIPPOINT){
+    /*if (encoder.getPosition() < ClawConstants.ANGLE_WRIST_FLIPPOINT){
       claw.setWristOut(false);
     }
     else{
       claw.setWristOut(true);
-    }
+    }*/
   }
 
   public double getAngle(){
@@ -84,7 +87,9 @@ public class Arm extends SubsystemBase {
   }
 
   public void rotateBy(double degrees){
-    desiredAngle += degrees;
+    leftMotor.set(degrees);
+
+    //desiredAngle += degrees;
   }
 
   public void toggleWrist(){
