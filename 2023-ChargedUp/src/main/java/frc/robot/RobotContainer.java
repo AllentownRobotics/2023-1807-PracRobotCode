@@ -4,48 +4,38 @@
 
 package frc.robot;
 
-<<<<<<< Updated upstream
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-=======
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ClawCommand;
 import frc.robot.commands.CompressorCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Compress;
->>>>>>> Stashed changes
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
+ * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-<<<<<<< Updated upstream
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-=======
+  public final static SwerveDrive drivetrain = new SwerveDrive();
   public final static Claw claw = new Claw();
   public final static Arm arm = new Arm();
   public final static Compress compressor = new Compress();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+  public final static CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
   private final CommandXboxController m_operatorController =
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
@@ -54,19 +44,19 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     compressor.setDefaultCommand(new CompressorCommand());
+    drivetrain.setDefaultCommand(new SwerveCommand());
     configureBindings();
->>>>>>> Stashed changes
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your trigger->command mappings. Triggers can be created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * predicate, or via the named factories in {@link
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
+   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * joysticks}.
    */
-<<<<<<< Updated upstream
-  private void configureButtonBindings() {}
-=======
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
@@ -75,11 +65,13 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
     m_operatorController.b().onTrue(new ClawCommand(0));
+
     m_operatorController.x().onTrue(new ClawCommand(1));
+
     m_operatorController.a().onTrue(new ArmCommand());
   }
->>>>>>> Stashed changes
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -87,7 +79,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    // An example command will be run in autonomous
+    return Autos.exampleAuto(m_exampleSubsystem);
   }
 }
