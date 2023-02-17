@@ -6,6 +6,7 @@ package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 
 public class ManualSetPointControl extends CommandBase {
@@ -28,7 +29,7 @@ public class ManualSetPointControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.rotateBy(0.05 * controller.getLeftY());
+    arm.rotateBy(ArmConstants.ANGLE_MANUAL_INPUT_MODIFIER * controller.getLeftY());
   }
 
   // Called once the command ends or is interrupted.

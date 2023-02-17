@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Claw;
 
 public class RotateArmToSetPoint extends CommandBase {
   CommandXboxController controller;

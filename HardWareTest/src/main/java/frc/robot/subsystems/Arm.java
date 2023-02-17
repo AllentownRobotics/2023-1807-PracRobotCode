@@ -25,7 +25,7 @@ public class Arm extends SubsystemBase {
 
   SparkMaxPIDController pidController;
 
-  double desiredAngle;
+  double desiredAngle = 0;
 
   Claw claw;
 
@@ -46,7 +46,7 @@ public class Arm extends SubsystemBase {
     pidController.setI(ArmConstants.PID_kI);
     pidController.setD(ArmConstants.PID_kD);
     pidController.setFF(ArmConstants.PID_kFF);
-    pidController.setOutputRange(-0.01,0.01);
+    pidController.setOutputRange(-0.1,0.1);
 
     leftMotor.setInverted(true);
 
@@ -68,7 +68,7 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //pidController.setReference(desiredAngle, ControlType.kPosition);
+    pidController.setReference(desiredAngle, ControlType.kPosition);
 
     /*if (encoder.getPosition() < ClawConstants.ANGLE_WRIST_FLIPPOINT){
       claw.setWristOut(false);
@@ -87,7 +87,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void rotateBy(double degrees){
-    leftMotor.set(degrees);
+    desiredAngle += degrees;
 
     //desiredAngle += degrees;
   }
