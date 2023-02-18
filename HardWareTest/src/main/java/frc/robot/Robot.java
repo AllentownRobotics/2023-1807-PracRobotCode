@@ -22,8 +22,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private CANSparkMax motor = new CANSparkMax(8, MotorType.kBrushless);
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -87,7 +85,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    motor.set(0.5);
+    
   }
 
   @Override

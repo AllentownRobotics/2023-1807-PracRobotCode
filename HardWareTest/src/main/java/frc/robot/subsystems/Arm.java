@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ClawConstants;
@@ -25,15 +26,18 @@ public class Arm extends SubsystemBase {
 
   SparkMaxPIDController pidController;
 
-  double desiredAngle = 0;
+  double desiredAngle;
 
   Claw claw;
 
   public Arm(/*Claw claw*/) {
+    leftMotor.restoreFactoryDefaults();
+    rightMotor.restoreFactoryDefaults();
+
     // Determine which encoder to use
     encoder = ArmConstants.USE_LEFT_ENCODER ? leftMotor.getAbsoluteEncoder(Type.kDutyCycle) : rightMotor.getAbsoluteEncoder(Type.kDutyCycle); 
     // If using right encoder set inversion false, if not set true
-    encoder.setInverted(ArmConstants.USE_LEFT_ENCODER);
+    encoder.setInverted(!ArmConstants.USE_LEFT_ENCODER);
     // Set conversion factor to output in degrees and degrees/sec
     encoder.setPositionConversionFactor(360.0);
     encoder.setVelocityConversionFactor(encoder.getPositionConversionFactor() / 60.0);
@@ -46,9 +50,10 @@ public class Arm extends SubsystemBase {
     pidController.setI(ArmConstants.PID_kI);
     pidController.setD(ArmConstants.PID_kD);
     pidController.setFF(ArmConstants.PID_kFF);
-    pidController.setOutputRange(-0.1,0.1);
+    pidController.setOutputRange(-0.12,0.12);
+    pidController.setPositionPIDWrappingEnabled(false);
 
-    leftMotor.setInverted(true);
+    leftMotor.setInverted(false);
 
     // Have all motors follor master
     rightMotor.follow(leftMotor, true);
@@ -64,11 +69,16 @@ public class Arm extends SubsystemBase {
     rightMotor.burnFlash();
 
     //this.claw = claw;
+
+    desiredAngle = 0.0;
   }
 
   @Override
   public void periodic() {
     pidController.setReference(desiredAngle, ControlType.kPosition);
+
+    SmartDashboard.putNumber("Arm Angle", encoder.getPosition());
+    SmartDashboard.putNumber("Set Point", desiredAngle);
 
     /*if (encoder.getPosition() < ClawConstants.ANGLE_WRIST_FLIPPOINT){
       claw.setWristOut(false);
@@ -76,6 +86,10 @@ public class Arm extends SubsystemBase {
     else{
       claw.setWristOut(true);
     }*/
+  }
+
+  public void BRAKE(){
+    leftMotor.set(0);
   }
 
   public double getAngle(){

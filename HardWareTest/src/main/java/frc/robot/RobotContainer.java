@@ -62,12 +62,14 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // HIGH PLACEMENT
-    operatorController.povUp().onTrue(new RotateArmToSetPoint(arm, operatorController, ArmConstants.ANGLE_CONE_HIGH, ArmConstants.ANGLE_CUBE_HIGH));
+    operatorController.povUp().onTrue(new RotateArmToSetPoint(arm, operatorController, 180.0));
     // MID PLACEMENT
-    operatorController.povLeft().onTrue(new RotateArmToSetPoint(arm, operatorController, ArmConstants.ANGLE_CONE_MID, ArmConstants.ANGLE_CUBE_MID));
+    operatorController.povLeft().onTrue(new RotateArmToSetPoint(arm, operatorController, 90.0));
 
     // ARM RESET
-    operatorController.povRight().onTrue(new RotateArmToSetPoint(arm, operatorController, 0.0));
+    operatorController.povDown().onTrue(new RotateArmToSetPoint(arm, operatorController, 25.0));
+
+    operatorController.povRight().onTrue(new RotateArmToSetPoint(arm, operatorController, ArmConstants.ANGLE_CONE_HIGH, ArmConstants.ANGLE_CUBE_HIGH));
 
     // CLAW TOGGLE
     //operatorController.x().onTrue(new ToggleClaw(claw));

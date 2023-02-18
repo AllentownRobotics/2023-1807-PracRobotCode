@@ -4,23 +4,14 @@
 
 package frc.robot.commands.Arm;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 
-public class ManualSetPointControl extends CommandBase {
+public class BRAKE extends CommandBase {
   Arm arm;
-  CommandXboxController controller;
-
-  /** Creates a new ManualSetPointControl. */
-  public ManualSetPointControl(Arm arm, CommandXboxController controller) {
+  public BRAKE(Arm arm) {
     addRequirements(arm);
-
     this.arm = arm;
-    this.controller = controller;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -30,9 +21,7 @@ public class ManualSetPointControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-
-    //arm.rotateBy(ArmConstants.ANGLE_MANUAL_INPUT_MODIFIER * MathUtil.applyDeadband(0.3, controller.getLeftY()));
+    arm.BRAKE();
   }
 
   // Called once the command ends or is interrupted.
