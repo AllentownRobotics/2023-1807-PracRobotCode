@@ -4,12 +4,12 @@
 
 package frc.robot.commands.Arm;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.Arm;
 
-public class RotateArmToSetPoint extends CommandBase {
+public class RotateArmToSetPoint extends InstantCommand {
   CommandXboxController controller;
   Arm arm;
 

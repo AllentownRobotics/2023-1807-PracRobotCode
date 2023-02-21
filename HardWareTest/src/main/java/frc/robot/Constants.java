@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.util.Color;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
+
 public final class Constants {
   public static class GlobalConstants{
     public static final int PNEUMATICS_ID = 14;
@@ -38,13 +39,13 @@ public final class Constants {
 
     public static final int RIGHT_MOTOR_ID = 32;
 
-    public static final double PID_kP = 0.1;
+    public static final double PID_kP = 0.15;
     public static final double PID_kI = 0.0;
     public static final double PID_kD = 0.0;
     public static final double PID_kFF = 0.0;
     
     public static final double ANGLE_CONE_INSURANCE = 5.0;
-    public static final double ANGLE_MANUAL_SPEED_MAX_DEGREESPERSECOND = 15.0;
+    public static final double ANGLE_MANUAL_SPEED_MAX_DEGREESPERSECOND = 50.0;
     public static final double ANGLE_MANUAL_INPUT_MODIFIER = ANGLE_MANUAL_SPEED_MAX_DEGREESPERSECOND * 0.02;
 
     public static final double ANGLE_CONE_HIGH = 195.37664 - ANGLE_CONE_INSURANCE - ANGLE_OFFSET_FROM_ZERO;
@@ -109,4 +110,4 @@ public final class Constants {
 
     public static final double COLLECTOR_SPEED_MAX = 0.5;
   }
-}
+} 

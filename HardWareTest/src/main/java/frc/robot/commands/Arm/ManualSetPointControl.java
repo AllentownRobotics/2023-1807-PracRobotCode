@@ -30,9 +30,7 @@ public class ManualSetPointControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-
-    //arm.rotateBy(ArmConstants.ANGLE_MANUAL_INPUT_MODIFIER * MathUtil.applyDeadband(0.3, controller.getLeftY()));
+    arm.rotateBy(ArmConstants.ANGLE_MANUAL_INPUT_MODIFIER * MathUtil.applyDeadband(controller.getLeftY(), 0.3));
   }
 
   // Called once the command ends or is interrupted.
