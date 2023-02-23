@@ -14,11 +14,13 @@ public class ArmACTIVE extends CommandBase {
 
     @Override
     public void execute() {
-        RobotContainer.armSystem.toggleArm();
+        RobotContainer.armSystem.Extended();
     }
 
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+        RobotContainer.armSystem.Retracted();
+    }
 
     @Override
     public boolean isFinished() {

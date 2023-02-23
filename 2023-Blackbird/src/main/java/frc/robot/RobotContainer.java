@@ -4,12 +4,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Arm.ArmACTIVE;
 import frc.robot.commands.Claw.ClawHORIZONTAL;
 import frc.robot.commands.Claw.ClawVERTICAL;
 import frc.robot.commands.Compressor.CompressACTIVE;
@@ -34,9 +33,9 @@ public class RobotContainer {
 
     public static Compress compressorSystem = new Compress();
 
-    public static XboxController operatorController;
+    public static CommandXboxController operatorController;
 
-    public static XboxController driverController;
+    public static CommandXboxController driverController;
 
     boolean fieldOriented = false;
 
@@ -45,11 +44,11 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    operatorController = new XboxController(Constants.CTRL_FOR_DRIVER_ID);
+    operatorController = new CommandXboxController(Constants.CTRL_FOR_DRIVER_ID);
     
-    driverController = new XboxController(Constants.CTRL_FOR_OPERATOR_ID);
+    driverController = new CommandXboxController(Constants.CTRL_FOR_OPERATOR_ID);
 
-    //default commands
+    //Default commands
     compressorSystem.setDefaultCommand(new CompressACTIVE());
   }
 
@@ -63,19 +62,23 @@ public class RobotContainer {
    * joysticks}.
    */
   public void configureBindings() {
-      new JoystickButton(operatorController, XboxController.Button.kA.value).whileTrue(new ClawHORIZONTAL());
-      
-      new JoystickButton(operatorController, XboxController.Button.kB.value).whileTrue(new ClawVERTICAL());
-  
 
-    new JoystickButton(driverController, XboxController.Button.kRightBumper.value)
+//Operator controller (claw & arm)
+    operatorController.a().onTrue(new ClawHORIZONTAL());    
+
+    operatorController.b().onTrue(new ClawVERTICAL());
+  
+    operatorController.x().whileTrue(new ArmACTIVE());
+
+//Driver Controller (swerve)
+    driverController.leftBumper()
         .whileTrue(new RunCommand(() -> drivetrain.setX(),
             drivetrain));
 
-    new JoystickButton(driverController, XboxController.Button.kLeftBumper.value)
+    driverController.rightBumper()
         .onTrue(new InstantCommand(() -> fieldOriented = !fieldOriented));
 
-    new JoystickButton(driverController, XboxController.Button.kStart.value)
+    driverController.start()
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading(),
             drivetrain));
 
