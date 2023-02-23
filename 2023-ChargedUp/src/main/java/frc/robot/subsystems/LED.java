@@ -4,64 +4,179 @@
 
 package frc.robot.subsystems;
 
+
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.ColorFlowAnimation;
+import com.ctre.phoenix.led.LarsonAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
+import com.ctre.phoenix.led.SingleFadeAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
+import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ColorConstants;
 
 public class LED extends SubsystemBase {
-  /** Creates a new LED. */
+
   CANdle candle;
   CANdleConfiguration config;
+  StrobeAnimation coneStrobeAnim;
+  ColorFlowAnimation coneFlowAnim;
+  StrobeAnimation cubeStrobeAnim;
+  ColorFlowAnimation cubeFlowAnim;
   RainbowAnimation rainbowAnim;
-  StrobeAnimation strobeAnim;
-  ColorFlowAnimation flowAnim;
+  SingleFadeAnimation idleFadeAnim;
+  LarsonAnimation coneLarsonAnim;
+  LarsonAnimation cubeLarsonAnim;
   Direction direction;
+  BounceMode bounce;
+  WPI_Pigeon2 pigeon;
+
+  public static Timer timer;
+
+  double endgameBright;
+
   public LED() {
+
     direction = Direction.Forward;
+    bounce = BounceMode.Front;
+
     candle = new CANdle(3);
     config = new CANdleConfiguration();
     config.stripType = LEDStripType.RGB;
     candle.configAllSettings(config);
-    rainbowAnim = new RainbowAnimation(1, .25, 68);
-    strobeAnim = new StrobeAnimation(128, 0, 255, 0, .01, 68, 0);
-    flowAnim = new ColorFlowAnimation(150, 30, 0, 0, .5, 68, direction, 0);
 
+    pigeon = new WPI_Pigeon2(9);
+
+    idleFadeAnim = new SingleFadeAnimation
+    (ColorConstants.redTeamR, ColorConstants.redTeamG, ColorConstants.redTeamB, 
+    0, .15, 68, 0);
+
+    coneFlowAnim = new ColorFlowAnimation
+    (ColorConstants.coneR, ColorConstants.coneG, ColorConstants.coneB,
+    128, .25, 68, direction, 0);
+
+    coneLarsonAnim = new LarsonAnimation
+    (ColorConstants.coneR, ColorConstants.coneG, ColorConstants.coneB, 
+    128, .1, 68, bounce, 15, 0);
+
+    cubeFlowAnim = new ColorFlowAnimation
+    (ColorConstants.cubeR, ColorConstants.cubeG, ColorConstants.cubeB, 
+    128, .25, 68, direction, 0);
+
+    cubeLarsonAnim = new LarsonAnimation
+    (ColorConstants.cubeR, ColorConstants.cubeG, ColorConstants.cubeB, 
+    128, .1, 68, bounce, 15, 0);
+
+
+    timer = new Timer();
+
+    endgameBright = 0;
+    
     candle.setLEDs(0, 0, 0);
   }
-  public void RedAnim() {
-    candle.setLEDs(255, 0, 0);
+  
+  public void IdleAnim() {
+    candle.animate(idleFadeAnim, 0);
+  }
+  
+  public void ConeReqAnim() {
+    candle.setLEDs(ColorConstants.coneR, ColorConstants.coneG, ColorConstants.coneB);
+  }
+  
+  public void CubeReqAnim() {
+    candle.setLEDs(ColorConstants.cubeR, ColorConstants.cubeG, ColorConstants.cubeB);
+  }
+  
+  public void ConeTransportAnim() {
+    candle.animate(coneLarsonAnim, 1);
+  }
+  
+  public void CubeTransportAnim() {
+    candle.animate(cubeLarsonAnim, 2);
   }
 
-  public void GreenAnim() {
-    candle.setLEDs(0, 255, 0);
+  public void ConeScoreAnim() {
+    
+    timer.start();
+    candle.animate(coneFlowAnim, 3);
+  
+    Timer.delay(2);
+    for (int i = 0; i < 3; i++) {
+
+    candle.setLEDs(ColorConstants.coneR, ColorConstants.coneG, ColorConstants.coneB);
+
+    Timer.delay(.1);
+    candle.setLEDs(0, 0, 0);
+
+    Timer.delay(.1);
+    }
+
+    candle.setLEDs(0, 0, 0);
+    NoAnim();
+  
+        timer.stop();
+        timer.reset();
   }
 
-  public void BlueAnim() {
-    candle.setLEDs(0, 0, 255);
+  public void CubeScoreAnim() {
+    timer.start();
+candle.animate(cubeFlowAnim, 4);
+
+Timer.delay(2);
+
+for (int i = 0; i < 3; i++) {
+
+  candle.setLEDs(ColorConstants.cubeR, ColorConstants.cubeG, ColorConstants.cubeB);
+
+  Timer.delay(.1);
+  candle.setLEDs(0, 0, 0);
+
+  Timer.delay(.1);
   }
 
-  public void RainbowAnim() {
-    candle.animate(rainbowAnim, 0);
-  }
+Timer.delay(.8);
+NoAnim();
 
-  public void StrobeAnim() {
-    candle.animate(strobeAnim, 1);
+timer.stop();
+    timer.reset();
+}
+  // always change brightness to the correct value
+public void EndGameAnim() {
+  while (true) {
+  SetEndgameBright();
+  candle.configBrightnessScalar(endgameBright);
+  candle.setLEDs(ColorConstants.redTeamR, ColorConstants.redTeamG, ColorConstants.redTeamB);
   }
-  public void FlowAnim() {
-    candle.animate(flowAnim, 2);
+}
+
+public double SetEndgameBright() {
+
+  // use the pythagorean theorem to account for pitch and roll in one variable
+  double tilt = (Math.sqrt((Math.pow(pigeon.getRoll(), 2)) + Math.pow(pigeon.getPitch(), 2)));
+  
+  while (true) {
+    // function to set the brightness (logistic function I picked, you can pick your own)
+    endgameBright = (-1 / (1 + (50 * Math.pow(Math.E, -.7 * tilt)))) + 1 ;
+  return endgameBright;
   }
+}
 
   public void NoAnim() {
+
+    // clears animation slots and sets LEDs to 0
     candle.setLEDs(0, 0, 0);
+
     candle.clearAnimation(0);
     candle.clearAnimation(1);
     candle.clearAnimation(2);
+    candle.clearAnimation(3);
+    candle.clearAnimation(4);
   }
   @Override
   public void periodic() {

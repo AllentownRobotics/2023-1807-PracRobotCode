@@ -16,4 +16,50 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  public static class ColorConstants {
+
+    public static final int coneR = 255;
+
+    public static final int coneG = 80;
+
+    public static final int coneB = 0;
+
+    public static final int cubeR = 190;
+
+    public static final int cubeG = 20;
+
+    public static final int cubeB = 220;
+
+    public static final int redTeamR = 128;
+
+    public static final int redTeamG = 0;
+
+    public static final int redTeamB = 0;
+
+    public static final int blueTeamR = 0;
+
+    public static final int blueTeamG = 0;
+
+    public static final int blueTeamB = 128;
+  }
+  public static class AnimNumberConstants {
+
+    public static final int idleAnimNumber = 0;
+
+    public static final int coneReqAnimNumber = 1;
+
+    public static final int cubeReqAnimNumber = 2;
+
+    public static final int coneTransportAnimNumber = 3;
+
+    public static final int cubeTransportAnimNumber = 4;
+
+    public static final int coneScoreAnimNumber = 5;
+
+    public static final int cubeScoreAnimNumber = 6;
+
+    public static final int endgameAnimNumber = 7;
+
+    public static final int resetAnimNumber = 8;
+  }
 }

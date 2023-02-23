@@ -4,10 +4,9 @@
 
 package frc.robot;
 
+import frc.robot.Constants.AnimNumberConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.LEDCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LED;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -21,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static LED led = new LED();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -31,7 +29,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    led.setDefaultCommand(new LEDCommand(5));
+     led.setDefaultCommand(new LEDCommand(8));
 
     configureBindings();
   }
@@ -50,13 +48,23 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().onTrue(new LEDCommand(0));
-    m_driverController.a().onTrue(new LEDCommand(1));
-    m_driverController.x().onTrue(new LEDCommand(2));
-    m_driverController.y().onTrue(new LEDCommand(3));
-    m_driverController.leftBumper().onTrue(new LEDCommand(4));
-    m_driverController.rightBumper().onTrue(new LEDCommand(5));
-    m_driverController.start().onTrue(new LEDCommand(6));
+    m_driverController.back().onTrue(new LEDCommand(AnimNumberConstants.idleAnimNumber));
+
+    m_driverController.leftStick().onTrue(new LEDCommand(AnimNumberConstants.coneReqAnimNumber));
+
+    m_driverController.rightStick().onTrue(new LEDCommand(AnimNumberConstants.cubeReqAnimNumber));
+
+    m_driverController.leftBumper().onTrue(new LEDCommand(AnimNumberConstants.coneTransportAnimNumber));
+
+    m_driverController.rightBumper().onTrue(new LEDCommand(AnimNumberConstants.cubeTransportAnimNumber));
+
+    m_driverController.y().onTrue(new LEDCommand(AnimNumberConstants.coneScoreAnimNumber));
+    
+    m_driverController.x().onTrue(new LEDCommand(AnimNumberConstants.cubeScoreAnimNumber));
+
+    m_driverController.a().onTrue(new LEDCommand(AnimNumberConstants.endgameAnimNumber));
+
+    m_driverController.start().onTrue(new LEDCommand(AnimNumberConstants.resetAnimNumber));
   }
 
   /**
@@ -66,6 +74,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return null;
   }
 }

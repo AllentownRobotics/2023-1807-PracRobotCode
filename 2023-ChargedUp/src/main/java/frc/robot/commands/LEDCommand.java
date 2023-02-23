@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.AnimNumberConstants;
 
 public class LEDCommand extends CommandBase {
   public int animNumber;
@@ -19,27 +20,33 @@ public class LEDCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    switch (animNumber) {
+        case AnimNumberConstants.idleAnimNumber: RobotContainer.led.IdleAnim();
+        break;
+        case AnimNumberConstants.coneReqAnimNumber: RobotContainer.led.ConeReqAnim();
+        break;
+        case AnimNumberConstants.cubeReqAnimNumber: RobotContainer.led.CubeReqAnim();
+        break;
+        case AnimNumberConstants.coneTransportAnimNumber: RobotContainer.led.ConeTransportAnim();
+        break;
+        case AnimNumberConstants.cubeTransportAnimNumber: RobotContainer.led.CubeTransportAnim();
+        break;
+        case AnimNumberConstants.coneScoreAnimNumber: RobotContainer.led.ConeScoreAnim(); 
+        break;
+        case AnimNumberConstants.cubeScoreAnimNumber: RobotContainer.led.CubeScoreAnim();
+        break;
+        case AnimNumberConstants.endgameAnimNumber: RobotContainer.led.EndGameAnim();
+        break;
+        case AnimNumberConstants.resetAnimNumber: RobotContainer.led.NoAnim();
+        break;
+      }
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    switch (animNumber) {
-      case 0: RobotContainer.led.RedAnim();
-      break;
-      case 1: RobotContainer.led.GreenAnim();
-      break;
-      case 2: RobotContainer.led.BlueAnim();
-      break;
-      case 3: RobotContainer.led.RainbowAnim();
-      break;
-      case 4: RobotContainer.led.StrobeAnim();
-      break;
-      case 5: RobotContainer.led.FlowAnim();
-      break;
-      case 6: RobotContainer.led.NoAnim();
-      break;
-    }
+    
   }
 
   // Called once the command ends or is interrupted.
