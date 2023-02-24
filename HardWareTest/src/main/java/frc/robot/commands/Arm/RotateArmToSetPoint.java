@@ -24,11 +24,10 @@ public class RotateArmToSetPoint extends InstantCommand {
     coneSetPoint = coneAngle;
     cubeSetPoint = cubeAngle;
   }
-  public RotateArmToSetPoint(Arm arm, CommandXboxController controller, double uniAngle) {
+  public RotateArmToSetPoint(Arm arm, double uniAngle) {
     addRequirements(arm);
 
     this.arm = arm;
-    this.controller = controller;
     coneSetPoint = uniAngle;
     cubeSetPoint = uniAngle;
   }
@@ -40,7 +39,13 @@ public class RotateArmToSetPoint extends InstantCommand {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean placeCube = controller.leftBumper().getAsBoolean();
+    boolean placeCube;
+    try{
+      placeCube = controller.leftBumper().getAsBoolean();
+    }
+    finally{
+      placeCube = false;
+    }
 
     arm.setDesiredAngle(placeCube ? cubeSetPoint : coneSetPoint);
   }

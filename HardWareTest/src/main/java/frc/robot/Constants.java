@@ -45,7 +45,7 @@ public final class Constants {
     public static final double PID_kFF = 0.0;
     
     public static final double ANGLE_CONE_INSURANCE = 5.0;
-    public static final double ANGLE_MANUAL_SPEED_MAX_DEGREESPERSECOND = 50.0;
+    public static final double ANGLE_MANUAL_SPEED_MAX_DEGREESPERSECOND = 120.0;
     public static final double ANGLE_MANUAL_INPUT_MODIFIER = ANGLE_MANUAL_SPEED_MAX_DEGREESPERSECOND * 0.02;
 
     public static final double ANGLE_CONE_HIGH = 195.37664 - ANGLE_CONE_INSURANCE - ANGLE_OFFSET_FROM_ZERO;
