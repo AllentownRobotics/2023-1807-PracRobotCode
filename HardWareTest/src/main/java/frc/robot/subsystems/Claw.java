@@ -50,7 +50,7 @@ public class Claw extends SubsystemBase {
   // Handles setting piston position
   @Override
   public void periodic() {
-    wristPiston.set(wristOut ? Value.kForward : Value.kReverse);
-    clawPiston.set(holding ? Value.kReverse : Value.kForward);
+    wristPiston.set(wristOut ? Value.kReverse : Value.kForward);
+    clawPiston.set(holding ? Value.kForward : Value.kReverse);
   }
 }

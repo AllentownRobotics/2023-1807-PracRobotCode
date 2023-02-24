@@ -5,13 +5,12 @@
 package frc.robot.commands.Claw;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Claw;
 
-public class ToggleClaw extends InstantCommand {
+public class ToggleWrist extends CommandBase {
   Claw claw;
-  
-  public ToggleClaw(Claw claw) {
+
+  public ToggleWrist(Claw claw) {
     addRequirements(claw);
 
     this.claw = claw;
@@ -24,7 +23,7 @@ public class ToggleClaw extends InstantCommand {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    claw.toggleHold();
+    claw.toggleWrist();
   }
 
   // Called once the command ends or is interrupted.
