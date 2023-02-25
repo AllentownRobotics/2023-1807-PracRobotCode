@@ -57,6 +57,10 @@ public class RotateArmToSetPoint extends InstantCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    double error = Math.abs(arm.getAngle() - arm.getDesiredAngle());
+    if (error <= 2.5){
+      return true;
+    }
     return false;
   }
 }

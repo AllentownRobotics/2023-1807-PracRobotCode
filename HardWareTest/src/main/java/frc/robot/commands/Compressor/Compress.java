@@ -11,6 +11,8 @@ public class Compress extends CommandBase {
   Cmprsr compressor;
 
   public Compress(Cmprsr compressor) {
+    addRequirements(compressor);
+
     this.compressor = compressor;
   }
 

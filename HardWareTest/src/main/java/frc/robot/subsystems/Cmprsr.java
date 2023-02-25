@@ -10,8 +10,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CompressorConstants;
 
 public class Cmprsr extends SubsystemBase {
-  Compressor compressor = new Compressor(CompressorConstants.COMPRESSOR_ID, PneumaticsModuleType.REVPH);
+  Compressor compressor;
   public Cmprsr() {
+    compressor = new Compressor(CompressorConstants.COMPRESSOR_ID, PneumaticsModuleType.REVPH);
   }
 
   public void Compressor_Active(){

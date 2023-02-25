@@ -10,6 +10,7 @@ import frc.robot.commands.Arm.ManualSetPointControl;
 import frc.robot.commands.Arm.ResetArm;
 import frc.robot.commands.Arm.RotateArmToSetPoint;
 import frc.robot.commands.Claw.ToggleClaw;
+import frc.robot.commands.Claw.ToggleWrist;
 import frc.robot.commands.Collector.Collect;
 import frc.robot.commands.Compressor.Compress;
 import frc.robot.commands.Spindexer.Spindex;
@@ -36,9 +37,9 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
   private final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
-  //final Claw claw = new Claw();
+  final Claw claw = new Claw();
   public final Arm arm = new Arm();
-  //final Cmprsr compressor = new Cmprsr();
+  final Cmprsr compressor = new Cmprsr();
   //final Spindexer spindexer = new Spindexer();
   //final Collector collector = new Collector();
 
@@ -46,7 +47,7 @@ public class RobotContainer {
   public RobotContainer() {
     arm.setDefaultCommand(new ManualSetPointControl(arm, operatorController));
 
-    //compressor.setDefaultCommand(new Compress(compressor));
+    compressor.setDefaultCommand(new Compress(compressor));
 
     // Configure the trigger bindings
     configureBindings();
@@ -63,22 +64,24 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // HIGH PLACEMENT
-    operatorController.povUp().whileTrue(new RotateArmToSetPoint(arm, operatorController, 
+    operatorController.povUp().onTrue(new RotateArmToSetPoint(arm, operatorController, 
                                           ArmConstants.ANGLE_CONE_HIGH, ArmConstants.ANGLE_CUBE_HIGH));
     
     // MID PLACEMENT
-    operatorController.povLeft().whileTrue(new RotateArmToSetPoint(arm, operatorController, 
+    operatorController.povLeft().onTrue(new RotateArmToSetPoint(arm, operatorController, 
                                           ArmConstants.ANGLE_CONE_MID, ArmConstants.ANGLE_CUBE_MID));
 
     // ARM RESET
-    operatorController.povDown().whileTrue(new ResetArm(this));
+    operatorController.povDown().onTrue(new ResetArm(this));
 
-    operatorController.povRight().whileTrue(new RotateArmToSetPoint(arm, 275.0));
+    operatorController.povRight().onTrue(new RotateArmToSetPoint(arm, 275.0));
 
 
 
     // CLAW TOGGLE
-    //operatorController.x().onTrue(new ToggleClaw(claw));
+    operatorController.x().onTrue(new ToggleClaw(claw));
+
+    operatorController.b().onTrue(new ToggleWrist(claw));
 
     // SPINDEXER FORWARD
     //operatorController.rightTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new Spindex(spindexer, 1.0));

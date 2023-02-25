@@ -39,7 +39,7 @@ public final class Constants {
 
     public static final int RIGHT_MOTOR_ID = 32;
 
-    public static final double PID_kP = 0.15;
+    public static final double PID_kP = 0.12;
     public static final double PID_kI = 0.0;
     public static final double PID_kD = 0.0;
     public static final double PID_kFF = 0.0;
@@ -69,13 +69,13 @@ public final class Constants {
   public static class ClawConstants{
     public static final int WRIST_ID = GlobalConstants.PNEUMATICS_ID;
     public static final int WRIST_CHANNEL_FORWARD = 0;
-    public static final int WRIST_CHANNEL_BACKWARD = 0;
+    public static final int WRIST_CHANNEL_BACKWARD = 3;
 
     public static final int CLAW_ID = GlobalConstants.PNEUMATICS_ID;
-    public static final int CLAW_CHANNEL_FORWARD = 0;
-    public static final int CLAW_CHANNEL_BACKWARD = 0;
+    public static final int CLAW_CHANNEL_FORWARD = 1;
+    public static final int CLAW_CHANNEL_BACKWARD = 4;
 
-    public static final double ANGLE_WRIST_FLIPPOINT = 15.0;
+    public static final double ANGLE_WRIST_FLIPPOINT = 190.0 + ArmConstants.ANGLE_OFFSET_FROM_ZERO;
   }
 
   public static class SpindexerConstants{
