@@ -5,6 +5,7 @@
 package frc.robot.commands.Spindexer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Spindexer;
 
 public class Spindex extends CommandBase {
@@ -12,11 +13,13 @@ public class Spindex extends CommandBase {
 
   double directionMod;
   
-  public Spindex(Spindexer spindexer, double directionMod) {
+  CommandXboxController controller;
+  public Spindex(Spindexer spindexer, double directionMod, CommandXboxController controller) {
     addRequirements(spindexer);
 
     this.spindexer = spindexer;
     this.directionMod = directionMod;
+    this.controller = controller;
   }
 
   // Called when the command is initially scheduled.
@@ -26,7 +29,9 @@ public class Spindex extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    spindexer.spindex(directionMod);
+    double varSpeed = directionMod == -1.0 ? controller.getLeftTriggerAxis() : controller.getRightTriggerAxis();
+
+    spindexer.spindex(directionMod * varSpeed);
   }
 
   // Called once the command ends or is interrupted.

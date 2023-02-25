@@ -32,7 +32,7 @@ public class Arm extends SubsystemBase {
 
   Claw claw;
 
-  public Arm(/*Claw claw*/) {
+  public Arm(Claw claw) {
     leftMotor.restoreFactoryDefaults();
     rightMotor.restoreFactoryDefaults();
 
@@ -52,7 +52,7 @@ public class Arm extends SubsystemBase {
     pidController.setI(ArmConstants.PID_kI);
     pidController.setD(ArmConstants.PID_kD);
     pidController.setFF(ArmConstants.PID_kFF);
-    pidController.setOutputRange(-0.15,0.15);
+    pidController.setOutputRange(-0.25,0.25);
     pidController.setPositionPIDWrappingEnabled(false);
 
     leftMotor.setInverted(false);
@@ -70,7 +70,7 @@ public class Arm extends SubsystemBase {
     leftMotor.burnFlash();
     rightMotor.burnFlash();
 
-    //this.claw = claw;
+    this.claw = claw;
 
     desiredAngle = 0.0;
   }

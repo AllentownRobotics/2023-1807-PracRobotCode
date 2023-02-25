@@ -41,9 +41,9 @@ public class RobotContainer {
   private final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
   final Claw claw = new Claw();
-  public final Arm arm = new Arm();
+  public final Arm arm = new Arm(claw);
   final Cmprsr compressor = new Cmprsr();
-  //final Spindexer spindexer = new Spindexer();
+  final Spindexer spindexer = new Spindexer();
   //final Collector collector = new Collector();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -66,22 +66,20 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    SetCubeOrCone commonCommand = new SetCubeOrCone(arm, operatorController);
-
     // HIGH PLACEMENT
-    operatorController.povUp().onTrue(new Place(Commands.waitUntil(arm::getNOTHolding), 
+    operatorController.povUp().onTrue(Commands.deadline(Commands.waitUntil(arm::getNOTHolding), 
                                                 new SetArmAngle(arm, ArmConstants.ANGLE_CONE_HIGH, ArmConstants.ANGLE_CUBE_HIGH), 
-                                                commonCommand));
+                                                new SetCubeOrCone(arm, operatorController)));
     
     // MID PLACEMENT
     operatorController.povLeft().onTrue(new Place(Commands.waitUntil(arm::getNOTHolding), 
                                                 new SetArmAngle(arm, ArmConstants.ANGLE_CONE_MID, ArmConstants.ANGLE_CUBE_MID),
-                                                commonCommand));
+                                                new SetCubeOrCone(arm, operatorController)));
 
     // ARM RESET
     operatorController.povDown().onTrue(new ResetArm(this));
 
-    operatorController.povRight().onTrue(new SetArmAngle(arm, 275.0));
+    //operatorController.povRight().onTrue(new SetArmAngle(arm, 275.0));
 
 
 
@@ -91,9 +89,9 @@ public class RobotContainer {
     operatorController.b().onTrue(new ToggleWrist(claw));
 
     // SPINDEXER FORWARD
-    //operatorController.rightTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new Spindex(spindexer, 1.0));
+    operatorController.rightTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new Spindex(spindexer, 1.0, operatorController));
     // SPINDEXER REVERSE
-    //operatorController.leftTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new Spindex(spindexer, -1.0));
+    operatorController.leftTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new Spindex(spindexer, -1.0, operatorController));
 
     // COLLECT
     //operatorController.a().whileTrue(new Collect(collector));

@@ -19,7 +19,7 @@ public class ResetArm extends SequentialCommandGroup {
     SetArmAngle resetCheckPoint = new SetArmAngle(
       rc.arm, 35.0);
     Command waitForArm = Commands.waitUntil(rc.arm::atSetPoint);
-    Command finalLower = Commands.run(() -> rc.arm.runAtSpeed(-0.05), rc.arm).until(rc.arm::atReset);
+    Command finalLower = Commands.run(() -> rc.arm.runAtSpeed(-0.025), rc.arm).until(rc.arm::atReset);
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());

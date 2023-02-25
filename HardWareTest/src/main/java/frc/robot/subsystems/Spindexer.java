@@ -19,7 +19,7 @@ import frc.robot.ColorMatchType;
 public class Spindexer extends SubsystemBase {
   CANSparkMax motor = new CANSparkMax(SpindexerConstants.SPINDEXER_MOTOR_ID, MotorType.kBrushless);
 
-  ColorSensorV3 colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+  //ColorSensorV3 colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
   public Spindexer() {
     motor.setIdleMode(IdleMode.kBrake);
@@ -29,7 +29,7 @@ public class Spindexer extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putString("Color Sensor", colorMatch(colorSensor.getColor()).asString);
+    //SmartDashboard.putString("Color Sensor", colorMatch(colorSensor.getColor()).asString);
   }
 
   public void spindex(double direction){

@@ -16,8 +16,6 @@ public class SetCubeOrCone extends CommandBase {
   CommandXboxController controller;
 
   public SetCubeOrCone(Arm arm, CommandXboxController controller) {
-    addRequirements(arm);
-
     this.arm = arm;
     this.controller = controller;
   }
