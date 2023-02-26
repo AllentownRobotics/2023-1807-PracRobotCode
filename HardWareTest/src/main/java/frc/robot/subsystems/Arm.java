@@ -14,6 +14,7 @@ import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LagBehind;
 import frc.robot.Constants.ArmConstants;
 //import frc.robot.Constants.ClawConstants;
 
@@ -31,6 +32,8 @@ public class Arm extends SubsystemBase {
   boolean placeCone;
 
   Claw claw;
+
+  LagBehind checkValues;
 
   public Arm(Claw claw) {
     leftMotor.restoreFactoryDefaults();
@@ -73,11 +76,15 @@ public class Arm extends SubsystemBase {
     this.claw = claw;
 
     desiredAngle = 0.0;
+
+    checkValues = new LagBehind(encoder.getPosition());
   }
 
   @Override
   public void periodic() {
     pidController.setReference(desiredAngle, ControlType.kPosition);
+
+    checkValues.update(encoder.getPosition());
 
     SmartDashboard.putNumber("Arm Angle", encoder.getPosition());
     SmartDashboard.putNumber("Set Point", desiredAngle);
@@ -124,8 +131,7 @@ public class Arm extends SubsystemBase {
   }
 
   public boolean atSetPoint(){
-    double error = Math.abs(encoder.getPosition() - desiredAngle); 
-    if (error <= 3.5){
+    if (checkValues.getError() <= 3.5){
       return true;
     }
     return false;

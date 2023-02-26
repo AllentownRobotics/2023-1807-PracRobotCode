@@ -6,23 +6,25 @@ package frc.robot;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Arm.Place;
+import frc.robot.commands.Arm.WaitForPlace;
+import frc.robot.commands.Arm.AutoPlace;
 import frc.robot.commands.Arm.ResetArm;
 import frc.robot.commands.Arm.LowLevelCommands.ManualSetPointControl;
 import frc.robot.commands.Arm.LowLevelCommands.SetArmAngle;
 import frc.robot.commands.Arm.LowLevelCommands.SetCubeOrCone;
-import frc.robot.commands.Claw.ToggleClaw;
-import frc.robot.commands.Claw.ToggleWrist;
+import frc.robot.commands.Claw.GrabFromSpindexer;
+import frc.robot.commands.Claw.LowLevelCommands.ToggleClaw;
+import frc.robot.commands.Claw.LowLevelCommands.ToggleWrist;
 import frc.robot.commands.Collector.Collect;
 import frc.robot.commands.Compressor.Compress;
-import frc.robot.commands.Spindexer.Spindex;
+import frc.robot.commands.Spindexer.LowLevelCommands.RunAtSpeed;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Cmprsr;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Spindexer;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -33,14 +35,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
   private final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
-  final Claw claw = new Claw();
+  public final Claw claw = new Claw();
   public final Arm arm = new Arm(claw);
   final Cmprsr compressor = new Cmprsr();
   final Spindexer spindexer = new Spindexer();
@@ -67,14 +65,14 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // HIGH PLACEMENT
-    operatorController.povUp().onTrue(Commands.deadline(Commands.waitUntil(arm::getNOTHolding), 
+    operatorController.povUp().onTrue(new WaitForPlace(arm, 
                                                 new SetArmAngle(arm, ArmConstants.ANGLE_CONE_HIGH, ArmConstants.ANGLE_CUBE_HIGH), 
-                                                new SetCubeOrCone(arm, operatorController)));
+                                                operatorController));
     
     // MID PLACEMENT
-    operatorController.povLeft().onTrue(new Place(Commands.waitUntil(arm::getNOTHolding), 
+    operatorController.povLeft().onTrue(new WaitForPlace(arm, 
                                                 new SetArmAngle(arm, ArmConstants.ANGLE_CONE_MID, ArmConstants.ANGLE_CUBE_MID),
-                                                new SetCubeOrCone(arm, operatorController)));
+                                                operatorController));
 
     // ARM RESET
     operatorController.povDown().onTrue(new ResetArm(this));
@@ -89,9 +87,9 @@ public class RobotContainer {
     operatorController.b().onTrue(new ToggleWrist(claw));
 
     // SPINDEXER FORWARD
-    operatorController.rightTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new Spindex(spindexer, 1.0, operatorController));
+    operatorController.rightTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new RunAtSpeed(spindexer, 1.0, operatorController));
     // SPINDEXER REVERSE
-    operatorController.leftTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new Spindex(spindexer, -1.0, operatorController));
+    operatorController.leftTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new RunAtSpeed(spindexer, -1.0, operatorController));
 
     // COLLECT
     //operatorController.a().whileTrue(new Collect(collector));
@@ -103,7 +101,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
+    SequentialCommandGroup auto = new SequentialCommandGroup(new GrabFromSpindexer(claw, arm),
+              new AutoPlace(arm, claw, 180),
+              new ResetArm(this));
+
+    return auto;
   }
 }

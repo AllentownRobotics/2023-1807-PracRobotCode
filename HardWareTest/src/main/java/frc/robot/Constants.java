@@ -81,6 +81,13 @@ public final class Constants {
   public static class SpindexerConstants{
     public static final int SPINDEXER_MOTOR_ID = 11;
 
+    public static final double SPINDEXER_GEARING_MOTORTOTABLE = 22.0 / 1.0;
+
+    public static final double PID_kP = 1.0;
+    public static final double PID_kI = 0.0;
+    public static final double PID_kD = 0.0;
+    public static final double PID_kFF = 0.0;
+
     public static final double SPINDEXER_MOTOR_MAXOUTPUT = 0.25;
 
     public static final double COLORSENSOR_THRESHOLD_CUBE = 0.04;

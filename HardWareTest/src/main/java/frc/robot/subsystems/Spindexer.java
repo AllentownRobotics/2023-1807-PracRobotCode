@@ -5,62 +5,83 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ColorSensorV3;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SpindexerConstants;
-import frc.robot.ColorMatchType;
 
 public class Spindexer extends SubsystemBase {
   CANSparkMax motor = new CANSparkMax(SpindexerConstants.SPINDEXER_MOTOR_ID, MotorType.kBrushless);
 
-  //ColorSensorV3 colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+  RelativeEncoder encoder;
 
+  SparkMaxPIDController pidController;
+
+  double desriedRotations;
+  
   public Spindexer() {
     motor.setIdleMode(IdleMode.kBrake);
 
+    encoder = motor.getEncoder();
+    encoder.setPosition(0);
+    encoder.setPositionConversionFactor(1.0 / SpindexerConstants.SPINDEXER_GEARING_MOTORTOTABLE);
+    encoder.setVelocityConversionFactor(encoder.getPositionConversionFactor() / 60.0);
+
+    pidController = motor.getPIDController();
+    pidController.setFeedbackDevice(encoder);
+    pidController.setP(SpindexerConstants.PID_kP);
+    pidController.setI(SpindexerConstants.PID_kI);
+    pidController.setD(SpindexerConstants.PID_kD);
+    pidController.setFF(SpindexerConstants.PID_kFF);
+    pidController.setOutputRange(-SpindexerConstants.SPINDEXER_MOTOR_MAXOUTPUT, SpindexerConstants.SPINDEXER_MOTOR_MAXOUTPUT);
+
     motor.burnFlash();
+
+    desriedRotations = 0.0;
   }
 
   @Override
   public void periodic() {
-    //SmartDashboard.putString("Color Sensor", colorMatch(colorSensor.getColor()).asString);
+    pidController.setReference(desriedRotations, ControlType.kPosition);
   }
 
+  /**
+   * Resets the encoder to zero.
+   * Recommend setting desired rotations to 0 afterwards to avoid unwanted movement
+   */
+  public void zeroEncoder(){
+    encoder.setPosition(0.0);
+  }
+
+  /**
+   * Runs the motor at the max allowed speed with the direction
+   * @param direction the direction for the spindexer to spin 
+   */
   public void spindex(double direction){
     motor.set(direction * SpindexerConstants.SPINDEXER_MOTOR_MAXOUTPUT);
   }
 
-  public ColorMatchType colorMatch(Color sensedColor){
-    double sRed = sensedColor.red;
-    double sGreen = sensedColor.green;
-    double sBlue = sensedColor.blue;
-
-    double cubeThreshold = SpindexerConstants.COLORSENSOR_THRESHOLD_CUBE;
-    double coneThreshold = SpindexerConstants.COLORSENSOR_THRESHOLD_CONE;
-
-    Color cubeColor = SpindexerConstants.COLORSENSOR_COLOR_CUBE;
-    Color coneColor = SpindexerConstants.COLORSENSOR_COLOR_CONE;
-
-    // Plot RGB as XYZ point for sensed color and for constant color, find 3D distance (deltaE) to compare against threshold
-    // Produces sphere around constant colors that sensed colors must fall wihtin
-    // Tighter and more accurate range compared to previous which created cube around color constants
-    double cubeDeltaE = Math.sqrt(Math.pow(sRed - cubeColor.red, 2.0) + Math.pow(sGreen - cubeColor.green, 2) + Math.pow(sBlue, cubeColor.blue));
-    double coneDeltaE = Math.sqrt(Math.pow(sRed - coneColor.red, 2.0) + Math.pow(sGreen - coneColor.green, 2) + Math.pow(sBlue, coneColor.blue));
-
-    // Dual guard clause
-    if (coneDeltaE < coneThreshold){
-      return ColorMatchType.ConeMatch;
+  /**
+   * Checks if the table is at the specified rotations returns true if it is and false if not.
+   * @return Whether or not the table is at the specified rotations
+   */
+  public boolean atSetPoint(){
+    double error = Math.abs(encoder.getPosition() - desriedRotations);
+    if (error <= 0.01){
+      return true;
     }
-    if (cubeDeltaE < cubeThreshold){
-      return ColorMatchType.CubeMatch;
-    }
+    return false;
+  }
 
-    return ColorMatchType.NullMatch;
+  /**
+   * Sets the desired rotations for the spindexer to spin
+   * @param rotations the desired rotations to spin
+   */
+  public void setDesiredRotation(double rotations) {
+    desriedRotations = rotations;
   }
 }
