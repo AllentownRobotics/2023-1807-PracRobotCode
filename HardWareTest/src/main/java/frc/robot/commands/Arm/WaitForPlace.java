@@ -16,6 +16,11 @@ import frc.robot.subsystems.Arm;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class WaitForPlace extends ParallelDeadlineGroup {
 
+  /**
+   * Parallel deadline group which rotates the arm to its placement position and waits for the operator to place
+   * the currently held game piece. Allows for the operator to switch between cube and cone placement angles.
+   * Ends once the operator places the piece
+   */
   public WaitForPlace(Arm arm, SetArmAngle angles, CommandXboxController controller) {
     // Add the deadline command in the super() call. Add other commands using
     // addCommands().

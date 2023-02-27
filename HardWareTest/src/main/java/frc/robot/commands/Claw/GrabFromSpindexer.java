@@ -7,8 +7,10 @@ package frc.robot.commands.Claw;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.Claw.LowLevelCommands.SetHolding;
-import frc.robot.commands.Claw.LowLevelCommands.SetWristOut;
+import frc.robot.Enums.ClawState;
+import frc.robot.Enums.WristState;
+import frc.robot.commands.Claw.LowLevelCommands.SetClawState;
+import frc.robot.commands.Claw.LowLevelCommands.SetWristState;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 
@@ -16,13 +18,19 @@ import frc.robot.subsystems.Claw;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class GrabFromSpindexer extends SequentialCommandGroup {
-  /** Creates a new GrabFromSpindexer. */
+  /**
+   * Sequential command group which waits for the arm to be reset before running.
+   * Grabs the game piece from the spindexer and puts the wrist into position to run the arm.
+   * Ends after the wrist is set to the ready position
+   * @param claw Claw subsystem
+   * @param arm Arm subsystem
+   */
   public GrabFromSpindexer(Claw claw, Arm arm) {
     addCommands(Commands.waitUntil(arm::atReset),
-                new SetWristOut(claw, false),
+                new SetWristState(claw, WristState.WristDown),
                 new WaitCommand(0.1),
-                new SetHolding(claw, true),
+                new SetClawState(claw, ClawState.Closed),
                 new WaitCommand(0.2),
-                new SetWristOut(claw, true));
+                new SetWristState(claw, WristState.WristOut));
   }
 }

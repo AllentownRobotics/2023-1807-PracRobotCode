@@ -5,6 +5,7 @@
 package frc.robot.commands.Arm.LowLevelCommands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Enums.PlacementType;
 import frc.robot.subsystems.Arm;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -16,6 +17,14 @@ public class SetArmAngle extends InstantCommand {
   double coneAngle;
   double cubeAngle;
 
+  /**
+   * Instant command which sets the arms desired angle then instantly ends.
+   * NOTE: This command does not wait for the arm to be at the desired angle before ending
+   * To achieve this use a waitUntil command passing in arms atSetPoint as a boolean supplier
+   * @param arm Arm subsystem
+   * @param coneAngle Angle for the arm to go to if a cone placement is desired
+   * @param cubeAngle Angle for the arm to go to if a cube placement is desired
+   */
   public SetArmAngle(Arm arm, double coneAngle, double cubeAngle) {
     addRequirements(arm);
 
@@ -24,6 +33,13 @@ public class SetArmAngle extends InstantCommand {
     this.cubeAngle = cubeAngle;
   }
 
+  /**
+   * Instant command which sets the arms desired angle then instantly ends.
+   * NOTE: This command does not wait for the arm to be at the desired angle before ending
+   * To achieve this use a waitUntil command passing in arms atSetPoint as a boolean supplier
+   * @param arm Arm subsystem
+   * @param uniAngle Angle for the arm to go to regardless of desired placement type
+   */
   public SetArmAngle(Arm arm, double uniAngle){
     this(arm, uniAngle, uniAngle);
   }
@@ -31,7 +47,7 @@ public class SetArmAngle extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double angle = arm.getConePlace() ? coneAngle : cubeAngle;
+    double angle = arm.getPlaceType().equals(PlacementType.Cone) ? coneAngle : cubeAngle;
     arm.setDesiredAngle(angle);
   }
 }

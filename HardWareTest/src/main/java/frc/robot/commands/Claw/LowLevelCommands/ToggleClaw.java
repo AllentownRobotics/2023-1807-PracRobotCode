@@ -10,15 +10,17 @@ import frc.robot.subsystems.Claw;
 public class ToggleClaw extends InstantCommand {
   Claw claw;
   
+  /**
+   * Instant command that toggles the claw state and then instantly ends
+   * @param claw Claw subsystem
+   */
   public ToggleClaw(Claw claw) {
-    addRequirements(claw);
-
     this.claw = claw;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    claw.toggleHold();
+    claw.toggleClawState();
   }
 }

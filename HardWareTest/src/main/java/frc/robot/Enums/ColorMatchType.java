@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.Enums;
 
 public enum ColorMatchType{
     CubeMatch("Cube"),

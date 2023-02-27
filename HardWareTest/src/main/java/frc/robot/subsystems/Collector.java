@@ -39,6 +39,9 @@ public class Collector extends SubsystemBase {
     beltMotor.burnFlash();
   }
 
+  /**
+   * Extends and runs the collector to intake a game piece
+   */
   public void Collect(){
     piston.set(Value.kForward);
 
@@ -48,6 +51,9 @@ public class Collector extends SubsystemBase {
     beltMotor.set(CollectorConstants.COLLECTOR_SPEED_MAX);
   }
 
+  /**
+   * Retracts and stops the collector
+   */
   public void Retract(){
     piston.set(Value.kReverse);
 
@@ -56,10 +62,5 @@ public class Collector extends SubsystemBase {
     bottomMotor.set(0.0);
 
     beltMotor.set(0.0);
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

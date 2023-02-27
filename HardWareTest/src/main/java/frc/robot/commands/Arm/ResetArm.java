@@ -8,19 +8,24 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
+import frc.robot.Enums.WristState;
 import frc.robot.commands.Arm.LowLevelCommands.SetArmAngle;
 import frc.robot.commands.Claw.SetWristToStandBy;
-import frc.robot.commands.Claw.LowLevelCommands.SetWristOut;
+import frc.robot.commands.Claw.LowLevelCommands.SetWristState;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ResetArm extends SequentialCommandGroup {
-  /** Creates a new ResetArm. */
+  /**
+   * Sequential command group which sets the arm back to its reset position with the claw in its standby position.
+   * Ends after the arm is in the reset position and the claw is in position
+   * @param rc Robotcontainer
+   */
   public ResetArm(RobotContainer rc) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new SetWristOut(rc.claw, false),
+    addCommands(new SetWristState(rc.claw, WristState.WristDown),
                 new SetArmAngle(rc.arm, 35.0), 
                 Commands.waitUntil(rc.arm::atSetPoint),  
                 new ParallelCommandGroup(Commands.run(() -> rc.arm.runAtSpeed(-0.025), rc.arm).until(rc.arm::atReset), 

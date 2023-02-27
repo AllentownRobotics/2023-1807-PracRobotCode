@@ -5,25 +5,30 @@
 package frc.robot.commands.Claw.LowLevelCommands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Enums.ClawState;
 import frc.robot.subsystems.Claw;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SetWristOut extends InstantCommand {
+public class SetClawState extends InstantCommand {
   Claw claw;
+  
+  ClawState state;
 
-  boolean state;
-
-  public SetWristOut(Claw claw, boolean setState) {
+  /**
+   * Instant command which sets the claw state then instantly ends
+   * @param claw Claw subsystem
+   * @param setState State to set the claw to
+   */
+  public SetClawState(Claw claw, ClawState setState){
     this.claw = claw;
-
     this.state = setState;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    claw.setWristOut(state);
+    claw.setClawState(state);
   }
 }

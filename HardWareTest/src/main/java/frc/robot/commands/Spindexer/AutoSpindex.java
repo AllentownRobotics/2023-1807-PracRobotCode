@@ -5,6 +5,7 @@
 package frc.robot.commands.Spindexer;
 
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Spindexer.LowLevelCommands.SetSpindexerRotations;
 import frc.robot.subsystems.Spindexer;
@@ -17,6 +18,8 @@ public class AutoSpindex extends SequentialCommandGroup {
   public AutoSpindex(Spindexer spindexer) {
     addCommands(new SetSpindexerRotations(spindexer, -1.5),
                 Commands.waitUntil(spindexer::atSetPoint),
+                new ParallelCommandGroup(Commands.runOnce(() -> spindexer.setDesiredRotation(0)),
+                                          Commands.runOnce(() -> spindexer.zeroEncoder())),
                 new SetSpindexerRotations(spindexer, 2),
                 Commands.waitUntil(spindexer::atSetPoint));
   }

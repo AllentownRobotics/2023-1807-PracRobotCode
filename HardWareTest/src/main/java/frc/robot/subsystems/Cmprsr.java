@@ -15,12 +15,11 @@ public class Cmprsr extends SubsystemBase {
     compressor = new Compressor(CompressorConstants.COMPRESSOR_ID, PneumaticsModuleType.REVPH);
   }
 
+  /**
+   * Activates the compressor if below the minimum pressure defined in the constants until it is close to the
+   * maximum pressure defined in the constants
+   */
   public void Compressor_Active(){
     compressor.enableAnalog(CompressorConstants.COMPRESSOR_RANGE_MIN, CompressorConstants.COMPRESSOR_RANGE_MAX);
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

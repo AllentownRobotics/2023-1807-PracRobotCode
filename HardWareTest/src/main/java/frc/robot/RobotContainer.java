@@ -11,7 +11,6 @@ import frc.robot.commands.Arm.AutoPlace;
 import frc.robot.commands.Arm.ResetArm;
 import frc.robot.commands.Arm.LowLevelCommands.ManualSetPointControl;
 import frc.robot.commands.Arm.LowLevelCommands.SetArmAngle;
-import frc.robot.commands.Arm.LowLevelCommands.SetCubeOrCone;
 import frc.robot.commands.Claw.GrabFromSpindexer;
 import frc.robot.commands.Claw.LowLevelCommands.ToggleClaw;
 import frc.robot.commands.Claw.LowLevelCommands.ToggleWrist;
