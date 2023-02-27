@@ -20,7 +20,7 @@ public class AutoPlace extends SequentialCommandGroup {
   /**
    * Sequential command group which moved the arm to the desired angle then places the currently held game piece.
    * NOTE: this commands does not reset the arm to its reset position
-   * To achieve this call ResetArm after this command
+   * To achieve this call {@link frc.robot.commands.Arm.ResetArm} after this command
    * Ends 0.1 seconds (100 ms) after the game piece is placed
    * @param arm Arm subsystem
    * @param claw Claw subsystem

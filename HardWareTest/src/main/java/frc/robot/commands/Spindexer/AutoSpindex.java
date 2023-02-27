@@ -14,13 +14,19 @@ import frc.robot.subsystems.Spindexer;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoSpindex extends SequentialCommandGroup {
-  /** Creates a new AutoSpindex. */
+  /**
+   * Sequential command group that rotates the spindexer counter clockwise for one and a half rotations,
+   * resets the encoder and the desired rotation, then rotates it clockwise for one rotation and ends
+   * after resetting the enoder and desired rotations again
+   */
   public AutoSpindex(Spindexer spindexer) {
     addCommands(new SetSpindexerRotations(spindexer, -1.5),
                 Commands.waitUntil(spindexer::atSetPoint),
                 new ParallelCommandGroup(Commands.runOnce(() -> spindexer.setDesiredRotation(0)),
                                           Commands.runOnce(() -> spindexer.zeroEncoder())),
                 new SetSpindexerRotations(spindexer, 2),
-                Commands.waitUntil(spindexer::atSetPoint));
+                Commands.waitUntil(spindexer::atSetPoint),
+                new ParallelCommandGroup(Commands.runOnce(() -> spindexer.setDesiredRotation(0)),
+                                          Commands.runOnce(() -> spindexer.zeroEncoder())));
   }
 }

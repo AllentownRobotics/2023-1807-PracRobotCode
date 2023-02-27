@@ -194,7 +194,14 @@ public class Arm extends SubsystemBase {
   public boolean atReset(){
     if (encoder.getPosition() <= 11.5){
       desiredAngle = 0.0;
-      //claw.setWristOut(false);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean atBumpers(){
+    if (encoder.getPosition() >= 290.0){
+      desiredAngle = 300.0;
       return true;
     }
     return false;

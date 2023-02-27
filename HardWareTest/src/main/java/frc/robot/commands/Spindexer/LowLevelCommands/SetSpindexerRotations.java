@@ -15,6 +15,15 @@ public class SetSpindexerRotations extends InstantCommand {
 
   double rotations;
 
+  /**
+   * Instant command that sets the desired number of rotations for the spindexer to spin then instantly ends
+   * NOTE: This command does not wait for the spindexer to be at the desired rotations before ending
+   * To achieve this use a {@code Commands.waitUntil} command 
+   * passing in the spindexer's {@code atSetPoint()} as a boolean supplier Ex. 
+   * {@code Commands.waitUntil(spindexer::atSetPoint)}
+   * @param spindexer
+   * @param rotations
+   */
   public SetSpindexerRotations(Spindexer spindexer, double rotations) {
     this.sd = spindexer;
     this.rotations = rotations;

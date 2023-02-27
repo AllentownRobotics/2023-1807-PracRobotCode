@@ -16,6 +16,7 @@ import frc.robot.commands.Claw.LowLevelCommands.ToggleClaw;
 import frc.robot.commands.Claw.LowLevelCommands.ToggleWrist;
 import frc.robot.commands.Collector.Collect;
 import frc.robot.commands.Compressor.Compress;
+import frc.robot.commands.Spindexer.AutoSpindex;
 import frc.robot.commands.Spindexer.LowLevelCommands.RunAtSpeed;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
@@ -67,14 +68,14 @@ public class RobotContainer {
     operatorController.povUp().onTrue(new WaitForPlace(arm, 
                                                 new SetArmAngle(arm, ArmConstants.ANGLE_CONE_HIGH, ArmConstants.ANGLE_CUBE_HIGH), 
                                                 operatorController));
-    
     // MID PLACEMENT
     operatorController.povLeft().onTrue(new WaitForPlace(arm, 
                                                 new SetArmAngle(arm, ArmConstants.ANGLE_CONE_MID, ArmConstants.ANGLE_CUBE_MID),
                                                 operatorController));
-
     // ARM RESET
     operatorController.povDown().onTrue(new ResetArm(this));
+    // INTAKE POSITION
+    operatorController.back().onTrue(new SetArmAngle(arm, 35.0));
 
     //operatorController.povRight().onTrue(new SetArmAngle(arm, 275.0));
 
@@ -89,6 +90,8 @@ public class RobotContainer {
     operatorController.rightTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new RunAtSpeed(spindexer, 1.0, operatorController));
     // SPINDEXER REVERSE
     operatorController.leftTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new RunAtSpeed(spindexer, -1.0, operatorController));
+    // AUTO SPINDEX
+    operatorController.rightBumper().onTrue(new AutoSpindex(spindexer));
 
     // COLLECT
     //operatorController.a().whileTrue(new Collect(collector));

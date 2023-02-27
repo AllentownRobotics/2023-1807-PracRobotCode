@@ -19,7 +19,7 @@ import frc.robot.commands.Claw.LowLevelCommands.SetWristState;
 public class ResetArm extends SequentialCommandGroup {
   /**
    * Sequential command group which sets the arm back to its reset position with the claw in its standby position.
-   * Ends after the arm is in the reset position and the claw is in position
+   * Ends after the arm is in the reset position and the claw is in standby position
    * @param rc Robotcontainer
    */
   public ResetArm(RobotContainer rc) {

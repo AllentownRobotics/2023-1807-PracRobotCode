@@ -17,7 +17,7 @@ import frc.robot.subsystems.Claw;
 public class SetWristToStandBy extends ParallelCommandGroup {
 
   /**
-   * Parallel command group which runs 2 instant commands in parallel.
+   * Parallel command group which runs 2 instant commands in parallel and ends instantly
    * Sets the claw to its idle state with the claw open and the wrist out
    * @param claw Claw subsystem
    */

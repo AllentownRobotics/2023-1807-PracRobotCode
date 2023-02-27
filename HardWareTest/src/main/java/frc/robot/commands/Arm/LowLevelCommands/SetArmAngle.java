@@ -20,7 +20,8 @@ public class SetArmAngle extends InstantCommand {
   /**
    * Instant command which sets the arms desired angle then instantly ends.
    * NOTE: This command does not wait for the arm to be at the desired angle before ending
-   * To achieve this use a waitUntil command passing in arms atSetPoint as a boolean supplier
+   * To achieve this use a {@code Commands.waitUntil} command 
+   * passing in arm's {@code atSetPoint()} as a boolean supplier Ex. {@code Commands.waitUntil(arm::atSetPoint)}
    * @param arm Arm subsystem
    * @param coneAngle Angle for the arm to go to if a cone placement is desired
    * @param cubeAngle Angle for the arm to go to if a cube placement is desired
@@ -36,9 +37,10 @@ public class SetArmAngle extends InstantCommand {
   /**
    * Instant command which sets the arms desired angle then instantly ends.
    * NOTE: This command does not wait for the arm to be at the desired angle before ending
-   * To achieve this use a waitUntil command passing in arms atSetPoint as a boolean supplier
+   * To achieve this use a {@code Commands.waitUntil} command 
+   * passing in arm's {@code atSetPoint()} as a boolean supplier Ex. {@code Commands.waitUntil(arm::atSetPoint)}
    * @param arm Arm subsystem
-   * @param uniAngle Angle for the arm to go to regardless of desired placement type
+   * @param uniAngle Angle for the arm to go to regardless of the desired placement type
    */
   public SetArmAngle(Arm arm, double uniAngle){
     this(arm, uniAngle, uniAngle);
