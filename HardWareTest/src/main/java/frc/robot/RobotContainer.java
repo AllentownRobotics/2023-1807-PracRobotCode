@@ -13,20 +13,16 @@ import frc.robot.commands.Arm.AutoPlace;
 import frc.robot.commands.Arm.ResetArm;
 import frc.robot.commands.Arm.LowLevelCommands.ManualSetPointControl;
 import frc.robot.commands.Arm.LowLevelCommands.SetArmAngle;
-import frc.robot.commands.Claw.GrabFromSpindexer;
-import frc.robot.commands.Claw.SetWristToStandBy;
 import frc.robot.commands.Claw.LowLevelCommands.SetClawState;
 import frc.robot.commands.Claw.LowLevelCommands.SetWristState;
 import frc.robot.commands.Claw.LowLevelCommands.ToggleClaw;
 import frc.robot.commands.Claw.LowLevelCommands.ToggleWrist;
-import frc.robot.commands.Collector.Collect;
 import frc.robot.commands.Compressor.Compress;
 import frc.robot.commands.Spindexer.AutoSpindex;
 import frc.robot.commands.Spindexer.LowLevelCommands.RunAtSpeed;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Cmprsr;
-import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Spindexer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -43,14 +39,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
   private final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
   public final Claw claw = new Claw();
   public final Arm arm = new Arm(claw);
   final Cmprsr compressor = new Cmprsr();
   final Spindexer spindexer = new Spindexer();
-  //final Collector collector = new Collector();
 
   Trigger wristFlipTrigger = new Trigger(arm::isWristAllowedOut);
 
@@ -109,9 +103,6 @@ public class RobotContainer {
     operatorController.leftTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new RunAtSpeed(spindexer, -1.0, operatorController));
     // AUTO SPINDEX
     operatorController.rightBumper().onTrue(new AutoSpindex(spindexer));
-
-    // COLLECT
-    //operatorController.a().whileTrue(new Collect(collector));
   }
 
   /**

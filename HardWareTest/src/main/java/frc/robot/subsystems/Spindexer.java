@@ -37,6 +37,7 @@ public class Spindexer extends SubsystemBase {
     pidController.setI(SpindexerConstants.PID_kI);
     pidController.setD(SpindexerConstants.PID_kD);
     pidController.setFF(SpindexerConstants.PID_kFF);
+    pidController.setPositionPIDWrappingEnabled(false);
     pidController.setOutputRange(-SpindexerConstants.SPINDEXER_MOTOR_MAXOUTPUT, SpindexerConstants.SPINDEXER_MOTOR_MAXOUTPUT);
 
     motor.burnFlash();

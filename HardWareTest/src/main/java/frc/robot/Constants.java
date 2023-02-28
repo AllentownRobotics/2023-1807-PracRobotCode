@@ -110,7 +110,7 @@ public final class Constants {
 
     public static final double SPINDEXER_GEARING_MOTORTOTABLE = 22.0 / 1.0;
 
-    public static final double PID_kP = 1.0;
+    public static final double PID_kP = 0.08;
     public static final double PID_kI = 0.0;
     public static final double PID_kD = 0.0;
     public static final double PID_kFF = 0.0;
