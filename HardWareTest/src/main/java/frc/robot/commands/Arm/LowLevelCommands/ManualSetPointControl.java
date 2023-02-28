@@ -17,6 +17,7 @@ public class ManualSetPointControl extends CommandBase {
   /** Creates a new ManualSetPointControl. */
   public ManualSetPointControl(Arm arm, CommandXboxController controller) {
     addRequirements(arm);
+    withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
 
     this.arm = arm;
     this.controller = controller;

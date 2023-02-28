@@ -30,6 +30,8 @@ public class SetWristState extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    claw.setWristState(state);
+    if (claw.isManualWristControlAuthorized()){
+      claw.setWristState(state);
+    }
   }
 }

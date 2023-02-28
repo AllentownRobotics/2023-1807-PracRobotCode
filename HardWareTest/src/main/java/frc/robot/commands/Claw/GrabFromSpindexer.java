@@ -28,9 +28,8 @@ public class GrabFromSpindexer extends SequentialCommandGroup {
   public GrabFromSpindexer(Claw claw, Arm arm) {
     addCommands(Commands.waitUntil(arm::atReset),
                 new SetWristState(claw, WristState.WristDown),
-                new WaitCommand(0.1),
+                new WaitCommand(0.25),
                 new SetClawState(claw, ClawState.Closed),
-                new WaitCommand(0.2),
-                new SetWristState(claw, WristState.WristOut));
+                new WaitCommand(0.2));
   }
 }

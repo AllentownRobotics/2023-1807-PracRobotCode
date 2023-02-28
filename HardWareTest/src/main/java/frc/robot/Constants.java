@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.Enums.PlacementType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -24,6 +25,8 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER_PORT = 1;
     public static final int OPERATOR_CONTROLLER_PORT = 0;
 
+    public static final int OPERATOR_CONTROLLER_AXISID_LEFTSTICK_Y = 1;
+
     public static final double OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER = 0.08;
   }
 
@@ -31,7 +34,7 @@ public final class Constants {
     public static final boolean USE_LEFT_ENCODER = true;
 
     public static final double ANGLE_OFFSET_FROM_ZERO = 9.5;
-    public static final double ANGLE_OFFSET_FROM_VERTICAL_DEGREES = 57.442 + ANGLE_OFFSET_FROM_ZERO;
+    public static final double ANGLE_OFFSET_FROM_VERTICAL_DEGREES = 57.442;
     public static final double HEIGHT_OFFSET_FROM_GROUND_INCHES = 35.219;
     public static final double ARM_LENGTH_INCHES = 30.254;
 
@@ -39,28 +42,51 @@ public final class Constants {
 
     public static final int RIGHT_MOTOR_ID = 32;
 
-    public static final double PID_kP = 0.08;
+    public static final double PID_kP = 0.01;
     public static final double PID_kI = 0.0;
     public static final double PID_kD = 0.0;
     public static final double PID_kFF = 0.0;
     
-    public static final double ANGLE_CONE_INSURANCE = 5.0;
+    public static final double ANGLE_CONE_INSURANCE = 20.0;
+    public static final double ANGLE_CUBE_INSURANCE = 10.0;
     public static final double ANGLE_MANUAL_SPEED_MAX_DEGREESPERSECOND = 120.0;
     public static final double ANGLE_MANUAL_INPUT_MODIFIER = ANGLE_MANUAL_SPEED_MAX_DEGREESPERSECOND * 0.02;
 
-    public static final double ANGLE_CONE_HIGH = 195.37664 - ANGLE_CONE_INSURANCE - ANGLE_OFFSET_FROM_ZERO;
-    public static final double ANGLE_CONE_MID = 210.2488 - ANGLE_CONE_INSURANCE - ANGLE_OFFSET_FROM_ZERO;
+    public static final double ANGLE_CONE_HIGH = 201.182 - ANGLE_CONE_INSURANCE;
+    public static final double ANGLE_CONE_MID = 224.367 - ANGLE_CONE_INSURANCE;
 
-    public static final double ANGLE_CUBE_HIGH = 195.37664 - ANGLE_OFFSET_FROM_ZERO;
-    public static final double ANGLE_CUBE_MID = 210.2488 - ANGLE_OFFSET_FROM_ZERO;
+    public static final double ANGLE_CUBE_HIGH = 201.182 - ANGLE_CUBE_INSURANCE;
+    public static final double ANGLE_CUBE_MID = 224.367 - ANGLE_CUBE_INSURANCE;
 
-    public static final double ANGLE_FROM_HEIGHT(double heightInches, boolean insure){
+    /**
+     * Calculates the angle required for the arm to rotate to in order to reach the desired height
+     * @param heightInches Height above ground for the arm to end up
+     * @return The angle for the arm to rotate to in order reach the desired height above the ground
+     */
+    public static double ANGLE_FROM_HEIGHT(double heightInches){
       double verticalDiff = heightInches - HEIGHT_OFFSET_FROM_GROUND_INCHES;
       double sideRatios = Math.abs(verticalDiff) / ARM_LENGTH_INCHES;
-      double angleABS = (270.0 - verticalDiff > 0.0 ? Math.asin(sideRatios) : -Math.asin(sideRatios));
-      double angle = angleABS - ANGLE_OFFSET_FROM_VERTICAL_DEGREES;
+      double angleABS = (270.0 - (verticalDiff > 0.0 ? Math.asin(sideRatios) : -Math.asin(sideRatios)));
+      double angle = (angleABS - ANGLE_OFFSET_FROM_VERTICAL_DEGREES) + ANGLE_OFFSET_FROM_ZERO;
 
-      angle -= insure ? ANGLE_CONE_INSURANCE : 0.0;
+      return angle;
+    }
+
+    /**
+     * Calculates the angle required for the arm to rotate to in order to reach the desired height
+     * with insurance so as to place the arm slightly above the target height
+     * @param heightInches Height above the ground for the arm to end up at disregarding insurance
+     * @param setPointType The type of set point for the angle to be, each type uses its respective insurance
+     * defined in the constants
+     * @return The angle for the arm to rotate to in order to reach the desired height above the ground with insurance
+     */
+    public static double ANGLE_FROM_HEIGHT(double heightInches, PlacementType setPointType){
+      double verticalDiff = heightInches - HEIGHT_OFFSET_FROM_GROUND_INCHES;
+      double sideRatios = Math.abs(verticalDiff) / ARM_LENGTH_INCHES;
+      double angleABS = (270.0 - (verticalDiff > 0.0 ? Math.asin(sideRatios) : -Math.asin(sideRatios)));
+      double angle = (angleABS - ANGLE_OFFSET_FROM_VERTICAL_DEGREES) + ANGLE_OFFSET_FROM_ZERO;
+
+      angle -= (setPointType.equals(PlacementType.Cone) ? ANGLE_CONE_INSURANCE : ANGLE_CUBE_INSURANCE);
 
       return angle;
     }
@@ -68,14 +94,15 @@ public final class Constants {
 
   public static class ClawConstants{
     public static final int WRIST_ID = GlobalConstants.PNEUMATICS_ID;
-    public static final int WRIST_CHANNEL_FORWARD = 3;
-    public static final int WRIST_CHANNEL_BACKWARD = 0;
+    public static final int WRIST_CHANNEL_FORWARD = 0;
+    public static final int WRIST_CHANNEL_BACKWARD = 3;
 
     public static final int CLAW_ID = GlobalConstants.PNEUMATICS_ID;
-    public static final int CLAW_CHANNEL_FORWARD = 1;
-    public static final int CLAW_CHANNEL_BACKWARD = 4;
+    public static final int CLAW_CHANNEL_FORWARD = 4;
+    public static final int CLAW_CHANNEL_BACKWARD = 1;
 
-    public static final double ANGLE_WRIST_FLIPPOINT = 190.0 + ArmConstants.ANGLE_OFFSET_FROM_ZERO;
+    public static final double ANGLE_WRIST_FLIPPOINT_MIN = 0.0;
+    public static final double ANGLE_WRIST_FLIPPOINT_MAX = 192.0 + ArmConstants.ANGLE_OFFSET_FROM_ZERO;
   }
 
   public static class SpindexerConstants{

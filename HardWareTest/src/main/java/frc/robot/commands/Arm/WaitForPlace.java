@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Arm;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -24,7 +25,7 @@ public class WaitForPlace extends ParallelDeadlineGroup {
   public WaitForPlace(Arm arm, SetArmAngle angles, CommandXboxController controller) {
     // Add the deadline command in the super() call. Add other commands using
     // addCommands().
-    super(Commands.waitUntil(arm::getNOTHolding));
+    super(Commands.waitUntil(arm::getNOTHolding).withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf));
 
     addCommands(Commands.repeatingSequence(angles, new SetCubeOrCone(arm, controller)));
   }

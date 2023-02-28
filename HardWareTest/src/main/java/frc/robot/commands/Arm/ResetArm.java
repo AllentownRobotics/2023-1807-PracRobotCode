@@ -8,10 +8,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
-import frc.robot.Enums.WristState;
 import frc.robot.commands.Arm.LowLevelCommands.SetArmAngle;
 import frc.robot.commands.Claw.SetWristToStandBy;
-import frc.robot.commands.Claw.LowLevelCommands.SetWristState;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -25,8 +23,7 @@ public class ResetArm extends SequentialCommandGroup {
   public ResetArm(RobotContainer rc) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new SetWristState(rc.claw, WristState.WristDown),
-                new SetArmAngle(rc.arm, 35.0), 
+    addCommands(new SetArmAngle(rc.arm, 55.0), 
                 Commands.waitUntil(rc.arm::atSetPoint),  
                 new ParallelCommandGroup(Commands.run(() -> rc.arm.runAtSpeed(-0.025), rc.arm).until(rc.arm::atReset), 
                                           new SetWristToStandBy(rc.claw)));

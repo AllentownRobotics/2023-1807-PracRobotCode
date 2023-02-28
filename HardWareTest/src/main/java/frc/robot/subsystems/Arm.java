@@ -14,8 +14,8 @@ import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LagBehind;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ClawConstants;
 import frc.robot.Enums.ClawState;
 //import frc.robot.Constants.ClawConstants;
 import frc.robot.Enums.PlacementType;
@@ -34,8 +34,6 @@ public class Arm extends SubsystemBase {
   PlacementType placeType;
 
   Claw claw;
-
-  LagBehind checkValues;
 
   public Arm(Claw claw) {
     leftMotor.restoreFactoryDefaults();
@@ -57,7 +55,7 @@ public class Arm extends SubsystemBase {
     pidController.setI(ArmConstants.PID_kI);
     pidController.setD(ArmConstants.PID_kD);
     pidController.setFF(ArmConstants.PID_kFF);
-    pidController.setOutputRange(-0.25,0.25);
+    pidController.setOutputRange(-0.2,0.2);
     pidController.setPositionPIDWrappingEnabled(false);
 
     leftMotor.setInverted(false);
@@ -79,21 +77,15 @@ public class Arm extends SubsystemBase {
 
     desiredAngle = 0.0;
 
-    checkValues = new LagBehind(encoder.getPosition());
+    placeType = PlacementType.Cone;
   }
 
   @Override
   public void periodic() {
     pidController.setReference(desiredAngle, ControlType.kPosition);
 
-    checkValues.update(encoder.getPosition());
-
     SmartDashboard.putNumber("Arm Angle", encoder.getPosition());
     SmartDashboard.putNumber("Set Point", desiredAngle);
-
-    /*if (encoder.getPosition() < ClawConstants.ANGLE_WRIST_FLIPPOINT){
-      claw.setWristOut(false);
-    }*/
   }
 
   /**
@@ -121,11 +113,11 @@ public class Arm extends SubsystemBase {
   }
 
   /**
-   * Shifts the desired angle by the given number of degrees
-   * @param degrees Amount to change the desired angle by
+   * Sets the desired angle to the current angle shifted by the given number of degrees
+   * @param degrees Amount to change the current angle by
    */
   public void rotateBy(double degrees){
-    desiredAngle += degrees;
+    desiredAngle = encoder.getPosition() + degrees;
   }
 
   /**
@@ -164,7 +156,7 @@ public class Arm extends SubsystemBase {
 
   /**
    * Returns false of the claw is currently closed and true if it is currently open
-   * Best used as a boolean supplier for a waitUntil command
+   * Best used as a boolean supplier for a {@code waitUntil} command
    * @return Inverse of the claws current state
    */
   public boolean getNOTHolding(){
@@ -176,11 +168,11 @@ public class Arm extends SubsystemBase {
 
   /**
    * Checks whether or not the arm is currently at the desired angle within a given tolerance defined in the constants.
-   * Best used as a boolean supplier with a waitUntil command
+   * Best used as a boolean supplier with a {@code waitUntil} command
    * @return If the arm is at the desired angle
    */
   public boolean atSetPoint(){
-    if (checkValues.getError() <= 3.5){
+    if (Math.abs(encoder.getPosition() - desiredAngle) <= 3.5){
       return true;
     }
     return false;
@@ -188,7 +180,7 @@ public class Arm extends SubsystemBase {
 
   /**
    * Checks whether or not the arm is currently at the desired reset angle whithin a given tolerance defined in the constants.
-   * Best used as a boolean supplier with a waitUntil command
+   * Best used as a boolean supplier with a {@code waitUntil} command
    * @return If the arm is at the desired reset angle
    */
   public boolean atReset(){
@@ -199,9 +191,28 @@ public class Arm extends SubsystemBase {
     return false;
   }
 
+  /**
+   * Checks whether or not the arm is currently at desired bumper angle within a given tolerance defined in the constants.
+   * Best used as a boolean supplier with a {@code waitUntil} command
+   * @return If the arm is at the desired reset angle
+   */
   public boolean atBumpers(){
     if (encoder.getPosition() >= 290.0){
       desiredAngle = 300.0;
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Checks whether or not the arm has passed the desired wrist flip point within a given tolerance defined in the constants.
+   * Best used as a boolean supplier with a {@code waitUntil} command
+   * @return If the arm is passed the flip point
+   */
+  public boolean isWristAllowedOut(){
+    boolean angleAboveMin = encoder.getPosition() >= ClawConstants.ANGLE_WRIST_FLIPPOINT_MIN;
+    boolean angleBelowMax = encoder.getPosition() <= ClawConstants.ANGLE_WRIST_FLIPPOINT_MAX;
+    if (angleAboveMin && angleBelowMax){
       return true;
     }
     return false;

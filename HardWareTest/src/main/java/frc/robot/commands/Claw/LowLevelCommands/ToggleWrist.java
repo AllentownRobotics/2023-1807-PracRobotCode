@@ -21,6 +21,8 @@ public class ToggleWrist extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    claw.toggleWristState();
+    if (claw.isManualWristControlAuthorized()){
+      claw.toggleWristState();
+    }
   }
 }

@@ -20,7 +20,9 @@ public class Claw extends SubsystemBase {
     ClawConstants.CLAW_CHANNEL_FORWARD, ClawConstants.CLAW_CHANNEL_BACKWARD);
   
   WristState wristState = WristState.WristOut;
-  ClawState clawState = ClawState.Open;
+  ClawState clawState = ClawState.Closed;
+
+  boolean manualWristControlAllowed = true;
 
   public Claw() {
   }
@@ -77,6 +79,14 @@ public class Claw extends SubsystemBase {
       return;
     }
     wristState = WristState.WristOut;
+  }
+
+  public void setManualWristControlAllowed(boolean allowed){
+    manualWristControlAllowed = allowed;
+  }
+
+  public boolean isManualWristControlAuthorized(){
+    return manualWristControlAllowed;
   }
 
   @Override

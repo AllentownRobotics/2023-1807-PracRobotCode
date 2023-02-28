@@ -29,7 +29,7 @@ public class AutoPlace extends SequentialCommandGroup {
   public AutoPlace(Arm arm, Claw claw, double angle) {
     addCommands(new SetArmAngle(arm, angle), 
                 Commands.waitUntil(arm::atSetPoint),
-                new WaitCommand(0.1),
+                new WaitCommand(0.25),
                 new SetClawState(claw, ClawState.Open),
                 new WaitCommand(0.1));
   }
