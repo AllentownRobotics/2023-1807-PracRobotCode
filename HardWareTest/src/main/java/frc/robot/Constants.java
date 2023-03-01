@@ -101,8 +101,8 @@ public final class Constants {
     public static final int CLAW_CHANNEL_FORWARD = 4;
     public static final int CLAW_CHANNEL_BACKWARD = 1;
 
-    public static final double ANGLE_WRIST_FLIPPOINT_MIN = 0.0;
-    public static final double ANGLE_WRIST_FLIPPOINT_MAX = 192.0 + ArmConstants.ANGLE_OFFSET_FROM_ZERO;
+    public static final double ANGLE_WRIST_EXCLUSIONZONE_MIN = 0.0;
+    public static final double ANGLE_WRIST_EXCLUSIONZONE_MAX = 192.0 + ArmConstants.ANGLE_OFFSET_FROM_ZERO;
   }
 
   public static class SpindexerConstants{

@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ClawConstants;
 import frc.robot.Enums.ClawState;
-//import frc.robot.Constants.ClawConstants;
 import frc.robot.Enums.PlacementType;
 
 public class Arm extends SubsystemBase {
@@ -39,11 +38,8 @@ public class Arm extends SubsystemBase {
     leftMotor.restoreFactoryDefaults();
     rightMotor.restoreFactoryDefaults();
 
-    // Determine which encoder to use
     encoder = ArmConstants.USE_LEFT_ENCODER ? leftMotor.getAbsoluteEncoder(Type.kDutyCycle) : rightMotor.getAbsoluteEncoder(Type.kDutyCycle); 
-    // If using right encoder set inversion false, if not set true
     encoder.setInverted(!ArmConstants.USE_LEFT_ENCODER);
-    // Set conversion factor to output in degrees and degrees/sec
     encoder.setPositionConversionFactor(360.0);
     encoder.setVelocityConversionFactor(encoder.getPositionConversionFactor() / 60.0);
     
