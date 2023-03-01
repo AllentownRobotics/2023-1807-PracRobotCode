@@ -91,7 +91,13 @@ public class Claw extends SubsystemBase {
 
   @Override
   public void periodic() {
-    wristPiston.set(wristState.equals(WristState.WristOut) ? Value.kReverse : Value.kForward);
+    if (manualWristControlAllowed){
+      wristPiston.set(wristState.equals(WristState.WristOut) ? Value.kReverse : Value.kForward);
+    }
+    else{
+      wristPiston.set(Value.kReverse);
+    }
+
     clawPiston.set(clawState.equals(ClawState.Closed) ? Value.kForward : Value.kReverse);
   }
 }

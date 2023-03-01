@@ -5,7 +5,6 @@
 package frc.robot.commands.Arm.LowLevelCommands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Enums.PlacementType;
 import frc.robot.subsystems.Arm;
 
@@ -17,8 +16,6 @@ public class SetArmAngle extends InstantCommand {
 
   double coneAngle;
   double cubeAngle;
-
-  boolean autoSetWrist;
 
   /**
    * Instant command which sets the arms desired angle then instantly ends.
@@ -35,8 +32,6 @@ public class SetArmAngle extends InstantCommand {
     this.arm = arm;
     this.coneAngle = coneAngle;
     this.cubeAngle = cubeAngle;
-
-    this.autoSetWrist = coneAngle == ArmConstants.ANGLE_CONE_HIGH || cubeAngle == ArmConstants.ANGLE_CUBE_HIGH;
   }
 
   /**

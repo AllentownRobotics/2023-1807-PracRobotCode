@@ -5,6 +5,7 @@
 package frc.robot.commands.Arm.LowLevelCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Enums.PlacementType;
 import frc.robot.subsystems.Arm;
@@ -23,14 +24,8 @@ public class SetCubeOrCone extends CommandBase {
 
   @Override
   public void execute(){
-    PlacementType type;
-    if (controller.leftBumper().getAsBoolean()){
-      type = PlacementType.Cube;
-    }
-    else{
-      type = PlacementType.Cone;
-    }
-    arm.setPlaceType(type);
+    controller.leftBumper().whileTrue(Commands.runOnce(() -> arm.setPlaceType(PlacementType.Cube)));
+    controller.leftBumper().whileFalse(Commands.runOnce(() -> arm.setPlaceType(PlacementType.Cone)));
   }
 
   @Override

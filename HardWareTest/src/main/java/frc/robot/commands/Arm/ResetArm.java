@@ -23,9 +23,9 @@ public class ResetArm extends SequentialCommandGroup {
   public ResetArm(RobotContainer rc) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new SetArmAngle(rc.arm, 55.0), 
+    addCommands(new SetArmAngle(rc.arm, 35.0), 
                 Commands.waitUntil(rc.arm::atSetPoint),  
-                new ParallelCommandGroup(Commands.run(() -> rc.arm.runAtSpeed(-0.025), rc.arm).until(rc.arm::atReset), 
+                new ParallelCommandGroup(Commands.run(() -> rc.arm.runAtSpeed(-0.05), rc.arm).until(rc.arm::atReset), 
                                           new SetWristToStandBy(rc.claw)));
   }
 }

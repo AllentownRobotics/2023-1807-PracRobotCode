@@ -4,17 +4,12 @@
 
 package frc.robot;
 
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.Enums.ClawState;
-import frc.robot.Enums.WristState;
-import frc.robot.commands.Arm.WaitForPlace;
-import frc.robot.commands.Arm.AutoPlace;
+import frc.robot.commands.Arm.ArmSubStationInTake;
 import frc.robot.commands.Arm.ResetArm;
 import frc.robot.commands.Arm.LowLevelCommands.ManualSetPointControl;
-import frc.robot.commands.Arm.LowLevelCommands.SetArmAngle;
-import frc.robot.commands.Claw.LowLevelCommands.SetClawState;
-import frc.robot.commands.Claw.LowLevelCommands.SetWristState;
+import frc.robot.commands.Arm.NodeCommands.HighNode;
+import frc.robot.commands.Arm.NodeCommands.MidNode;
 import frc.robot.commands.Claw.LowLevelCommands.ToggleClaw;
 import frc.robot.commands.Claw.LowLevelCommands.ToggleWrist;
 import frc.robot.commands.Compressor.Compress;
@@ -26,9 +21,6 @@ import frc.robot.subsystems.Cmprsr;
 import frc.robot.subsystems.Spindexer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -47,6 +39,7 @@ public class RobotContainer {
   final Spindexer spindexer = new Spindexer();
 
   Trigger wristFlipTrigger = new Trigger(arm::isWristAllowedOut);
+  Trigger armManualControl = new Trigger(() -> Math.abs(operatorController.getLeftY()) >= 0.15);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -54,8 +47,6 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
-
-
   }
 
   /**
@@ -69,25 +60,19 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // HIGH PLACEMENT
-    operatorController.povUp().onTrue(new WaitForPlace(arm, 
-                                                new SetArmAngle(arm, ArmConstants.ANGLE_CONE_HIGH, ArmConstants.ANGLE_CUBE_HIGH), 
-                                                operatorController));
+    operatorController.povUp().onTrue(new HighNode(arm, claw, operatorController));
     // MID PLACEMENT
-    operatorController.povLeft().onTrue(new WaitForPlace(arm, 
-                                                new SetArmAngle(arm, ArmConstants.ANGLE_CONE_MID, ArmConstants.ANGLE_CUBE_MID),
-                                                operatorController));
+    operatorController.povLeft().onTrue(new MidNode(arm, claw, operatorController));
     // ARM RESET
     operatorController.povDown().onTrue(new ResetArm(this));
     // MANUAL CONTROL
-    operatorController.axisLessThan(1, -0.15).whileTrue(new ManualSetPointControl(arm, operatorController));
-
+    armManualControl.whileTrue(new ManualSetPointControl(arm, operatorController));
     // INTAKE POSITION
-    operatorController.back().onTrue(new SetArmAngle(arm, 35.0));
+    operatorController.rightBumper().onTrue(new ArmSubStationInTake(this)).onFalse(new ResetArm(this));
 
     // AUTO WRIST
-    wristFlipTrigger.onTrue(Commands.runOnce(() -> claw.setManualWristControlAllowed(true), claw));
-    wristFlipTrigger.whileFalse(new SetWristState(claw, WristState.WristDown).andThen(
-                            Commands.runOnce(() -> claw.setManualWristControlAllowed(false))));
+    wristFlipTrigger.onTrue(Commands.runOnce(() -> claw.setManualWristControlAllowed(true))).whileFalse(
+                                            Commands.runOnce(() -> claw.setManualWristControlAllowed(false)));
 
     // CLAW TOGGLE
     operatorController.x().onTrue(new ToggleClaw(claw));
@@ -95,11 +80,11 @@ public class RobotContainer {
     operatorController.b().onTrue(new ToggleWrist(claw));
 
     // SPINDEXER FORWARD
-    operatorController.rightTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new RunAtSpeed(spindexer, 1.0, operatorController));
+    operatorController.rightTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(
+                                                                    new RunAtSpeed(spindexer, 1.0, operatorController));
     // SPINDEXER REVERSE
-    operatorController.leftTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(new RunAtSpeed(spindexer, -1.0, operatorController));
-    // AUTO SPINDEX
-    operatorController.rightBumper().onTrue(new AutoSpindex(spindexer));
+    operatorController.leftTrigger(OperatorConstants.OPERATOR_CONTROLLER_THRESHOLD_SPINDEXER).whileTrue(
+                                                                    new RunAtSpeed(spindexer, -1.0, operatorController));
   }
 
   /**
@@ -108,16 +93,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    /*SequentialCommandGroup auto = new SequentialCommandGroup(
-              new SetWristState(claw, WristState.WristOut),
-              new SetClawState(claw, ClawState.Closed),
-              new AutoPlace(arm, claw, ArmConstants.ANGLE_CONE_HIGH),
-              new PrintCommand("Placed"),
-              new ResetArm(this),
-              new PrintCommand("Reset"),
-              new WaitCommand(0.25));*/
-
-    return new SetArmAngle(arm, 180.0);
-    //return new AutoSpindex(spindexer);
+    return null;
   }
 }
