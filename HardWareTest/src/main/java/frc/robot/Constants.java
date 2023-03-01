@@ -42,10 +42,10 @@ public final class Constants {
 
     public static final int RIGHT_MOTOR_ID = 32;
 
-    public static final double PID_kP = 0.01;
-    public static final double PID_kI = 0.0;
+    public static final double PID_kP = 0.03;
+    public static final double PID_kI = 0.00000001;
     public static final double PID_kD = 0.0;
-    public static final double PID_kFF = 0.0;
+    public static final double PID_kFF = 0.0005;
     
     public static final double ANGLE_CONE_INSURANCE = 20.0;
     public static final double ANGLE_CUBE_INSURANCE = 10.0;

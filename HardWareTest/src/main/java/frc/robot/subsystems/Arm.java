@@ -55,7 +55,7 @@ public class Arm extends SubsystemBase {
     pidController.setI(ArmConstants.PID_kI);
     pidController.setD(ArmConstants.PID_kD);
     pidController.setFF(ArmConstants.PID_kFF);
-    pidController.setOutputRange(-0.2,0.2);
+    pidController.setOutputRange(-0.4,0.4);
     pidController.setPositionPIDWrappingEnabled(false);
 
     leftMotor.setInverted(false);
@@ -184,7 +184,7 @@ public class Arm extends SubsystemBase {
    * @return If the arm is at the desired reset angle
    */
   public boolean atReset(){
-    if (encoder.getPosition() <= 11.5){
+    if (encoder.getPosition() <= 13.0){
       desiredAngle = 0.0;
       return true;
     }
@@ -194,7 +194,7 @@ public class Arm extends SubsystemBase {
   /**
    * Checks whether or not the arm is currently at desired bumper angle within a given tolerance defined in the constants.
    * Best used as a boolean supplier with a {@code waitUntil} command
-   * @return If the arm is at the desired reset angle
+   * @return If the arm is at the desired bumpers angle
    */
   public boolean atBumpers(){
     if (encoder.getPosition() >= 290.0){

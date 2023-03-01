@@ -50,8 +50,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    arm.setDefaultCommand(new ManualSetPointControl(arm, operatorController));
-
     compressor.setDefaultCommand(new Compress(compressor));
 
     // Configure the trigger bindings
@@ -81,8 +79,7 @@ public class RobotContainer {
     // ARM RESET
     operatorController.povDown().onTrue(new ResetArm(this));
     // MANUAL CONTROL
-    operatorController.axisGreaterThan(1, 0.3).whileTrue(new ManualSetPointControl(arm, operatorController));
-    operatorController.axisLessThan(1, -0.3).whileTrue(new ManualSetPointControl(arm, operatorController));
+    operatorController.axisLessThan(1, -0.15).whileTrue(new ManualSetPointControl(arm, operatorController));
 
     // INTAKE POSITION
     operatorController.back().onTrue(new SetArmAngle(arm, 35.0));
@@ -111,15 +108,16 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    SequentialCommandGroup auto = new SequentialCommandGroup(
+    /*SequentialCommandGroup auto = new SequentialCommandGroup(
               new SetWristState(claw, WristState.WristOut),
               new SetClawState(claw, ClawState.Closed),
               new AutoPlace(arm, claw, ArmConstants.ANGLE_CONE_HIGH),
               new PrintCommand("Placed"),
               new ResetArm(this),
               new PrintCommand("Reset"),
-              new WaitCommand(0.25));
+              new WaitCommand(0.25));*/
 
-    return auto;
+    return new SetArmAngle(arm, 180.0);
+    //return new AutoSpindex(spindexer);
   }
 }
