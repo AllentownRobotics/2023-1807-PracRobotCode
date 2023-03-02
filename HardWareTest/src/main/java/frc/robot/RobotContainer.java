@@ -19,6 +19,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Cmprsr;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Spindexer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -44,6 +45,7 @@ public class RobotContainer {
   final Cmprsr compressor = new Cmprsr();
   final Spindexer spindexer = new Spindexer();
   final DriveSubsystem drivetrain = new DriveSubsystem();
+  final Limelight limelight = new Limelight();
 
   SlewRateLimiter strafe = new SlewRateLimiter(5);
   SlewRateLimiter translate = new SlewRateLimiter(5);
