@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Arm.ArmSubStationInTake;
 import frc.robot.commands.Arm.ResetArm;
+import frc.robot.commands.Arm.WaitForPlace;
 import frc.robot.commands.Arm.LowLevelCommands.ManualSetPointControl;
+import frc.robot.commands.Arm.LowLevelCommands.SetArmAngle;
 import frc.robot.commands.Arm.NodeCommands.HighNode;
 import frc.robot.commands.Arm.NodeCommands.MidNode;
 import frc.robot.commands.Claw.LowLevelCommands.ToggleClaw;
@@ -26,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -36,7 +40,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
+  public final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
   private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
   public final Claw claw = new Claw();
@@ -50,7 +54,7 @@ public class RobotContainer {
   boolean fieldOriented = true;
 
   Trigger wristFlipTrigger = new Trigger(arm::isWristAllowedOut);
-  //Trigger armManualControl = new Trigger(() -> Math.abs(operatorController.getLeftY()) >= 0.15);
+  Trigger armManualControl = new Trigger(() -> Math.abs(operatorController.getLeftY()) >= 0.15);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -61,7 +65,7 @@ public class RobotContainer {
             () -> drivetrain.drive(
                 translate.calculate(MathUtil.applyDeadband(-driverController.getLeftY(), 0.3)),
                 strafe.calculate(MathUtil.applyDeadband(-driverController.getLeftX(), 0.3)),
-                MathUtil.applyDeadband(driverController.getRightX(), 0.3),
+                MathUtil.applyDeadband(-driverController.getRightX(), 0.3),
                 fieldOriented),
             drivetrain));  
 
@@ -91,13 +95,14 @@ public class RobotContainer {
         OPERATOR
     */
     // HIGH PLACEMENT
-    operatorController.povUp().onTrue(new HighNode(arm, claw, operatorController));
+    operatorController.povUp().onTrue(new SetArmAngle(arm, ArmConstants.ANGLE_CONE_HIGH, ArmConstants.ANGLE_CUBE_HIGH));
     // MID PLACEMENT
-    operatorController.povLeft().onTrue(new MidNode(arm, claw, operatorController));
+    operatorController.povLeft().onTrue(new SetArmAngle(arm, ArmConstants.ANGLE_CONE_MID, ArmConstants.ANGLE_CUBE_MID));
     // ARM RESET
     operatorController.povDown().onTrue(new ResetArm(this));
     // MANUAL CONTROL
-    //armManualControl.whileTrue(new ManualSetPointControl(arm, operatorController));
+    //armManualControl.onTrue(Commands.runOnce)
+    armManualControl.whileTrue(Commands.run(() -> arm.rotateBy(-10.0 * operatorController.getLeftY()), arm).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
     // INTAKE POSITION
     operatorController.rightBumper().onTrue(new ArmSubStationInTake(this)).onFalse(new ResetArm(this));
 

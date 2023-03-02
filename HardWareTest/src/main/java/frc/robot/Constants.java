@@ -39,7 +39,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 4;
+    public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
@@ -144,7 +144,7 @@ public final class Constants {
     public static final double ANGLE_CONE_INSURANCE = 20.0;
     public static final double ANGLE_CUBE_INSURANCE = 10.0;
     public static final double ANGLE_MANUAL_SPEED_MAX_DEGREESPERSECOND = 120.0;
-    public static final double ANGLE_MANUAL_INPUT_MODIFIER = ANGLE_MANUAL_SPEED_MAX_DEGREESPERSECOND * 0.02;
+    public static final double ANGLE_MANUAL_INPUT_MODIFIER = 2.0;
 
     public static final double ANGLE_CONE_HIGH = 201.182 - ANGLE_CONE_INSURANCE;
     public static final double ANGLE_CONE_MID = 224.367 - ANGLE_CONE_INSURANCE;

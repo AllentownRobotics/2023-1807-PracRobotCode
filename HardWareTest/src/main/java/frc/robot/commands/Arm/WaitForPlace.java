@@ -7,6 +7,7 @@ package frc.robot.commands.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Arm.LowLevelCommands.SetArmAngle;
 import frc.robot.commands.Arm.LowLevelCommands.SetCubeOrCone;
@@ -15,7 +16,7 @@ import frc.robot.subsystems.Arm;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class WaitForPlace extends ParallelDeadlineGroup {
+public class WaitForPlace extends SequentialCommandGroup {
 
   /**
    * Parallel deadline group which rotates the arm to its placement position and waits for the operator to place
@@ -25,8 +26,6 @@ public class WaitForPlace extends ParallelDeadlineGroup {
   public WaitForPlace(Arm arm, SetArmAngle angles, CommandXboxController controller) {
     // Add the deadline command in the super() call. Add other commands using
     // addCommands().
-    super(Commands.waitUntil(arm::getNOTHolding).withInterruptBehavior(Command.InterruptionBehavior.kCancelSelf));
-
     addCommands(Commands.repeatingSequence(angles, new SetCubeOrCone(arm, controller)));
   }
 }
