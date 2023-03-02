@@ -18,9 +18,14 @@ import frc.robot.commands.Spindexer.LowLevelCommands.RunAtSpeed;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Cmprsr;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Spindexer;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -32,18 +37,33 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   private final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.OPERATOR_CONTROLLER_PORT);
+  private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
 
   public final Claw claw = new Claw();
   public final Arm arm = new Arm(claw);
   final Cmprsr compressor = new Cmprsr();
   final Spindexer spindexer = new Spindexer();
+  final DriveSubsystem drivetrain = new DriveSubsystem();
+
+  SlewRateLimiter strafe = new SlewRateLimiter(5);
+  SlewRateLimiter translate = new SlewRateLimiter(5);
+  boolean fieldOriented = true;
 
   Trigger wristFlipTrigger = new Trigger(arm::isWristAllowedOut);
-  Trigger armManualControl = new Trigger(() -> Math.abs(operatorController.getLeftY()) >= 0.15);
+  //Trigger armManualControl = new Trigger(() -> Math.abs(operatorController.getLeftY()) >= 0.15);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     compressor.setDefaultCommand(new Compress(compressor));
+
+    drivetrain.setDefaultCommand(
+      new RunCommand(
+            () -> drivetrain.drive(
+                translate.calculate(MathUtil.applyDeadband(-driverController.getLeftY(), 0.3)),
+                strafe.calculate(MathUtil.applyDeadband(-driverController.getLeftX(), 0.3)),
+                MathUtil.applyDeadband(driverController.getRightX(), 0.3),
+                fieldOriented),
+            drivetrain));  
 
     // Configure the trigger bindings
     configureBindings();
@@ -59,6 +79,17 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    /*
+        DRIVER
+    */
+
+    driverController.rightBumper().whileTrue(new RunCommand(() -> drivetrain.setX(), drivetrain));
+    driverController.leftBumper().onTrue(new InstantCommand(() -> fieldOriented = !fieldOriented));
+    driverController.start().onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
+
+    /*
+        OPERATOR
+    */
     // HIGH PLACEMENT
     operatorController.povUp().onTrue(new HighNode(arm, claw, operatorController));
     // MID PLACEMENT
@@ -66,7 +97,7 @@ public class RobotContainer {
     // ARM RESET
     operatorController.povDown().onTrue(new ResetArm(this));
     // MANUAL CONTROL
-    armManualControl.whileTrue(new ManualSetPointControl(arm, operatorController));
+    //armManualControl.whileTrue(new ManualSetPointControl(arm, operatorController));
     // INTAKE POSITION
     operatorController.rightBumper().onTrue(new ArmSubStationInTake(this)).onFalse(new ResetArm(this));
 

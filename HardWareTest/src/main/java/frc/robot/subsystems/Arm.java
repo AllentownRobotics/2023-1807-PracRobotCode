@@ -201,19 +201,18 @@ public class Arm extends SubsystemBase {
   }
 
   /**
-   * Checks whether or not the arm has passed the desired wrist flip point within a given tolerance defined in the constants.
-   * Best used as a boolean supplier with a {@code waitUntil} command
-   * @return If the arm is passed the flip point
+   * Checks whether or not the wrist is allowed to be extended at any given moment and returns accordingly.
+   * True if yes, false if no
+   * @return whether or not the wrist is allowed to be extended
    */
   public boolean isWristAllowedOut(){
-    boolean angleAboveMin = encoder.getPosition() >= ClawConstants.ANGLE_WRIST_FLIPPOINT_MIN;
-    boolean angleBelowMax = encoder.getPosition() <= ClawConstants.ANGLE_WRIST_FLIPPOINT_MAX;
-    if (angleAboveMin && angleBelowMax){
-      return true;
-    }
-    return false;
-  }
+    boolean angleAboveMin = encoder.getPosition() >= ClawConstants.ANGLE_WRIST_EXCLUSIONZONE_MIN;
+    boolean angleBelowMax = encoder.getPosition() <= ClawConstants.ANGLE_WRIST_EXCLUSIONZONE_MAX;
 
+    boolean inExclusionZone = angleAboveMin && angleBelowMax;
+
+    return !inExclusionZone;
+  }
   /**
    * Sets the motors to run at the given percent speed
    * @param percentSpeed the speed for the motors to run at
