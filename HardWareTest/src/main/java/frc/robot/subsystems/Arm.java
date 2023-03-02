@@ -80,6 +80,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     pidController.setReference(desiredAngle, ControlType.kPosition);
 
+    SmartDashboard.putBoolean("In Exclusion", isWristAllowedOut());
     SmartDashboard.putNumber("Arm Angle", encoder.getPosition());
     SmartDashboard.putNumber("Set Point", desiredAngle);
   }

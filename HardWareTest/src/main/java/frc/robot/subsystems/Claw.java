@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClawConstants;
 import frc.robot.Enums.ClawState;
@@ -91,11 +92,13 @@ public class Claw extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("Manual Wrist", manualWristControlAllowed);
+
     if (manualWristControlAllowed){
       wristPiston.set(wristState.equals(WristState.WristOut) ? Value.kReverse : Value.kForward);
     }
     else{
-      wristPiston.set(Value.kReverse);
+      wristPiston.set(Value.kForward);
     }
 
     clawPiston.set(clawState.equals(ClawState.Closed) ? Value.kForward : Value.kReverse);

@@ -109,8 +109,8 @@ public class RobotContainer {
     operatorController.rightBumper().onTrue(new ArmSubStationInTake(this)).onFalse(new ResetArm(this));
 
     // AUTO WRIST
-    wristFlipTrigger.onTrue(Commands.runOnce(() -> claw.setManualWristControlAllowed(true))).whileFalse(
-                                            Commands.run(() -> claw.setManualWristControlAllowed(false)));
+    wristFlipTrigger.onTrue(Commands.runOnce(() -> claw.setManualWristControlAllowed(true))).onFalse(
+                                            Commands.runOnce(() -> claw.setManualWristControlAllowed(false)));
 
     // CLAW TOGGLE
     operatorController.x().onTrue(new ToggleClaw(claw));
