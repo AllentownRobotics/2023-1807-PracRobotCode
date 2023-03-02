@@ -110,7 +110,7 @@ public class RobotContainer {
 
     // AUTO WRIST
     wristFlipTrigger.onTrue(Commands.runOnce(() -> claw.setManualWristControlAllowed(true))).whileFalse(
-                                            Commands.runOnce(() -> claw.setManualWristControlAllowed(false)));
+                                            Commands.run(() -> claw.setManualWristControlAllowed(false)));
 
     // CLAW TOGGLE
     operatorController.x().onTrue(new ToggleClaw(claw));
