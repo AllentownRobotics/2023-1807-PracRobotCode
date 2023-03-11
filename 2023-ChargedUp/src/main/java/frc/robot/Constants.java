@@ -64,9 +64,9 @@ public final class Constants {
 
   public static final int rightArmPistonReverseChannel = 3;
 
-  public static final int clawRetractorForwardChannel = 4;
+  public static final int clawWristForwardChannel = 4;
 
-  public static final int clawRetractorReverseChannel = 5;
+  public static final int clawWristReverseChannel = 5;
 
   public static final int clawExtenderForwardChannel = 6;
 

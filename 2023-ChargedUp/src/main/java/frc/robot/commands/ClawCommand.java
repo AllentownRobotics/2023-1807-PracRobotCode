@@ -10,10 +10,17 @@ import frc.robot.subsystems.Claw;
 
 public class ClawCommand extends CommandBase {
   int commandNumber;
+  public static int wristTogglePattern;
+  public static int extenderTogglePattern;
   /** Creates a new ClawCommand. */
   public ClawCommand(int commandNumber) {
-    // Use addRequirements() here to declare subsystem dependencies.
+
     this.commandNumber = commandNumber;
+
+    // sets start of game claw states
+    extenderTogglePattern = 0;
+    wristTogglePattern = 0;
+
     addRequirements(RobotContainer.claw);
   }
 
@@ -21,9 +28,29 @@ public class ClawCommand extends CommandBase {
   @Override
   public void initialize() {
     if (commandNumber == 0) {
-      Claw.toggleClaw();
+      if (extenderTogglePattern == 0) {
+
+        Claw.ClawExtensionForward();
+        extenderTogglePattern++;
+
+      } else if (extenderTogglePattern == 1) {
+
+        Claw.ClawExtensionRetract();
+        extenderTogglePattern--;
+
+      }
     } else if (commandNumber == 1) {
-      Claw.toggleClawExtension();
+
+      if (wristTogglePattern == 0) {
+
+        Claw.OpenClawWrist();
+        wristTogglePattern++;
+
+      } else if (wristTogglePattern == 1) {
+
+        Claw.CloseClawWrist();
+        wristTogglePattern--;
+      }
     }
   }
 
