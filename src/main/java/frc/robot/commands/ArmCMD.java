@@ -15,12 +15,12 @@ public class ArmCMD extends CommandBase {
     
     @Override
     public void execute() {
-        RobotContainer.armSystem.extended();
+        RobotContainer.armSystem.armExtended();
     }
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.armSystem.retracted();
+        RobotContainer.armSystem.armRetracted();
     }
 
     @Override

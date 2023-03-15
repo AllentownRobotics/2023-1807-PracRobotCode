@@ -4,7 +4,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.CompressorConstants;
 
 public class Arm extends SubsystemBase {
 
@@ -15,17 +16,17 @@ public class Arm extends SubsystemBase {
  
      public Arm() {
          leftArmSolenoid = new DoubleSolenoid(
-             Constants.COMPRESSOR_ID,
+             CompressorConstants.COMPRESSOR_ID,
              PneumaticsModuleType.REVPH,
-             Constants.ARM_EXTEND_CHANNEL,
-             Constants.ARM_RETRACT_CHANNEL
+             ArmConstants.LEFT_ARM_EXTEND_CHANNEL_ID,
+             ArmConstants.LEFT_ARM_RETRACT_CHANNEL_ID
          );
 
          rightArmSolenoid = new DoubleSolenoid(
-            Constants.COMPRESSOR_ID,
+            CompressorConstants.COMPRESSOR_ID,
             PneumaticsModuleType.REVPH,
-            Constants.ARM_EXTEND_CHANNEL,
-            Constants.ARM_RETRACT_CHANNEL
+            ArmConstants.RIGHT_ARM_EXTEND_CHANNEL_ID,
+            ArmConstants.RIGHT_ARM_RETRACT_CHANNEL_ID
         );
      }
 
@@ -35,12 +36,12 @@ public class Arm extends SubsystemBase {
     @Override
     public void simulationPeriodic() {}
 
-    public void extended() {
+    public void armExtended() {
     leftArmSolenoid.set(Value.kForward);
     rightArmSolenoid.set(Value.kForward);
     }
 
-    public void retracted() {
+    public void armRetracted() {
     leftArmSolenoid.set(Value.kReverse);
     rightArmSolenoid.set(Value.kReverse);
     }

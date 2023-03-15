@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.RobotContainerConstants;
 import frc.robot.commands.ArmCMD;
 import frc.robot.commands.CompressCMD;
 import frc.robot.subsystems.Arm;
@@ -21,15 +22,17 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     
-    operatorController = new CommandXboxController(Constants.CTRL_FOR_DRIVER_ID);
+    operatorController = new CommandXboxController(RobotContainerConstants.CTRL_FOR_DRIVER_ID);
         
-    driverController = new CommandXboxController(Constants.CTRL_FOR_OPERATOR_ID);
+    driverController = new CommandXboxController(RobotContainerConstants.CTRL_FOR_OPERATOR_ID);
     
-    //Default commands
+    // Default commands
+
     compressorSystem.setDefaultCommand(new CompressCMD());
 }
 
     public void configureBindings() {
-        operatorController.x().whileTrue(new ArmCMD());
+
+        operatorController.a().whileTrue(new ArmCMD());
     }
 }

@@ -4,13 +4,16 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.CompressorConstants;
 
 public class Compress extends SubsystemBase {
+    
     public Compressor compressor;
 
     public Compress() {
-        compressor = new Compressor(Constants.COMPRESSOR_ID, PneumaticsModuleType.REVPH);
+        compressor = new Compressor(
+            CompressorConstants.COMPRESSOR_ID,
+            PneumaticsModuleType.REVPH);
     }
 
     @Override
