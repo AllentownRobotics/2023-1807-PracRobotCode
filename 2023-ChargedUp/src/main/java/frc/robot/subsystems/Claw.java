@@ -12,15 +12,17 @@ import frc.robot.Constants.MechanismConstants;
 
 public class Claw extends SubsystemBase {
   static DoubleSolenoid clawWrist;
-  static DoubleSolenoid clawExtender;
-  static DoubleSolenoid rightClawExtender;
+  static DoubleSolenoid clawExtenderLeft;
+  static DoubleSolenoid clawExtenderRight;
 
   /** Creates a new Claw. */
   public Claw() {
     clawWrist = new DoubleSolenoid(PneumaticsModuleType.REVPH, 
     MechanismConstants.clawWristForwardChannel, MechanismConstants.clawWristReverseChannel);
-    clawExtender = new DoubleSolenoid(PneumaticsModuleType.REVPH, 
-    MechanismConstants.clawExtenderForwardChannel, MechanismConstants.clawExtenderReverseChannel);
+    clawExtenderLeft = new DoubleSolenoid(PneumaticsModuleType.REVPH, 
+    MechanismConstants.clawExtenderLeftForwardChannel, MechanismConstants.clawExtenderLeftReverseChannel);
+    clawExtenderRight = new DoubleSolenoid(PneumaticsModuleType.REVPH, 
+    MechanismConstants.clawExtenderRightForwardChannel, MechanismConstants.clawExtenderRightReverseChannel);
   }
   public static void OpenClawWrist() {
     clawWrist.set(Value.kReverse);
@@ -30,9 +32,11 @@ public class Claw extends SubsystemBase {
   }
 
   public static void ClawExtensionForward() {
-    clawExtender.set(Value.kReverse);
+    clawExtenderLeft.set(Value.kReverse);
+    clawExtenderRight.set(Value.kReverse);
   }
   public static void ClawExtensionRetract() {
-    clawExtender.set(Value.kForward);
+    clawExtenderLeft.set(Value.kForward);
+    clawExtenderRight.set(Value.kForward);
   }
 }

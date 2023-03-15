@@ -68,9 +68,13 @@ public final class Constants {
 
   public static final int clawWristReverseChannel = 5;
 
-  public static final int clawExtenderForwardChannel = 6;
+  public static final int clawExtenderLeftForwardChannel = 6;
 
-  public static final int clawExtenderReverseChannel = 7;
+  public static final int clawExtenderLeftReverseChannel = 7;
+
+  public static final int clawExtenderRightForwardChannel = 8;
+
+  public static final int clawExtenderRightReverseChannel = 9;
     }
     public static class DrivetrainConstants {
 
