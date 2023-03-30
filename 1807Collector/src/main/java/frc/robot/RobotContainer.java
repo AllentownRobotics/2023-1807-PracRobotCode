@@ -1,4 +1,3 @@
-
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -6,15 +5,16 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.CollectCmd;
+import frc.robot.commands.CollectDown;
+import frc.robot.commands.CollectMotors;
+import frc.robot.commands.CollectUp;
+import frc.robot.commands.CompressCMD;
 import frc.robot.commands.DriveCMD;
-import frc.robot.subsystems.Collector;
+import frc.robot.subsystems.Compress;
 import frc.robot.subsystems.DriveTrain;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -24,23 +24,22 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+ private Wrist wrist = new Wrist();
+ private Compress comp = new Compress();
+ //private DriveTrain drive = new DriveTrain();
   // The robot's subsystems and commands are defined here...
-  public static DriveTrain drivetrainsubsystem;
-  public static Collector collectsubsystem;
-  private JoystickButton collectButton;
-  private JoystickButton reverseButton;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  public static XboxController controller;
+  private final CommandXboxController m_driverController =
+      new CommandXboxController(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    controller = new XboxController(OperatorConstants.kDriverControllerPort);
     // Configure the trigger bindings
-    drivetrainsubsystem = new DriveTrain();
-    collectsubsystem = new Collector();
-    drivetrainsubsystem.setDefaultCommand(new DriveCMD());
     configureBindings();
+    //comp.setDefaultCommand(new CompressCMD(comp));
+    //drive.setDefaultCommand(new DriveCMD(drive, m_driverController));
   }
 
   /**
@@ -53,18 +52,14 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
-    collectButton = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
-    collectButton.whileHeld(new CollectCmd(.4));
-
-    reverseButton = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
-    reverseButton.whileHeld(new CollectCmd(-.4));
-
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
+    m_driverController.a().whileTrue(new CollectMotors(wrist, 1));
+    m_driverController.b().whileTrue(new CollectMotors(wrist, -1));
+    m_driverController.leftBumper().onTrue(new CollectUp(wrist));
+    m_driverController.rightBumper().onTrue(new CollectDown(wrist));
   }
 
   /**

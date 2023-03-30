@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
@@ -27,10 +27,10 @@ public class DriveTrain extends SubsystemBase {
   private DigitalInput IRSensor;
   public DriveTrain() 
   {
-    leftLead = new CANSparkMax(DriveConstants.leftLeadid, MotorType.kBrushless);
-    leftFollow = new CANSparkMax(DriveConstants.leftFollowid, MotorType.kBrushless);
-    rightLead = new CANSparkMax(DriveConstants.rightLeadid, MotorType.kBrushless);
-    rightFollow = new CANSparkMax(DriveConstants.rightFollowid, MotorType.kBrushless);
+    leftLead = new CANSparkMax(1, MotorType.kBrushless);
+    leftFollow = new CANSparkMax(0, MotorType.kBrushless);
+    rightLead = new CANSparkMax(0, MotorType.kBrushless);
+    rightFollow = new CANSparkMax(0, MotorType.kBrushless);
 
 
     left = new MotorControllerGroup(leftLead, leftFollow);
@@ -47,8 +47,8 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putBoolean("Sensor", IRSensor.get());
   }
 
-  public void drive(XboxController controller)
+  public void drive(CommandXboxController controller)
   {
-    driver.arcadeDrive(controller.getLeftY()*DriveConstants.driveMultiplier, controller.getRightX()*DriveConstants.driveMultiplier);
+    driver.arcadeDrive(controller.getLeftY()*1.0, controller.getRightX()*1.0);
   }
 }
